@@ -20,6 +20,7 @@
 				<?php banks_nav_item( '/knowledge/', 'Knowledge' ); ?>
 				<?php banks_nav_item( '/glossary/', 'Glossary' ); ?>
 				<?php banks_nav_item( '/labs/', 'Labs' ); ?>
+				<?php banks_nav_item( '/wordpress-development/', 'For agencies' ); ?>
 			</ul>
 		</div>
 		<div>
