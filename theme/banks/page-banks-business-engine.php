@@ -51,16 +51,16 @@ $b_inside = array(
 	array( 'Your choice of AI', 'Runs on OpenAI or Groq with your own key, so you see and pay the real model cost.' ),
 	array( 'Five-minute setup', 'A guided wizard for your business, services, knowledge, hours and AI, then you’re live.' ),
 	array( 'Slack and SMS', 'Lead alerts to a Slack channel, or by SMS and WhatsApp through Twilio.' ),
-	array( 'Updates built in', 'New versions show up on your own Plugins page, like any other WordPress plugin.' ),
+	array( 'Updates built in', 'New versions arrive on their own. We keep your assistant current without you lifting a finger.' ),
 );
 
 $b_faqs = array(
-	array( 'What is Banks Business Engine?', 'Banks Business Engine is a WordPress plugin from Banks Solutions. It adds an AI assistant to your website that answers visitors in real time, qualifies them, books appointments and sends ready leads to a dashboard with a CRM, automations, WhatsApp alerts, Paystack payment links and insights. It runs on your own WordPress site.' ),
+	array( 'What is Banks Business Engine?', 'Banks Business Engine is an AI assistant and lead CRM from Banks Solutions. It adds an assistant to your website that answers visitors in real time, qualifies them, books appointments and sends ready leads to a dashboard with a CRM, automations, WhatsApp alerts, Paystack payment links and insights.' ),
 	array( 'Does it work on WhatsApp?', 'Yes, for notifications. You get each new lead on WhatsApp with the service, budget and timeline, and customers get their confirmation on WhatsApp too, through Meta’s WhatsApp Cloud API or Twilio. The conversation itself happens on your website.' ),
 	array( 'Which AI does it use?', 'It runs on OpenAI or Groq, using your own API key, which is encrypted before it is stored. The assistant answers from what you tell it about your business, and it only offers appointment times from your real booking hours.' ),
 	array( 'What does it cost a month?', 'It’s priced on scope: what the assistant needs to do on your website, from answering questions to taking bookings, payments and WhatsApp follow-ups. It runs on a monthly licence per website, and we quote both with the setup. AI model usage is billed by the provider on your own key, never marked up. Start the brief and the quote comes back within two working days.' ),
-	array( 'Does it work with my website?', 'It works on any WordPress website. If your site is on another platform, we can talk about moving it to WordPress or building the same features into what you have.' ),
-	array( 'Where is my data kept?', 'On your own WordPress site and database, not on a platform you don’t control. API keys and credentials are encrypted with AES-256-GCM, and the setup follows Nigeria’s Data Protection Act 2023.' ),
+	array( 'Does it work with my website?', 'Yes. We set it up on your website, whatever it was built with, and connect it to WhatsApp, Paystack and your calendar. If you don’t have a website yet, we can build one with it included.' ),
+	array( 'Where is my data kept?', 'With your own website and business, not on a shared platform you don’t control. API keys and credentials are encrypted with AES-256-GCM, and the setup follows Nigeria’s Data Protection Act 2023.' ),
 	array( 'What happens if I stop paying?', 'The public assistant pauses, but you keep full access to your dashboard, leads, customers and bookings. Nothing is deleted.' ),
 );
 ?>
@@ -69,9 +69,9 @@ $b_faqs = array(
 		<div class="s-glow" aria-hidden="true"></div>
 		<div class="b-wrap en-inner">
 			<div class="en-copy">
-				<p class="b-eyebrow en-eyebrow">Banks Business Engine · WordPress plugin</p>
+				<p class="b-eyebrow en-eyebrow">Banks Business Engine · AI assistant and lead CRM</p>
 				<h1 class="en-title">Every enquiry answered, qualified and followed up<span class="s-dot">.</span></h1>
-				<p class="en-lede">Banks Business Engine is a WordPress plugin from Banks Solutions that answers website visitors in real time, qualifies them and sends ready leads to a built-in dashboard with bookings and automations. It runs on your own site, in your voice.</p>
+				<p class="en-lede">Banks Business Engine is an AI assistant from Banks Solutions that answers your website visitors in real time, qualifies them and sends ready leads to a built-in dashboard with bookings and automations. It works on your website, in your voice.</p>
 				<div class="en-actions">
 					<button type="button" class="b-btn b-btn--signal b-btn--lg en-try" data-magnetic hidden>Try it live</button>
 					<a class="b-btn b-btn--signal b-btn--lg en-setup" href="<?php echo esc_url( $b_setup ); ?>" data-magnetic>Book a setup</a>
@@ -176,7 +176,7 @@ $b_faqs = array(
 		<div class="en-head">
 			<p class="b-eyebrow">What’s inside</p>
 			<h2 data-split>Everything after the first hello.</h2>
-			<p>One plugin, on your own site, doing the work that usually needs a receptionist, a CRM and a few apps stitched together.</p>
+			<p>One tool on your website, doing the work that usually needs a receptionist, a CRM and a few apps stitched together.</p>
 		</div>
 		<ul class="en-grid">
 			<?php foreach ( $b_inside as $b_i => $b_f ) : ?>
@@ -199,7 +199,7 @@ $b_faqs = array(
 		<div class="en-head en-head--dark">
 			<p class="b-eyebrow">Data protection</p>
 			<h2 data-split>Your data stays on your site.</h2>
-			<p>Banks Business Engine is self-hosted on your own WordPress install, not a platform you don’t control. Every API key and credential is encrypted with AES-256-GCM before it touches the database, and every setup follows Nigeria’s Data Protection Act 2023.</p>
+			<p>Banks Business Engine keeps your leads and customers with your own business, not on a shared platform you don’t control. Every API key and credential is encrypted with AES-256-GCM before it touches the database, and every setup follows Nigeria’s Data Protection Act 2023.</p>
 		</div>
 	</div>
 </section>
@@ -260,8 +260,8 @@ echo wp_json_encode(
 				'url'                 => banks_main_url( '/banks-business-engine/' ),
 				'applicationCategory' => 'BusinessApplication',
 				'applicationSubCategory' => 'AI assistant and lead CRM',
-				'operatingSystem'     => 'WordPress',
-				'description'         => 'A WordPress plugin that answers website visitors in real time, qualifies them, books appointments and sends ready leads to a dashboard with a CRM, automations, WhatsApp alerts, Paystack payment links and insights.',
+				'operatingSystem'     => 'Web',
+				'description'         => 'An AI assistant and lead CRM that answers website visitors in real time, qualifies them, books appointments and sends ready leads to a dashboard with a CRM, automations, WhatsApp alerts, Paystack payment links and insights.',
 				'featureList'         => array_map(
 					function ( $f ) {
 						return $f[0];
