@@ -32,7 +32,7 @@ add_action(
 		wp_enqueue_style( 'banks-fonts', 'https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap', array(), null );
 		wp_enqueue_style( 'banks', $uri . 'main.css', array(), BANKS_VERSION );
 		wp_enqueue_script( 'banks-nav', $uri . 'nav.js', array(), BANKS_VERSION, true );
-		if ( is_singular( 'post' ) || is_page_template( 'default' ) ) {
+		if ( is_singular( array( 'post', 'glossary' ) ) || ( is_page() && ! banks_is_elementor_page() ) ) {
 			wp_enqueue_style( 'banks-article', $uri . 'article.css', array( 'banks' ), BANKS_VERSION );
 		}
 		if ( 'main' !== banks_site() ) {
