@@ -1,0 +1,60 @@
+/* Contact (/contact/). Colours come from the tokens in main.css, so both themes work. */
+
+/* 1. Hero: the invitation on the left, a conversation on the right */
+.ct-hero{background:var(--b-bg)}
+.ct-stage{position:relative;overflow:hidden;min-height:100svh;display:grid;align-items:center;background:var(--b-hero);color:var(--b-on);padding-block:calc(var(--b-header) + 40px) 80px;will-change:clip-path}
+.ct-inner{position:relative;z-index:1;width:100%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:64px;align-items:center}
+@media (max-width:1000px){.ct-inner{grid-template-columns:minmax(0,1fr);gap:48px}}
+.ct-eyebrow{color:var(--b-foam)}
+.ct-title{font-size:clamp(3rem,7.4vw,7rem);line-height:.92;letter-spacing:-.05em;max-width:9ch;margin-bottom:28px}
+.ct-lede{max-width:48ch;font-size:clamp(1.02rem,1.3vw,1.15rem);color:var(--b-on-soft);margin-bottom:36px}
+.ct-lede a{color:var(--b-on)}
+.ct-actions{display:flex;flex-wrap:wrap;gap:14px}
+
+.ct-chat{margin:0;max-width:520px;justify-self:end;width:100%;border:1px solid var(--b-on-line);border-radius:26px;background:color-mix(in srgb,var(--b-paper) 5%,var(--b-hero));box-shadow:0 60px 120px -60px rgba(0,0,0,.8);overflow:hidden}
+@media (max-width:1000px){.ct-chat{justify-self:start}}
+.ct-chat__top{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--b-on-line)}
+.ct-chat__avatar{display:grid;place-items:center;flex:none;width:40px;height:40px;border-radius:50%;background:var(--b-paper);color:var(--b-lagoon);font:700 18px/1 var(--b-head)}
+.ct-chat__who{display:grid;gap:3px;min-width:0}
+.ct-chat__who strong{font:600 15px/1.2 var(--b-head)}
+.ct-chat__status{display:flex;align-items:center;font:400 11px/1.3 var(--b-mono);letter-spacing:.04em;color:var(--b-on-soft)}
+.ct-chat__status .s-live{width:6px;height:6px;margin-right:7px}
+.ct-clock{display:grid;justify-items:end;margin-left:auto;font-family:var(--b-mono)}
+.ct-clock__label{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--b-on-soft)}
+.ct-clock__time{font-size:17px;font-weight:500;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.ct-chat__log{display:grid;gap:10px;list-style:none;margin:0;padding:22px 18px;min-height:300px;align-content:start}
+.ct-msg{max-width:84%;padding:11px 15px;border-radius:18px;font-size:14.5px;line-height:1.45}
+.ct-msg--in{justify-self:start;border-bottom-left-radius:6px;background:color-mix(in srgb,var(--b-paper) 10%,var(--b-hero))}
+.ct-msg--out{justify-self:end;border-bottom-right-radius:6px;background:var(--b-current);color:var(--b-paper)}
+.ct-typing{display:inline-flex;gap:4px;padding:14px 16px}
+.ct-typing i{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.6}
+.ct-chat__bar{display:flex;align-items:center;justify-content:space-between;margin:0 14px 14px;padding:12px 8px 12px 18px;border:1px solid var(--b-on-line);border-radius:99px;font-size:14px;color:var(--b-on-soft)}
+.ct-chat__send{width:30px;height:30px;border-radius:50%;background:var(--b-foam);position:relative}
+.ct-chat__send::after{content:"";position:absolute;left:9px;top:10px;width:9px;height:9px;border-top:2px solid var(--b-hero);border-right:2px solid var(--b-hero);transform:rotate(45deg)}
+
+/* 2. Three ways in */
+.ct-ways{padding-block:clamp(96px,12vw,150px)}
+.ct-head{max-width:640px;margin-bottom:48px}
+.ct-head h2{font-size:clamp(2rem,4.4vw,3.4rem);letter-spacing:-.035em}
+.ct-head p:not(.b-eyebrow){color:var(--b-muted);max-width:52ch}
+.ct-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media (max-width:900px){.ct-grid{grid-template-columns:minmax(0,1fr)}}
+.ct-way{display:flex;flex-direction:column;min-height:280px;padding:30px 28px;border:1px solid var(--b-line);border-radius:22px;background:var(--b-surface);color:var(--b-fg);text-decoration:none;transition:border-color var(--b-dur),box-shadow var(--b-dur)}
+.ct-way:hover,.ct-way:focus-visible{border-color:color-mix(in srgb,var(--b-link) 50%,var(--b-line));box-shadow:var(--b-shadow)}
+.ct-way--brief{background:var(--b-hero);color:var(--b-on);border-color:transparent}
+.ct-way__label{font:500 11.5px/1.2 var(--b-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--b-link);margin-bottom:18px}
+.ct-way--brief .ct-way__label{color:var(--b-foam)}
+.ct-way__value{font:700 clamp(1.4rem,2.2vw,1.9rem)/1.15 var(--b-head);letter-spacing:-.03em;overflow-wrap:anywhere}
+.ct-way__note{margin-top:12px;color:var(--b-muted);font-size:15px}
+.ct-way--brief .ct-way__note{color:var(--b-on-soft)}
+.ct-way__go{margin-top:auto;padding-top:24px;font-weight:600;color:var(--b-link)}
+.ct-way--brief .ct-way__go{color:var(--b-foam)}
+
+/* 3. Where we are */
+.ct-where{padding-block:0 clamp(96px,12vw,150px)}
+.ct-where__grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px;align-items:end}
+@media (max-width:900px){.ct-where__grid{grid-template-columns:minmax(0,1fr);gap:8px}}
+.ct-cities{list-style:none;margin:0 0 48px;padding:0;border-top:1px solid var(--b-line)}
+.ct-city{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 24px;padding:22px 0;border-bottom:1px solid var(--b-line)}
+.ct-city__name{font:700 clamp(2.4rem,6vw,5rem)/1 var(--b-head);letter-spacing:-.05em}
+.ct-city__meta{font:500 12px/1.3 var(--b-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--b-muted)}
