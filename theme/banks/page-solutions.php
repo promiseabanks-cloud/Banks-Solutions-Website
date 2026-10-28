@@ -1,6 +1,6 @@
 <?php
 /*
- * Solutions hub (/solutions/), built as scenes: hero with the six solutions in orbit, "start where
+ * Solutions hub (/solutions/), built as scenes: hero with the six solutions shown working, "start where
  * it hurts" (symptom to solution), the six in depth as stacking cards, prices at a glance, the
  * fields we work in, questions, closing call. Copy: "Banks Solutions website: sitemap and copy" doc.
  * Motion lives in solutions.js; everything here reads in full with JavaScript off.
@@ -104,16 +104,59 @@ $b_faqs = array(
 					<a class="b-btn b-btn--line b-btn--lg" href="#sl-pain">Find your starting point</a>
 				</div>
 			</div>
-			<div class="sl-orbit" aria-hidden="true">
-				<span class="sl-orbit__ring"></span>
-				<span class="sl-orbit__ring sl-orbit__ring--2"></span>
-				<span class="sl-orbit__core">Your<br>business</span>
-				<?php foreach ( $b_solutions as $b_i => $b_s ) : ?>
-					<span class="sl-node" style="--a:<?php echo esc_attr( $b_i * 60 - 90 ); ?>deg">
-						<span class="sl-node__spoke"></span>
-						<span class="sl-node__pos"><span class="sl-node__chip"><i><?php echo esc_html( sprintf( '%02d', $b_i + 1 ) ); ?></i><?php echo esc_html( $b_s['short'] ); ?></span></span>
-					</span>
-				<?php endforeach; ?>
+			<div class="sl-reel" aria-hidden="true">
+				<div class="sl-reel__frame">
+					<div class="sl-reel__bar"><i></i><i></i><i></i><span class="sl-reel__where">yourbusiness.ng</span><span class="sl-reel__live"><span class="s-live"></span>Live</span></div>
+					<div class="sl-reel__stage">
+						<div class="sl-scr sl-scr--site is-on" data-where="yourbusiness.ng">
+							<span class="sl-scr__bar sl-scr__bar--lg"></span>
+							<span class="sl-scr__bar sl-scr__bar--md"></span>
+							<span class="sl-scr__bar"></span>
+							<span class="sl-scr__pill">Get a quote</span>
+							<div class="sl-scr__tiles"><span></span><span></span><span></span></div>
+							<div class="sl-scr__toast"><b>↗</b><span><em>New enquiry · website form</em>Ada wants a quote for an online store</span></div>
+						</div>
+						<div class="sl-scr sl-scr--portal" data-where="portal.yourbusiness.ng">
+							<div class="sl-scr__side"><span></span><span></span><span></span><span></span></div>
+							<div class="sl-scr__main">
+								<em>Project · New website</em>
+								<p class="sl-scr__big"><span data-reel-count="68">68</span>% built</p>
+								<span class="sl-scr__meter"><span style="width:68%"></span></span>
+								<ul class="sl-scr__steps"><li class="is-done">Brief approved</li><li class="is-done">Design signed off</li><li class="is-now">Build in progress</li><li>Launch</li></ul>
+								<span class="sl-scr__pill">Pay invoice 2 of 2 · Paystack</span>
+							</div>
+						</div>
+						<div class="sl-scr sl-scr--flow" data-where="WhatsApp → CRM">
+							<div class="sl-scr__node"><em>WhatsApp · 09:41</em>“Hi, how much for an online store?”</div>
+							<span class="sl-scr__link"></span>
+							<div class="sl-scr__node"><em>CRM · lead created</em>Tagged “Store”, assigned to sales</div>
+							<span class="sl-scr__link"></span>
+							<div class="sl-scr__node is-ok"><em>Follow-up · 40 seconds later</em>Price guide and booking link sent</div>
+						</div>
+						<div class="sl-scr sl-scr--chat" data-where="Assistant · yourbusiness.ng">
+							<p class="sl-scr__msg sl-scr__msg--in">Do you deliver to Abuja?</p>
+							<p class="sl-scr__msg">Yes. Abuja orders arrive in 2 to 3 days. Shall I start one for you?</p>
+							<p class="sl-scr__msg sl-scr__msg--in">Yes please</p>
+							<p class="sl-scr__msg sl-scr__typing"><span></span><span></span><span></span></p>
+						</div>
+						<div class="sl-scr sl-scr--care" data-where="Care plan · status">
+							<div class="sl-scr__stat"><em>Uptime, 30 days</em><b>99.98%</b></div>
+							<div class="sl-scr__stat"><em>Last backup</em><b>Verified</b></div>
+							<div class="sl-scr__stat"><em>Security scan</em><b>Clean</b></div>
+							<div class="sl-scr__stat"><em>Changes this month</em><b>3 of 5</b></div>
+							<div class="sl-scr__uptime"><?php echo str_repeat( '<span></span>', 30 ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static markup. ?></div>
+						</div>
+						<div class="sl-scr sl-scr--search" data-where="AI search">
+							<p class="sl-scr__query">Who makes the best wedding cakes in Ilorin?</p>
+							<div class="sl-scr__answer"><em>AI answer</em><p>Customers often recommend <mark>Your Business</mark>, known for custom tiered cakes, delivery across Ilorin and orders from ₦85,000.</p><span class="sl-scr__src">Source · yourbusiness.ng</span></div>
+						</div>
+					</div>
+				</div>
+				<ol class="sl-reel__tabs">
+					<?php foreach ( $b_solutions as $b_i => $b_s ) : ?>
+						<li<?php echo 0 === $b_i ? ' class="is-on"' : ''; ?>><button type="button" tabindex="-1"><i><?php echo esc_html( sprintf( '%02d', $b_i + 1 ) ); ?></i><?php echo esc_html( $b_s['short'] ); ?><span class="sl-reel__prog"><span></span></span></button></li>
+					<?php endforeach; ?>
+				</ol>
 			</div>
 		</div>
 	</div>
