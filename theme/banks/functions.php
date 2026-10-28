@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.12.0' );
+define( 'BANKS_VERSION', '0.12.1' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
@@ -447,7 +447,50 @@ function banks_redirects() {
 		'aeo'                          => '/solutions/seo-aeo/',
 		'services'                     => '/solutions/',
 		'audit'                        => '/start/',
+		'banks-solution'               => '/',
+		'home-v2'                      => '/',
+		'homepage-v3-jasper-clone'     => '/',
+		'author/creator'               => '/about/',
+		'category/uncategorized'       => '/knowledge/',
 	);
+}
+
+/** The old site's knowledge topics, each mapped to the article category that covers it. */
+function banks_old_topics() {
+	return array(
+		'ai-for-business'              => 'ai-custom-solutions',
+		'crm-and-automation'           => 'automation-crm',
+		'search-and-being-found'       => 'aeo',
+		'trust-and-compliance'         => 'legal-compliance',
+		'websites-and-digital-presence' => 'digital-foundation',
+		'cost-and-practical-basics'    => '',
+	);
+}
+
+/**
+ * Where an old path should go now, or '' to leave it alone. Archive pages (topics, categories,
+ * glossary letters) fold into the Knowledge and Glossary hubs, which filter and jump instead.
+ *
+ * @param string $path Request path without slashes at either end.
+ * @return string
+ */
+function banks_redirect_target( $path ) {
+	$map = banks_redirects();
+	if ( isset( $map[ $path ] ) ) {
+		return $map[ $path ];
+	}
+	$path = preg_replace( '#/page/\d+$#', '', $path );
+	if ( preg_match( '#^category/([a-z0-9-]+)$#', $path, $m ) ) {
+		return 'uncategorized' === $m[1] ? '/knowledge/' : '/knowledge/?topic=' . $m[1] . '#library';
+	}
+	if ( preg_match( '#^knowledge-topic/([a-z0-9-]+)$#', $path, $m ) ) {
+		$topics = banks_old_topics();
+		return empty( $topics[ $m[1] ] ) ? '/knowledge/#library' : '/knowledge/?topic=' . $topics[ $m[1] ] . '#library';
+	}
+	if ( preg_match( '#^glossary-letter/([a-z])$#', $path, $m ) ) {
+		return '/glossary/#letter-' . $m[1];
+	}
+	return '';
 }
 
 add_action(
@@ -456,10 +499,14 @@ add_action(
 		if ( 'main' !== banks_site() || is_admin() ) {
 			return;
 		}
-		$path = trim( (string) wp_parse_url( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '', PHP_URL_PATH ), '/' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- compared against a fixed map only.
-		$map  = banks_redirects();
-		if ( isset( $map[ $path ] ) && get_page_by_path( trim( $map[ $path ], '/' ) ) ) {
-			wp_safe_redirect( banks_main_url( $map[ $path ] ), 301 );
+		$path = trim( (string) wp_parse_url( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '', PHP_URL_PATH ), '/' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- matched against fixed patterns only.
+		$to   = banks_redirect_target( $path );
+		if ( ! $to ) {
+			return;
+		}
+		$page = trim( (string) wp_parse_url( $to, PHP_URL_PATH ), '/' );
+		if ( '' === $page || get_page_by_path( $page ) ) {
+			wp_safe_redirect( banks_main_url( $to ), 301 );
 			exit;
 		}
 	},

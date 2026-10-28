@@ -1,0 +1,166 @@
+<?php
+/*
+ * Switchover check (step 5 of archive/switchover.md). Paste into the connector's execute-php.
+ * It requests every address live served on 2026-10-28 and reports any that don't end in a 200
+ * within one hop. Read-only: it only makes HTTP requests. The connector stops after 60 seconds,
+ * so run it twice: once with $b_part = 0, then with $b_part = 1.
+ */
+$b_base = 'https://bankssolution.ng';
+$b_part = 0;
+$b_urls = array(
+	'/',
+	'/contact/',
+	'/knowledge/',
+	'/glossary/',
+	'/services/',
+	'/services/digital-foundation/',
+	'/services/automation-crm/',
+	'/services/ai-custom-solutions/',
+	'/services/managed-technology/',
+	'/services/aeo/',
+	'/aeo/',
+	'/audit/',
+	'/banks-solution/',
+	'/home-v2/',
+	'/homepage-v3-jasper-clone/',
+	'/author/creator/',
+	'/feed/',
+	'/sitemap_index.xml',
+	'/digital-payments-ready-nigeria-business/',
+	'/get-found-online-nigerian-business-guide/',
+	'/can-customers-find-you-online-10-seconds/',
+	'/digital-trust-nigerian-customers-guide/',
+	'/when-to-hire-first-employee-nigeria/',
+	'/legal-mistakes-that-kill-nigerian-small-businesses/',
+	'/is-business-insurance-worth-it-nigeria/',
+	'/business-bank-account-nigeria-what-matters/',
+	'/pricing-strategy-nigeria-inflation-2026/',
+	'/why-banks-reject-nigerian-business-loans/',
+	'/why-nigerian-businesses-fail-first-5-years/',
+	'/nigeria-labour-law-first-employee-guide/',
+	'/last-mile-delivery-problem-nigerian-business/',
+	'/verbal-agreements-nigerian-business-losses/',
+	'/real-grants-loans-nigerian-business-owners-2026/',
+	'/why-lagos-shoppers-avoid-unbranded-business/',
+	'/power-options-nigerian-business-2026/',
+	'/cac-business-registration-2026-guide/',
+	'/nigeria-tax-law-2026-small-business-zero-cit/',
+	'/ai-automation-roi-timeline/',
+	'/free-ai-training-african-smes-2026/',
+	'/ai-roadmap-nigerian-smes/',
+	'/does-your-business-need-ai-policy/',
+	'/one-ai-agent-vs-ai-agent-team/',
+	'/why-nigerian-smes-quit-ai/',
+	'/ai-automation-real-cost-nigeria/',
+	'/online-presence-mistakes-nigeria/',
+	'/what-is-a-managed-technology-partner/',
+	'/ndpa-2023-guide-small-business/',
+	'/local-seo-nigeria-guide/',
+	'/shopify-vs-woocommerce-nigeria/',
+	'/website-alone-not-enough-nigeria/',
+	'/whatsapp-automation-guide-nigeria/',
+	'/ai-changing-small-business-nigeria/',
+	'/ai-chatbots-nigerian-business/',
+	'/business-automation-nigeria-guide/',
+	'/outgrown-whatsapp-notebooks/',
+	'/what-is-a-crm-nigeria/',
+	'/crm-vs-spreadsheets-nigeria/',
+	'/website-maintenance-nigeria/',
+	'/website-cost-nigeria-2026/',
+	'/glossary/zero-click-search/',
+	'/glossary/ymyl/',
+	'/glossary/xml-sitemap/',
+	'/glossary/wordpress/',
+	'/glossary/vps/',
+	'/glossary/ux/',
+	'/glossary/traffic/',
+	'/glossary/seo/',
+	'/glossary/responsive-design/',
+	'/glossary/qualified-lead/',
+	'/glossary/page-speed/',
+	'/glossary/open-graph/',
+	'/glossary/ndpa-2023/',
+	'/glossary/mobile-first/',
+	'/glossary/landing-page/',
+	'/glossary/keyword/',
+	'/glossary/javascript/',
+	'/glossary/integration/',
+	'/glossary/hosting/',
+	'/glossary/google-business-profile/',
+	'/glossary/funnel/',
+	'/glossary/e-commerce/',
+	'/glossary/domain-name/',
+	'/glossary/crm/',
+	'/glossary/conversion-rate/',
+	'/glossary/cms/',
+	'/glossary/bounce-rate/',
+	'/glossary/backup/',
+	'/glossary/api/',
+	'/glossary/ai/',
+	'/category/aeo/',
+	'/category/ai-custom-solutions/',
+	'/category/automation-crm/',
+	'/category/business-finance-funding/',
+	'/category/digital-foundation/',
+	'/category/legal-compliance/',
+	'/category/managed-technology/',
+	'/category/marketing-branding/',
+	'/category/operations-growth/',
+	'/category/uncategorized/',
+	'/knowledge-topic/ai-for-business/',
+	'/knowledge-topic/cost-and-practical-basics/',
+	'/knowledge-topic/crm-and-automation/',
+	'/knowledge-topic/search-and-being-found/',
+	'/knowledge-topic/trust-and-compliance/',
+	'/knowledge-topic/websites-and-digital-presence/',
+	'/glossary-letter/a/',
+	'/glossary-letter/b/',
+	'/glossary-letter/c/',
+	'/glossary-letter/d/',
+	'/glossary-letter/e/',
+	'/glossary-letter/f/',
+	'/glossary-letter/g/',
+	'/glossary-letter/h/',
+	'/glossary-letter/i/',
+	'/glossary-letter/j/',
+	'/glossary-letter/k/',
+	'/glossary-letter/l/',
+	'/glossary-letter/m/',
+	'/glossary-letter/n/',
+	'/glossary-letter/o/',
+	'/glossary-letter/p/',
+	'/glossary-letter/q/',
+	'/glossary-letter/r/',
+	'/glossary-letter/s/',
+	'/glossary-letter/t/',
+	'/glossary-letter/u/',
+	'/glossary-letter/v/',
+	'/glossary-letter/w/',
+	'/glossary-letter/x/',
+	'/glossary-letter/y/',
+	'/glossary-letter/z/',
+);
+$b_half = (int) ceil( count( $b_urls ) / 2 );
+$b_urls = array_slice( $b_urls, $b_part * $b_half, $b_half );
+$b_bad  = array();
+foreach ( $b_urls as $b_u ) {
+	$b_r    = wp_remote_head( $b_base . $b_u, array( 'redirection' => 0, 'timeout' => 20 ) );
+	$b_code = (int) wp_remote_retrieve_response_code( $b_r );
+	if ( 200 === $b_code ) {
+		continue;
+	}
+	$b_to = (string) wp_remote_retrieve_header( $b_r, 'location' );
+	if ( 301 === $b_code && $b_to ) {
+		$b_next = (int) wp_remote_retrieve_response_code( wp_remote_head( strtok( $b_to, '#' ), array( 'redirection' => 0, 'timeout' => 20 ) ) );
+		if ( 200 === $b_next ) {
+			continue;
+		}
+		$b_bad[ $b_u ] = '301 to ' . $b_to . ', which returns ' . $b_next;
+		continue;
+	}
+	$b_bad[ $b_u ] = $b_code . ( $b_to ? ' to ' . $b_to : '' );
+}
+return array(
+	'checked' => count( $b_urls ),
+	'bad'     => $b_bad,
+);
