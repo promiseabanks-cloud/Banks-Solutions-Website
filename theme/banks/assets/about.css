@@ -1,0 +1,77 @@
+/* About (/about/). Colours come from the tokens in main.css, so both themes work. */
+
+/* 1. Hero: who we are on the left, where our clients are on the right */
+.ab-hero{background:var(--b-bg)}
+.ab-stage{position:relative;overflow:hidden;min-height:100svh;display:grid;align-items:center;background:var(--b-hero);color:var(--b-on);padding-block:calc(var(--b-header) + 40px) 80px;will-change:clip-path}
+.ab-inner{position:relative;z-index:1;width:100%;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:center}
+@media (max-width:1080px){.ab-inner{grid-template-columns:minmax(0,1fr);gap:40px}}
+.ab-eyebrow{color:var(--b-foam)}
+.ab-title{font-size:clamp(2.5rem,5.2vw,5rem);line-height:.98;letter-spacing:-.045em;max-width:12ch;margin-bottom:26px}
+.ab-lede{max-width:54ch;font-size:clamp(1.02rem,1.3vw,1.15rem);color:var(--b-on-soft);margin-bottom:36px}
+.ab-actions{display:flex;flex-wrap:wrap;gap:14px}
+
+.ab-map{margin:0}
+.ab-map__svg{display:block;width:100%;height:auto;overflow:hidden}
+.ab-map__grid circle{fill:color-mix(in srgb,var(--b-paper) 24%,transparent)}
+.ab-map__grid line{stroke:var(--b-on-line);stroke-width:.6}
+.ab-route__arc{fill:none;stroke:var(--b-foam);stroke-width:1.8;stroke-linecap:round;opacity:.85}
+.ab-route__pin{fill:var(--b-foam)}
+.ab-route__label,.ab-home__label{font:500 13px var(--b-mono);letter-spacing:.08em;text-transform:uppercase;fill:var(--b-on-soft)}
+.ab-home__label{fill:var(--b-on);font-size:14px}
+.ab-home__dot{fill:var(--b-paper)}
+.ab-home__ring{fill:none;stroke:var(--b-foam);stroke-width:1.2;transform-box:fill-box;transform-origin:center}
+.ab-route__spark{fill:var(--b-paper)}
+.ab-map__cap{display:flex;align-items:center;justify-content:center;margin-top:18px;font:400 11.5px/1.3 var(--b-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--b-on-soft)}
+@media (max-width:640px){.ab-route__label,.ab-home__label{font-size:19px}}
+
+/* 2. The numbers */
+.ab-numbers{border-bottom:1px solid var(--b-line)}
+.ab-numbers__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;padding-block:clamp(56px,7vw,88px)}
+@media (max-width:760px){.ab-numbers__grid{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:40px}}
+.ab-num{display:flex;flex-direction:column;padding-right:20px}
+.ab-num dd{order:-1;margin:0 0 8px;font:700 clamp(2.6rem,5.4vw,4.6rem)/1 var(--b-head);letter-spacing:-.05em;font-variant-numeric:tabular-nums;color:var(--b-strong)}
+.ab-num dt{font:500 12px/1.4 var(--b-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--b-muted)}
+
+/* 3. The story: one big sentence that lights up word by word */
+.ab-story{padding-block:clamp(110px,14vw,180px)}
+.ab-story__grid{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,9fr);gap:48px}
+@media (max-width:900px){.ab-story__grid{grid-template-columns:minmax(0,1fr);gap:8px}}
+.ab-story__big{font:600 clamp(1.7rem,3.4vw,3rem)/1.18 var(--b-head);letter-spacing:-.03em;color:var(--b-fg);margin-bottom:48px;max-width:26ch}
+.ab-story__text p:not(.ab-story__big){max-width:60ch;color:var(--b-muted);font-size:clamp(1.02rem,1.2vw,1.12rem)}
+
+/* 4. How we work: cards that stack as you scroll */
+.ab-ways{background:var(--b-hero);color:var(--b-on);padding-block:clamp(96px,12vw,150px)}
+.ab-head{max-width:640px;margin-bottom:56px}
+.ab-head h2{font-size:clamp(2rem,4.4vw,3.4rem);letter-spacing:-.035em}
+.ab-head--dark .b-eyebrow{color:var(--b-foam)}
+.ab-ways__stack{list-style:none;margin:0;padding:0;display:grid;gap:22px}
+.ab-way{position:sticky;top:calc(var(--b-header) + 32px + var(--i) * 22px);min-height:clamp(220px,32vh,320px);padding:clamp(28px,4vw,48px);border:1px solid var(--b-on-line);border-radius:26px;background:color-mix(in srgb,var(--b-paper) 4%,var(--b-hero));box-shadow:0 -30px 60px -40px rgba(0,0,0,.6);transform-origin:50% 0}
+.ab-way__in{display:grid;grid-template-columns:120px minmax(0,1fr) minmax(0,1.2fr);gap:32px;align-items:start}
+@media (max-width:860px){.ab-way{top:calc(var(--b-header) + 20px + var(--i) * 14px)}.ab-way__in{grid-template-columns:minmax(0,1fr);gap:14px}}
+.ab-way__n{font:500 13px/1 var(--b-mono);color:var(--b-foam)}
+.ab-way h3{font-size:clamp(1.6rem,2.8vw,2.4rem);letter-spacing:-.03em;margin:0}
+.ab-way p{color:var(--b-on-soft);margin:0;font-size:clamp(1rem,1.2vw,1.1rem)}
+
+/* 5. The founder */
+.ab-founder{padding-block:clamp(96px,12vw,150px)}
+.ab-founder__grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(40px,6vw,88px);align-items:center}
+@media (max-width:860px){.ab-founder__grid{grid-template-columns:minmax(0,1fr)}}
+.ab-portrait{position:relative;margin:0;aspect-ratio:4/5;max-width:460px;overflow:hidden;border-radius:26px;background:radial-gradient(circle at 30% 20%,var(--b-current),var(--b-lagoon) 70%);box-shadow:var(--b-shadow)}
+.ab-portrait img{display:block;width:100%;height:100%;object-fit:cover}
+.ab-portrait__mark{position:absolute;inset:0;display:grid;place-items:center;font:700 clamp(5rem,12vw,9rem)/1 var(--b-head);letter-spacing:-.06em;color:var(--b-paper)}
+.ab-founder__copy h2{font-size:clamp(2.4rem,5vw,4rem);letter-spacing:-.045em;margin-bottom:8px}
+.ab-founder__role{font:500 12px/1.4 var(--b-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--b-link);margin-bottom:26px}
+.ab-founder__copy p:not(.b-eyebrow):not(.ab-founder__role):not(.ab-founder__links){max-width:52ch;color:var(--b-muted);font-size:clamp(1.05rem,1.3vw,1.2rem)}
+.ab-founder__links{display:flex;flex-wrap:wrap;gap:12px 24px;margin-top:26px;font-weight:600}
+.ab-founder__links a{color:var(--b-link)}
+
+/* 6. Company facts */
+.ab-facts{padding-block:0 clamp(96px,12vw,150px)}
+.ab-facts__grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px}
+@media (max-width:900px){.ab-facts__grid{grid-template-columns:minmax(0,1fr);gap:8px}}
+.ab-facts__list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px;margin:0;border-top:1px solid var(--b-line)}
+@media (max-width:560px){.ab-facts__list{grid-template-columns:minmax(0,1fr)}}
+.ab-fact{padding:20px 0;border-bottom:1px solid var(--b-line)}
+.ab-fact dt{font:500 11px/1.2 var(--b-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--b-muted);margin-bottom:6px}
+.ab-fact dd{margin:0;font:600 1.08rem/1.4 var(--b-head)}
+.ab-fact a{color:var(--b-link)}
