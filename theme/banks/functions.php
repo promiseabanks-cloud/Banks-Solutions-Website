@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.2.2' );
+define( 'BANKS_VERSION', '0.2.3' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
@@ -32,7 +32,8 @@ add_action(
 		wp_enqueue_style( 'banks-fonts', 'https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap', array(), null );
 		wp_enqueue_style( 'banks', $uri . 'main.css', array(), BANKS_VERSION );
 		wp_enqueue_script( 'banks-nav', $uri . 'nav.js', array(), BANKS_VERSION, true );
-		if ( is_singular( array( 'post', 'glossary' ) ) || ( is_page() && ! banks_is_elementor_page() ) ) {
+		$scene = banks_scene();
+		if ( ! $scene && ( is_singular( array( 'post', 'glossary' ) ) || ( is_page() && ! banks_is_elementor_page() ) ) ) {
 			wp_enqueue_style( 'banks-article', $uri . 'article.css', array( 'banks' ), BANKS_VERSION );
 		}
 		banks_legacy_styles();
@@ -46,9 +47,12 @@ add_action(
 		wp_enqueue_script( 'gsap-splittext', $uri . 'vendor/SplitText.min.js', array( 'gsap' ), BANKS_GSAP, true );
 		wp_enqueue_script( 'lenis', $uri . 'vendor/lenis.min.js', array(), BANKS_LENIS, true );
 		wp_enqueue_script( 'banks-motion', $uri . 'motion.js', array( 'gsap', 'gsap-scrolltrigger', 'gsap-splittext', 'lenis', 'banks-nav' ), BANKS_VERSION, true );
-		if ( is_front_page() ) {
-			wp_enqueue_style( 'banks-home', $uri . 'home.css', array( 'banks-motion' ), BANKS_VERSION );
-			wp_enqueue_script( 'banks-home', $uri . 'home.js', array( 'banks-motion' ), BANKS_VERSION, true );
+		// Pages built as scenes: the shared scene parts, then that page's own CSS/JS pair.
+		if ( $scene ) {
+			wp_enqueue_style( 'banks-scenes', $uri . 'scenes.css', array( 'banks-motion' ), BANKS_VERSION );
+			wp_enqueue_script( 'banks-scenes', $uri . 'scenes.js', array( 'banks-motion' ), BANKS_VERSION, true );
+			wp_enqueue_style( 'banks-' . $scene, $uri . $scene . '.css', array( 'banks-scenes' ), BANKS_VERSION );
+			wp_enqueue_script( 'banks-' . $scene, $uri . $scene . '.js', array( 'banks-scenes' ), BANKS_VERSION, true );
 		}
 	}
 );
@@ -57,7 +61,7 @@ add_action(
 add_filter(
 	'script_loader_tag',
 	function ( $tag, $handle ) {
-		if ( in_array( $handle, array( 'gsap', 'gsap-scrolltrigger', 'gsap-splittext', 'lenis', 'banks-motion', 'banks-home', 'banks-nav' ), true ) ) {
+		if ( in_array( $handle, array( 'gsap', 'gsap-scrolltrigger', 'gsap-splittext', 'lenis', 'banks-motion', 'banks-scenes', 'banks-home', 'banks-solutions', 'banks-nav' ), true ) ) {
 			return str_replace( ' src=', ' defer src=', $tag );
 		}
 		return $tag;
@@ -116,12 +120,26 @@ add_filter(
 	'body_class',
 	function ( $classes ) {
 		$classes[] = 'b-site-' . banks_site();
-		if ( is_front_page() ) {
+		if ( banks_scene() ) {
 			$classes[] = 'b-hero-dark';
 		}
 		return $classes;
 	}
 );
+
+/**
+ * Pages built as scenes, by asset name: front-page.php uses home.{css,js}, page-solutions.php
+ * uses solutions.{css,js}. Every scene page opens on a dark hero. Empty for everything else.
+ */
+function banks_scene() {
+	if ( is_front_page() ) {
+		return 'home';
+	}
+	if ( is_page( 'solutions' ) ) {
+		return 'solutions';
+	}
+	return '';
+}
 
 /** Which front door we are on: the public site or the client portal. */
 function banks_site() {
@@ -278,4 +296,51 @@ add_filter(
 	},
 	10,
 	2
+);
+
+/**
+ * Scene pages always use the theme's own template. The old homepage was built in Elementor with
+ * its "Elementor Full Width" template, which would otherwise replace front-page.php. The old
+ * Elementor content stays in the database, untouched, until switchover.
+ */
+add_filter(
+	'template_include',
+	function ( $template ) {
+		$scene = banks_scene();
+		if ( ! $scene || 'main' !== banks_site() ) {
+			return $template;
+		}
+		$own = locate_template( 'home' === $scene ? 'front-page.php' : 'page-' . $scene . '.php' );
+		return $own ? $own : $template;
+	},
+	999
+);
+
+/** Elementor's styles and scripts are not used on scene pages; its kit CSS would restyle the headings. */
+add_action(
+	'wp_enqueue_scripts',
+	function () {
+		if ( ! banks_scene() ) {
+			return;
+		}
+		foreach ( wp_styles()->queue as $handle ) {
+			if ( 0 === strpos( $handle, 'elementor' ) ) {
+				wp_dequeue_style( $handle );
+			}
+		}
+		foreach ( wp_scripts()->queue as $handle ) {
+			if ( 0 === strpos( $handle, 'elementor' ) ) {
+				wp_dequeue_script( $handle );
+			}
+		}
+	},
+	999
+);
+
+add_filter(
+	'body_class',
+	function ( $classes ) {
+		return banks_scene() ? preg_grep( '/^elementor/', $classes, PREG_GREP_INVERT ) : $classes;
+	},
+	999
 );

@@ -5,37 +5,7 @@
   var B = window.Banks || {};
   var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-  /* FAQ: smooth open and close (also without motion libraries, the native details still works) */
-  document.querySelectorAll('.h-qa').forEach(function (d) {
-    var s = d.querySelector('summary');
-    var a = d.querySelector('.h-qa__a');
-    if (!gsap || B.reduce || !s || !a) return;
-    s.addEventListener('click', function (e) {
-      e.preventDefault();
-      if (d.open) {
-        gsap.to(a, { height: 0, duration: 0.45, ease: 'power2.inOut', onComplete: function () { d.open = false; gsap.set(a, { clearProps: 'height' }); } });
-      } else {
-        d.open = true;
-        gsap.from(a, { height: 0, duration: 0.55, ease: 'power3.out', clearProps: 'height' });
-      }
-    });
-  });
-
   if (!gsap || B.reduce) return;
-
-  /* Light that follows the cursor across dark scenes */
-  if (fine) {
-    document.querySelectorAll('.h-hero__stage, .h-cta').forEach(function (el) {
-      var glow = el.querySelector('.h-hero__glow');
-      if (!glow) return;
-      var o = { x: 72, y: 28 };
-      var set = function () { glow.style.setProperty('--gx', o.x + '%'); glow.style.setProperty('--gy', o.y + '%'); };
-      el.addEventListener('mousemove', function (e) {
-        var r = el.getBoundingClientRect();
-        gsap.to(o, { x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100, duration: 1.2, ease: 'power3.out', onUpdate: set, overwrite: true });
-      });
-    });
-  }
 
   /* 1. Hero entrance: the headline rises line by line, the system assembles beside it */
   var tl = gsap.timeline({ delay: 0.15 });
@@ -190,41 +160,8 @@
     });
   }
 
-  /* 7. Spotlight on product cards */
-  if (fine) {
-    document.querySelectorAll('[data-spot]').forEach(function (card) {
-      card.addEventListener('mousemove', function (e) {
-        var r = card.getBoundingClientRect();
-        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-        card.style.setProperty('--my', (e.clientY - r.top) + 'px');
-      });
-    });
-  }
-
   /* Entrances for everything below the hero. Each runs once, the first time its section comes into view. */
   var once = function (trigger, start) { return { trigger: trigger, start: start || 'top 82%', once: true }; };
-
-  // Section labels decode from random characters into their text.
-  var glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/·+';
-  document.querySelectorAll('main .b-eyebrow').forEach(function (el) {
-    if (el.closest('.h-hero')) return;
-    var text = el.textContent;
-    el.setAttribute('aria-label', text);
-    ST.create({
-      trigger: el, start: 'top 90%', once: true,
-      onEnter: function () {
-        var o = { p: 0 };
-        gsap.to(o, {
-          p: 1, duration: 0.9, ease: 'power2.out',
-          onUpdate: function () {
-            var n = Math.floor(o.p * text.length);
-            el.textContent = text.slice(0, n) + text.slice(n).replace(/[^\s]/g, function () { return glyphs[Math.floor(Math.random() * glyphs.length)]; });
-          },
-          onComplete: function () { el.textContent = text; }
-        });
-      }
-    });
-  });
 
   // Clients: names rise out of a soft blur, one after another.
   gsap.fromTo('.h-marquee__track li', { y: 46, opacity: 0, filter: 'blur(8px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 1.1, ease: 'expo.out', stagger: 0.06, clearProps: 'filter,opacity,transform', scrollTrigger: once('.h-clients', 'top 88%') });
@@ -257,18 +194,4 @@
 
   // Products: the cards tip up from below, like they're being dealt onto the table.
   gsap.from('.h-product', { y: 90, rotationX: -24, scale: 0.94, opacity: 0, duration: 1.3, ease: 'expo.out', stagger: 0.12, transformPerspective: 1000, transformOrigin: '50% 100%', scrollTrigger: once('.h-products__grid', 'top 85%') });
-
-  // Questions: rows slide in one by one, their icons spin into place.
-  gsap.timeline({ scrollTrigger: once('.h-faq__list') })
-    .from('.h-qa', { x: 60, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.08 })
-    .from('.h-qa__icon', { scale: 0, rotate: -180, duration: 0.8, ease: 'back.out(1.8)', stagger: 0.08 }, 0.2);
-
-  // Closing call: the line and the button arrive after the headline.
-  gsap.timeline({ scrollTrigger: once('.h-cta', 'top 65%') })
-    .from('.h-cta p', { y: 30, opacity: 0, duration: 0.9, ease: 'expo.out' }, 0.35)
-    .from('.h-cta .b-btn', { scale: 0.6, opacity: 0, duration: 1.1, ease: 'elastic.out(1, 0.55)' }, 0.5);
-
-  /* 9. Closing call: the headline scales up into place */
-  var cta = document.querySelector('.h-cta__title');
-  if (cta && !B.lite) gsap.from(cta, { scale: 0.86, opacity: 0.4, ease: 'none', scrollTrigger: { trigger: '.h-cta', start: 'top bottom', end: 'top 30%', scrub: true } });
 })();

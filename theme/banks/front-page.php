@@ -71,9 +71,9 @@ $b_faqs = array(
 	array( 'How long does a project take?', 'A website takes about 5 weeks, an online store about 8 weeks, and a website with automation about 8 weeks. Web apps and custom solutions are scoped individually; you see the timeline before you commit.' ),
 );
 ?>
-<section class="h-hero" data-dark>
+<section class="h-hero" data-dark data-hero>
 	<div class="h-hero__stage">
-		<div class="h-hero__glow" aria-hidden="true"></div>
+		<div class="s-glow" aria-hidden="true"></div>
 		<svg class="h-flow" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
 			<path class="h-flow__bank" d="M-20 140 C 320 120, 420 380, 720 420 S 1180 520, 1460 760"/>
 			<path class="h-flow__line" d="M-20 140 C 320 120, 420 380, 720 420 S 1180 520, 1460 760"/>
@@ -81,12 +81,12 @@ $b_faqs = array(
 		</svg>
 		<div class="b-wrap h-hero__inner">
 			<div class="h-hero__copy">
-				<p class="b-eyebrow h-hero__eyebrow"><span class="h-live" aria-hidden="true"></span>Technology company · Lagos &amp; Ilorin · Clients in 6 countries</p>
+				<p class="b-eyebrow h-hero__eyebrow"><span class="s-live" aria-hidden="true"></span>Technology company · Lagos &amp; Ilorin · Clients in 6 countries</p>
 				<h1 class="h-hero__title">
 					<span class="b-sr">We build the websites, web apps, automation and AI your business runs on.</span>
 					<span class="h-hero__say" aria-hidden="true" data-split-hero>We build the</span>
 					<span class="h-rot" aria-hidden="true"><?php foreach ( array( 'websites', 'web apps', 'online stores', 'automations', 'AI tools' ) as $b_i => $b_w ) : ?><span class="h-rot__word<?php echo 0 === $b_i ? ' is-on' : ''; ?>"><?php echo esc_html( $b_w ); ?></span><?php endforeach; ?></span>
-					<span class="h-hero__say" aria-hidden="true" data-split-hero>your business runs on<span class="h-dot">.</span></span>
+					<span class="h-hero__say" aria-hidden="true" data-split-hero>your business runs on<span class="s-dot">.</span></span>
 				</h1>
 				<p class="h-hero__lede">Banks Solutions designs, builds and looks after the technology behind growing businesses in any industry. Websites from ₦499,000, live in about 5 weeks. Web apps and custom solutions priced from a written spec.</p>
 				<div class="h-hero__actions">
@@ -227,27 +227,27 @@ $b_faqs = array(
 	</div>
 </section>
 
-<section class="h-faq">
-	<div class="b-wrap h-faq__grid">
+<section class="s-faq">
+	<div class="b-wrap s-faq__grid">
 		<div>
 			<p class="b-eyebrow">Questions</p>
 			<h2 data-split>What people ask before they start.</h2>
 		</div>
-		<div class="h-faq__list">
+		<div class="s-faq__list">
 			<?php foreach ( $b_faqs as $b_f ) : ?>
-				<details class="h-qa">
-					<summary><?php echo esc_html( $b_f[0] ); ?><span class="h-qa__icon" aria-hidden="true"></span></summary>
-					<div class="h-qa__a"><p><?php echo esc_html( $b_f[1] ); ?></p></div>
+				<details class="s-qa">
+					<summary><?php echo esc_html( $b_f[0] ); ?><span class="s-qa__icon" aria-hidden="true"></span></summary>
+					<div class="s-qa__a"><p><?php echo esc_html( $b_f[1] ); ?></p></div>
 				</details>
 			<?php endforeach; ?>
 		</div>
 	</div>
 </section>
 
-<section class="h-cta" data-dark>
-	<div class="h-hero__glow" aria-hidden="true"></div>
-	<div class="b-wrap h-cta__inner">
-		<h2 class="h-cta__title" data-split>Tell us what's slowing the business down<span class="h-dot">.</span></h2>
+<section class="s-cta" data-dark>
+	<div class="s-glow" aria-hidden="true"></div>
+	<div class="b-wrap s-cta__inner">
+		<h2 class="s-cta__title" data-split>Tell us what's slowing the business down<span class="s-dot">.</span></h2>
 		<p>Ten minutes on the brief, and we'll come back within two working days with what we'd build, how long it takes and what it costs.</p>
 		<a class="b-btn b-btn--signal b-btn--lg" href="<?php echo esc_url( $b_start ); ?>" data-magnetic="0.45">Start a project</a>
 	</div>
