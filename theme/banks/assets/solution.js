@@ -484,6 +484,129 @@
           rx((e.clientY / window.innerHeight - 0.5) * -5);
         });
       }
+    },
+
+    /* SEO & AI search: a question goes to an AI assistant, the answer cites you, and your
+       Google result climbs to the top beside it */
+    'seo-aeo': function (vis) {
+      var chat = vis.querySelector('.vs-chat');
+      var thread = vis.querySelector('.vs-thread');
+      var ask = vis.querySelector('[data-vs-ask]');
+      var answer = vis.querySelector('[data-vs-answer]');
+      var sources = vis.querySelector('.vs-sources');
+      var cited = vis.querySelector('[data-vs-cited]');
+      var serp = vis.querySelector('.vs-serp');
+      var query = vis.querySelector('[data-vs-q]');
+      var list = vis.querySelector('.vs-serp__list');
+      var fields = [
+        { q: 'Which hotel in Ilorin is best for a business trip?', s: 'business hotel ilorin', pre: 'For business travel in Ilorin, ', post: ' stands out: fast Wi-Fi, a meeting room you can book online and airport pickup included.', title: 'Business hotel in Ilorin with meeting rooms',
+          others: [['hotels.ng', 'Ilorin hotels: compare prices'], ['travelnaija.com', 'Where to stay in Ilorin'], ['booking.com', 'Hotels in Ilorin, Kwara']] },
+        { q: 'Where can I get a custom suit made in Lagos?', s: 'custom suits lagos', pre: 'For made-to-measure suits in Lagos, ', post: ' is often recommended. Fittings are booked online, and the first fitting is about a week away.', title: 'Made-to-measure suits in Lagos',
+          others: [['lagosstyle.ng', 'Best tailors in Lagos'], ['fashionnaija.com', 'Bespoke suits: what to expect'], ['jiji.ng', 'Tailors in Lagos']] },
+        { q: 'Who are good corporate lawyers in Lagos?', s: 'corporate lawyers lagos', pre: 'For company and property work in Lagos, ', post: ' is a strong choice. They publish fixed fees, answer within a day and have advised over 200 Nigerian companies.', title: 'Corporate and property lawyers in Lagos',
+          others: [['lagoslegalhub.com', 'Top 10 law firms in Lagos (2026)'], ['naijadirectory.ng', 'Lawyers near you: compare and contact'], ['legalnaija.com', 'How to choose a law firm in Nigeria']] }
+      ];
+      var k = 0;
+      var score = 7;
+
+      var v = gsap.timeline();
+      v.from(chat, { y: 60, rotationX: -14, opacity: 0, duration: 1.3, ease: 'expo.out', transformOrigin: '50% 100%' })
+        .from(ask, { y: 16, opacity: 0, duration: 0.7, ease: 'expo.out' }, 0.6)
+        .from(vis.querySelector('.vs-answer'), { y: 16, opacity: 0, duration: 0.8, ease: 'expo.out' }, 0.8)
+        .from(sources.children, { scale: 0.7, opacity: 0, duration: 0.5, ease: 'back.out(2.2)', stagger: 0.08 }, 1.1)
+        .from(serp, { y: 40, scale: 0.94, opacity: 0, duration: 1, ease: 'expo.out' }, 1.3);
+      tl.add(v, 0.3);
+
+      var el = function (tag, cls, text) {
+        var e = document.createElement(tag);
+        if (cls) e.className = cls;
+        if (text) e.textContent = text;
+        return e;
+      };
+      var words = function (text, into) {
+        text.split(/(\s+)/).forEach(function (w) { if (w) into.appendChild(el('span', 'vs-w', w)); });
+      };
+
+      // Swap a result with the one above it, sliding both into their new places.
+      var climb = function (li) {
+        var prev = li.previousElementSibling;
+        if (!prev) return;
+        var a = li.offsetTop;
+        var b = prev.offsetTop;
+        list.insertBefore(li, prev);
+        gsap.fromTo(li, { y: a - li.offsetTop }, { y: 0, duration: 0.7, ease: 'expo.out', clearProps: 'transform' });
+        gsap.fromTo(prev, { y: b - prev.offsetTop }, { y: 0, duration: 0.7, ease: 'expo.out', clearProps: 'transform' });
+      };
+
+      var round = function () {
+        var f = fields[k];
+        k = (k + 1) % fields.length;
+        var r = gsap.timeline();
+        r.to(thread.children, { opacity: 0, y: -10, duration: 0.35, ease: 'power2.in', stagger: 0.04 })
+          .to(list, { opacity: 0, duration: 0.3 }, 0)
+          .add(function () {
+            ask.textContent = f.q;
+            query.textContent = f.s;
+            answer.textContent = '';
+            var dots = el('span', 'vs-dots');
+            dots.innerHTML = '<i></i><i></i><i></i>';
+            answer.appendChild(dots);
+            gsap.fromTo(dots.children, { y: 0 }, { y: -5, duration: 0.3, yoyo: true, repeat: 3, ease: 'sine.inOut', stagger: 0.1 });
+            sources.innerHTML = '';
+            [['1 · yourbusiness.ng', 'vs-src is-you'], ['2 · ' + f.others[0][0], 'vs-src'], ['3 · ' + f.others[1][0], 'vs-src']].forEach(function (s) { sources.appendChild(el('span', s[1], s[0])); });
+            gsap.set(sources, { opacity: 0 });
+            // Your result starts fourth on Google and works its way up.
+            list.innerHTML = '';
+            f.others.concat([['yourbusiness.ng', f.title, true]]).forEach(function (o) {
+              var li = el('li', 'vs-res' + (o[2] ? ' is-you' : ''));
+              li.appendChild(el('em', '', o[0]));
+              li.appendChild(el('b', '', o[1]));
+              list.appendChild(li);
+            });
+          })
+          .set(vis.querySelectorAll('.vs-ask, .vs-answer'), { opacity: 1, y: 0 })
+          .fromTo(ask, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'expo.out', clearProps: 'transform,opacity' }, '<')
+          .to(list, { opacity: 1, duration: 0.4 }, '<')
+          .add(function () {
+            answer.textContent = '';
+            words(f.pre, answer);
+            answer.appendChild(el('mark', '', 'Your Business'));
+            words(f.post, answer);
+            var parts = answer.children;
+            gsap.fromTo(parts, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out', stagger: B.lite ? 0.02 : 0.035, clearProps: 'transform,opacity' });
+            var mark = answer.querySelector('mark');
+            gsap.fromTo(mark, { scale: 0.8 }, { scale: 1, duration: 0.6, ease: 'back.out(3)', delay: f.pre.split(/\s+/).length * 0.07 });
+          }, '+=1.1')
+          .add(function () {
+            gsap.set(sources, { opacity: 1, y: 0 });
+            gsap.fromTo(sources.children, { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(2.2)', stagger: 0.08, clearProps: 'transform,opacity' });
+          }, '+=1.8')
+          .add(function () {
+            score = score >= 9 ? 7 : score + 1;
+            cited.textContent = 'Cited ' + score + ' of 10';
+          }, '<')
+          .add(function () { climb(list.querySelector('.is-you')); }, '-=1.6')
+          .add(function () { climb(list.querySelector('.is-you')); }, '+=0.7')
+          .add(function () { climb(list.querySelector('.is-you')); }, '+=0.7');
+        return r;
+      };
+
+      var live = true;
+      if (ST) ST.create({ trigger: vis, start: 'top bottom', end: 'bottom top', onToggle: function (self) { live = self.isActive; } });
+      var cycle = function () {
+        if (live && !document.hidden) round();
+        gsap.delayedCall(B.lite ? 11 : 8.5, cycle);
+      };
+      gsap.delayedCall(4, cycle);
+
+      if (fine && !B.lite) {
+        var rx = gsap.quickTo(chat, 'rotationX', { duration: 1.2, ease: 'power3.out' });
+        var ry = gsap.quickTo(chat, 'rotationY', { duration: 1.2, ease: 'power3.out' });
+        document.querySelector('.so-hero__stage').addEventListener('mousemove', function (e) {
+          ry((e.clientX / window.innerWidth - 0.5) * 7);
+          rx((e.clientY / window.innerHeight - 0.5) * -5);
+        });
+      }
     }
   };
   var vis = document.querySelector('.so-vis[data-visual]');

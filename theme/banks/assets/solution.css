@@ -212,6 +212,37 @@
 .vc-ticket__foot span:last-child{text-align:right}
 @media (max-width:560px){.vc-panel{inset:0 0 21% 0}.vc-kpis{display:none}.vc-check__text span{display:none}.vc-check{padding:7px 10px}.vc-pulse{height:44px}.vc-ticket{width:84%;padding:12px 14px}.vc-ticket p{min-height:0;margin-bottom:10px;font-size:13px}.vc-ticket__foot span:last-child{display:none}}
 
+/* SEO & AI search visual: an AI answer that cites you, and a Google result that climbs */
+.vs-chat{position:absolute;inset:0 14% 24% 0;overflow:hidden;border:1px solid var(--b-on-line);border-radius:18px;background:color-mix(in srgb,var(--b-hero) 70%,var(--b-paper) 6%);box-shadow:0 50px 100px -50px rgba(0,0,0,.7);display:flex;flex-direction:column;will-change:transform}
+.vs-chrome{display:flex;align-items:center;gap:6px;padding:12px 14px;border-bottom:1px solid var(--b-on-line);font:400 11.5px/1 var(--b-mono);color:var(--b-on-soft)}
+.vs-chrome i{width:9px;height:9px;border-radius:50%;background:var(--b-on-line)}
+.vs-chrome>span{margin-left:10px;padding:5px 10px;border-radius:999px;background:color-mix(in srgb,var(--b-paper) 6%,transparent);white-space:nowrap}
+.vs-chrome em{margin-left:auto;display:inline-flex;align-items:center;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--b-foam);white-space:nowrap}
+.vs-chrome .s-live{width:6px;height:6px;margin-right:7px}
+.vs-thread{flex:1;min-height:0;display:flex;flex-direction:column;gap:14px;padding:18px 18px 16px}
+.vs-ask{align-self:flex-end;max-width:80%;margin:0;padding:11px 15px;border-radius:16px 16px 4px 16px;background:color-mix(in srgb,var(--b-paper) 10%,transparent);font:500 14px/1.4 var(--b-body);color:var(--b-on)}
+.vs-answer{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;align-items:start}
+.vs-answer__spark{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:color-mix(in srgb,var(--b-foam) 18%,transparent);color:var(--b-foam);font-size:13px}
+.vs-answer p{margin:0;min-height:5.8em;font:400 14.5px/1.55 var(--b-body);color:var(--b-on)}
+.vs-answer mark{padding:1px 6px;border-radius:6px;background:color-mix(in srgb,var(--b-foam) 26%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--b-foam) 60%,transparent);color:var(--b-on);font-weight:600}
+.vs-answer .vs-w{display:inline-block;white-space:pre}
+.vs-dots{display:inline-flex;gap:5px;padding-top:9px}
+.vs-dots i{width:6px;height:6px;border-radius:50%;background:var(--b-on-soft)}
+.vs-sources{display:flex;flex-wrap:wrap;gap:7px;margin-left:40px}
+.vs-src{padding:6px 10px;border-radius:999px;border:1px solid var(--b-on-line);font:400 10.5px/1 var(--b-mono);letter-spacing:.04em;color:var(--b-on-soft);white-space:nowrap}
+.vs-src.is-you{border-color:var(--b-foam);color:var(--b-foam);background:color-mix(in srgb,var(--b-foam) 10%,transparent)}
+.vs-serp{position:absolute;right:0;bottom:0;width:min(330px,60%);padding:14px;border:1px solid var(--b-on-line);border-radius:16px;background:color-mix(in srgb,var(--b-hero) 80%,var(--b-paper) 8%);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 30px 60px -30px rgba(0,0,0,.8);color:var(--b-on)}
+.vs-serp__q{display:flex;align-items:center;gap:9px;margin:0 0 10px;padding:7px 10px;border-radius:999px;background:color-mix(in srgb,var(--b-paper) 8%,transparent);font:400 12px/1 var(--b-body);color:var(--b-on-soft)}
+.vs-serp__g{display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--b-paper);color:var(--b-lagoon);font:700 11px/1 var(--b-head)}
+.vs-serp__list{position:relative;display:flex;flex-direction:column;gap:5px;margin:0;padding:0;list-style:none;counter-reset:r}
+.vs-res{position:relative;padding:7px 10px 7px 30px;border-radius:10px;counter-increment:r}
+.vs-res::before{content:counter(r);position:absolute;left:10px;top:8px;font:500 11px/1 var(--b-mono);color:var(--b-on-soft)}
+.vs-res em{display:block;font:400 10px/1.3 var(--b-mono);font-style:normal;color:var(--b-on-soft)}
+.vs-res b{display:block;font-weight:600;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:color-mix(in srgb,var(--b-foam) 70%,var(--b-paper))}
+.vs-res.is-you{background:color-mix(in srgb,var(--b-foam) 14%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--b-foam) 50%,transparent)}
+.vs-res.is-you::before,.vs-res.is-you em{color:var(--b-foam)}
+@media (max-width:560px){.vs-chat{inset:0 0 37% 0}.vs-thread{padding:14px;gap:10px}.vs-answer p{font-size:13px;min-height:0}.vs-ask{font-size:13px}.vs-sources{display:none}.vs-serp{width:78%;padding:10px}.vs-serp__q{margin-bottom:6px}.vs-res{padding:6px 10px 6px 28px}.vs-res::before{top:7px}.vs-res b{display:none}.vs-res em{font-size:11px}.vs-res:nth-child(4){display:none}}
+
 /* 2. Sound familiar: the boxes tick as you read down the list */
 .so-check{padding-block:clamp(96px,12vw,160px)}
 .so-check__grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px}
