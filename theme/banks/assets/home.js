@@ -37,13 +37,77 @@
     });
   }
 
-  /* 1. Hero entrance: the headline rises line by line while the river draws itself */
-  var title = document.querySelector('[data-split-hero]');
+  /* 1. Hero entrance: the headline rises line by line, the system assembles beside it */
   var tl = gsap.timeline({ delay: 0.15 });
-  if (title) tl.from(B.split(title, 'lines'), { yPercent: 110, rotate: 2, duration: 1.3, ease: 'expo.out', stagger: 0.1 });
+  var says = document.querySelectorAll('[data-split-hero]');
+  var rot = document.querySelector('.h-rot');
+  var words = rot ? Array.prototype.slice.call(rot.querySelectorAll('.h-rot__word')) : [];
+  if (says.length) tl.from([].concat(B.split(says[0], 'lines'), words[0] || [], says[1] ? B.split(says[1], 'lines') : []), { yPercent: 110, rotate: 2, duration: 1.25, ease: 'expo.out', stagger: 0.1 });
   tl.from('.h-hero__eyebrow, .h-hero__lede, .h-hero__actions > *', { y: 28, opacity: 0, duration: 1, stagger: 0.08 }, '-=0.95')
     .from('.h-hero__proof li', { y: 20, opacity: 0, duration: 0.8, stagger: 0.07 }, '-=0.6')
+    .from('.h-sys__card', { y: 70, rotateX: -22, opacity: 0, duration: 1.3, ease: 'expo.out', stagger: 0.12, transformOrigin: '50% 100%' }, 0.45)
     .from('.h-hero__scroll', { opacity: 0, duration: 0.6 }, '-=0.3');
+  var spark = document.querySelector('.h-sys__spark path');
+  if (spark && spark.getTotalLength) {
+    var sl = spark.getTotalLength();
+    gsap.set(spark, { strokeDasharray: sl, strokeDashoffset: sl });
+    tl.to(spark, { strokeDashoffset: 0, duration: 1.8, ease: 'power2.inOut' }, 1.1);
+  }
+
+  /* The rotating word: each one slides up and out as the next rises in; the underline resizes to fit */
+  if (words.length > 1) {
+    var cur = 0;
+    var fit = function (w) { rot.style.setProperty('--rw', w.offsetWidth + 'px'); };
+    words.forEach(function (w, i) { w.style.visibility = 'visible'; if (i) gsap.set(w, { yPercent: 110 }); });
+    fit(words[0]);
+    gsap.delayedCall(3, function next() {
+      var a = words[cur];
+      cur = (cur + 1) % words.length;
+      var b = words[cur];
+      gsap.to(a, { yPercent: -110, duration: 0.8, ease: 'expo.inOut' });
+      gsap.fromTo(b, { yPercent: 110 }, { yPercent: 0, duration: 0.8, ease: 'expo.inOut' });
+      fit(b);
+      gsap.delayedCall(2.6, next);
+    });
+  }
+
+  /* The system keeps working: new leads arrive, the count ticks up */
+  var msg = document.querySelector('[data-sys-msg]');
+  var toast = document.querySelector('.h-sys__toast');
+  var count = document.querySelector('[data-sys-count]');
+  if (msg && toast && !B.lite) {
+    var leads = ['Ada wants a quote for a new website', 'Tunde booked a call for Friday, 10am', 'Grace asked about paying in two parts', 'Kemi wants a client portal for her firm'];
+    var li = 0;
+    gsap.delayedCall(4.5, function lead() {
+      li = (li + 1) % leads.length;
+      gsap.timeline()
+        .to(toast, { x: 40, opacity: 0, duration: 0.45, ease: 'power2.in' })
+        .add(function () { msg.textContent = leads[li]; if (count) count.textContent = String(parseInt(count.textContent, 10) + 1); })
+        .fromTo(toast, { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: 'expo.out' });
+      gsap.delayedCall(3.6, lead);
+    });
+  }
+
+  /* Depth: the cards drift with the cursor and float gently on their own */
+  var sys = document.querySelector('.h-sys');
+  if (sys && !B.lite) {
+    var cards = Array.prototype.slice.call(sys.querySelectorAll('.h-sys__card'));
+    cards.forEach(function (c, i) {
+      gsap.to(c, { yPercent: i % 2 ? -4 : 4, duration: 3 + i * 0.7, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 1.6 });
+    });
+    if (fine) {
+      var movers = cards.map(function (c) {
+        var d = parseFloat(c.getAttribute('data-depth')) || 1;
+        return { d: d, x: gsap.quickTo(c, 'x', { duration: 1 }), y: gsap.quickTo(c, 'y', { duration: 1 }), rx: gsap.quickTo(c, 'rotationY', { duration: 1 }) };
+      });
+      document.querySelector('.h-hero__stage').addEventListener('mousemove', function (e) {
+        var nx = e.clientX / window.innerWidth - 0.5;
+        var ny = e.clientY / window.innerHeight - 0.5;
+        movers.forEach(function (m) { m.x(nx * 30 * m.d); m.y(ny * 22 * m.d); m.rx(nx * 8); });
+      });
+    }
+  }
+
   document.querySelectorAll('.h-flow__line').forEach(function (line, i) {
     if (!line.getTotalLength) return;
     var len = line.getTotalLength();

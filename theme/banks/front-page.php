@@ -80,19 +80,51 @@ $b_faqs = array(
 			<path class="h-flow__line h-flow__line--2" d="M-20 300 C 300 280, 480 520, 760 560 S 1200 640, 1460 900"/>
 		</svg>
 		<div class="b-wrap h-hero__inner">
-			<p class="b-eyebrow h-hero__eyebrow">Technology partner · Nigeria and beyond</p>
-			<h1 class="h-hero__title" data-split-hero>Your website should do more than look good<span class="h-dot">.</span></h1>
-			<p class="h-hero__lede">Banks Solutions designs and builds the systems a business runs on: websites, web apps, custom solutions, automation and AI. We work with companies in any industry, in Nigeria and abroad, and we build what the problem needs, not a package.</p>
-			<div class="h-hero__actions">
-				<a class="b-btn b-btn--signal b-btn--lg" href="<?php echo esc_url( $b_start ); ?>" data-magnetic>Start a project</a>
-				<a class="b-btn b-btn--line b-btn--lg" href="#h-build">See what we build</a>
+			<div class="h-hero__copy">
+				<p class="b-eyebrow h-hero__eyebrow"><span class="h-live" aria-hidden="true"></span>Technology company · Lagos &amp; Ilorin · Clients in 6 countries</p>
+				<h1 class="h-hero__title">
+					<span class="b-sr">We build the websites, web apps, automation and AI your business runs on.</span>
+					<span class="h-hero__say" aria-hidden="true" data-split-hero>We build the</span>
+					<span class="h-rot" aria-hidden="true"><?php foreach ( array( 'websites', 'web apps', 'online stores', 'automations', 'AI tools' ) as $b_i => $b_w ) : ?><span class="h-rot__word<?php echo 0 === $b_i ? ' is-on' : ''; ?>"><?php echo esc_html( $b_w ); ?></span><?php endforeach; ?></span>
+					<span class="h-hero__say" aria-hidden="true" data-split-hero>your business runs on<span class="h-dot">.</span></span>
+				</h1>
+				<p class="h-hero__lede">Banks Solutions designs, builds and looks after the technology behind growing businesses in any industry. Websites from ₦499,000, live in about 5 weeks. Web apps and custom solutions priced from a written spec.</p>
+				<div class="h-hero__actions">
+					<a class="b-btn b-btn--signal b-btn--lg" href="<?php echo esc_url( $b_start ); ?>" data-magnetic>Start a project</a>
+					<a class="b-btn b-btn--line b-btn--lg" href="#h-build">See what we build</a>
+				</div>
+				<ul class="h-hero__proof">
+					<li><strong>9.0</strong> client rating</li>
+					<li><strong>7+</strong> brands built</li>
+					<li><strong>6</strong> countries</li>
+				</ul>
 			</div>
-			<ul class="h-hero__proof">
-				<li><strong>9.0</strong> client rating</li>
-				<li><strong>7+</strong> brands built</li>
-				<li><strong>6</strong> countries</li>
-				<li><strong>~5 wks</strong> to a live website</li>
-			</ul>
+
+			<div class="h-sys" aria-hidden="true">
+				<div class="h-sys__card h-sys__site" data-depth="0.6">
+					<div class="h-sys__chrome"><i></i><i></i><i></i><span>yourbusiness.ng</span></div>
+					<div class="h-sys__page">
+						<span class="h-sys__bar h-sys__bar--lg"></span>
+						<span class="h-sys__bar h-sys__bar--md"></span>
+						<span class="h-sys__bar"></span>
+						<span class="h-sys__pill">Book a call</span>
+						<div class="h-sys__tiles"><span></span><span></span><span></span></div>
+					</div>
+				</div>
+				<div class="h-sys__card h-sys__stats" data-depth="1.1">
+					<p class="h-sys__label">Enquiries this month</p>
+					<p class="h-sys__big"><span data-sys-count="128">128</span> <em>+34%</em></p>
+					<svg class="h-sys__spark" viewBox="0 0 200 56" preserveAspectRatio="none"><path d="M0 48 L22 44 L44 46 L66 36 L88 38 L110 26 L132 30 L154 16 L176 18 L200 6"/></svg>
+				</div>
+				<div class="h-sys__card h-sys__toast" data-depth="1.6">
+					<span class="h-sys__icon">↗</span>
+					<div><p class="h-sys__label">New lead · WhatsApp</p><p class="h-sys__msg" data-sys-msg>Ada wants a quote for a new website</p></div>
+				</div>
+				<div class="h-sys__card h-sys__pay" data-depth="0.9">
+					<span class="h-sys__check">✓</span>
+					<div><p class="h-sys__label">Invoice #0042 paid · Paystack</p><p class="h-sys__msg">₦375,000 · half on start</p></div>
+				</div>
+			</div>
 		</div>
 		<a class="h-hero__scroll" href="#h-clients" aria-label="Scroll to the next section"><span></span></a>
 	</div>
