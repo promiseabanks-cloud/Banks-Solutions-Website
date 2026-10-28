@@ -11,5 +11,5 @@ Old addresses on bankssolution.ng and where they go (301). The live list is `ban
 | /services/ai-custom-solutions/ | /solutions/ai/ | Active |
 | /services/managed-technology/ | /solutions/care-plans/ | Active |
 | /aeo/ and /services/aeo/ | /solutions/seo-aeo/ | Active |
-| /audit/ | /start/ | Planned (today a temporary redirect to /contact/) |
+| /audit/ | /start/ | Active in the theme (live also has a temporary redirect to /contact/ to remove at switchover) |
 | /banks-solution/, /home-v2/ | / | Planned |
