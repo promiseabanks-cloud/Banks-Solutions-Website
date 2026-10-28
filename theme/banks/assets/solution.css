@@ -62,6 +62,39 @@
 .vw-badge__icon{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:color-mix(in srgb,var(--b-foam) 22%,transparent);color:var(--b-foam)}
 @media (max-width:560px){.vw-browser{width:94%}.vw-phone{width:36%}.vw-img{height:80px}.vw-card{height:50px}.vw-badge--speed{left:0;bottom:2%}.vw-badge--speed b{font-size:1.5rem}.vw-badge--lead{right:0;top:-4%}}
 
+/* Web apps visual: a booking board that runs itself */
+.va-app{position:absolute;inset:4% 4% 6% 0;overflow:hidden;border:1px solid var(--b-on-line);border-radius:18px;background:color-mix(in srgb,var(--b-hero) 70%,var(--b-paper) 6%);box-shadow:0 50px 100px -50px rgba(0,0,0,.7);will-change:transform}
+.va-chrome{display:flex;align-items:center;gap:6px;padding:12px 14px;border-bottom:1px solid var(--b-on-line);font:400 11.5px/1 var(--b-mono);color:var(--b-on-soft)}
+.va-chrome i{width:9px;height:9px;border-radius:50%;background:var(--b-on-line)}
+.va-chrome span{margin-left:10px;padding:5px 10px;border-radius:999px;background:color-mix(in srgb,var(--b-paper) 6%,transparent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.va-body{display:grid;grid-template-columns:52px minmax(0,1fr);height:calc(100% - 40px)}
+.va-side{display:grid;align-content:start;gap:12px;padding:16px 10px;border-right:1px solid var(--b-on-line)}
+.va-side span{height:30px;border-radius:9px;background:color-mix(in srgb,var(--b-paper) 7%,transparent)}
+.va-side .va-side__logo{height:22px;margin-bottom:8px;background:var(--b-foam)}
+.va-side .is-on{background:color-mix(in srgb,var(--b-foam) 30%,transparent)}
+.va-main{display:flex;flex-direction:column;gap:14px;min-width:0;padding:16px}
+.va-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.va-kpi{padding:12px 14px;border:1px solid var(--b-on-line);border-radius:14px;background:color-mix(in srgb,var(--b-paper) 4%,transparent)}
+.va-kpi em,.va-toast em{display:block;font:400 10.5px/1.3 var(--b-mono);font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:var(--b-on-soft);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.va-kpi b{font:700 1.5rem/1 var(--b-head);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.va-board{flex:1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;min-height:0}
+.va-col{display:flex;flex-direction:column;gap:8px;min-width:0;padding:10px;border-radius:14px;background:color-mix(in srgb,var(--b-paper) 3%,transparent)}
+.va-col__head{display:flex;justify-content:space-between;margin:0 0 2px;font:500 11px/1.2 var(--b-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--b-on-soft)}
+.va-col[data-col="confirmed"] .va-col__head{color:var(--b-foam)}
+.va-col__list{display:flex;flex-direction:column;gap:8px}
+.va-card{position:relative;padding:10px 12px;border:1px solid var(--b-on-line);border-left:3px solid var(--b-on-line);border-radius:10px;background:color-mix(in srgb,var(--b-hero) 80%,var(--b-paper) 8%);font-size:12.5px;line-height:1.3}
+.va-col[data-col="confirmed"] .va-card{border-left-color:var(--b-foam)}
+.va-col[data-col="done"] .va-card{opacity:.6}
+.va-card b{display:block;font-weight:600;font-size:13.5px}
+.va-card span{color:var(--b-on-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.va-card.is-held{z-index:3;box-shadow:0 24px 40px -16px rgba(0,0,0,.7);border-color:var(--b-foam)}
+.va-cursor{position:absolute;left:0;top:0;z-index:4;width:22px;height:22px;opacity:0;pointer-events:none;filter:drop-shadow(0 4px 8px rgba(0,0,0,.5))}
+.va-cursor path{fill:var(--b-paper);stroke:var(--b-ink);stroke-width:1.2;stroke-linejoin:round}
+.va-toast{position:absolute;right:0;bottom:0;display:flex;align-items:center;gap:12px;max-width:72%;padding:12px 16px 12px 12px;border:1px solid var(--b-on-line);border-radius:16px;background:color-mix(in srgb,var(--b-hero) 80%,var(--b-paper) 8%);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 30px 60px -30px rgba(0,0,0,.8);font:600 14px/1.3 var(--b-body);color:var(--b-on)}
+.va-toast em{margin-bottom:3px}
+.va-toast__icon{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:color-mix(in srgb,var(--b-current) 50%,transparent);color:var(--b-paper);font:700 15px/1 var(--b-body)}
+@media (max-width:560px){.va-app{inset:0 0 10% 0}.va-body{grid-template-columns:minmax(0,1fr)}.va-side{display:none}.va-kpis .va-kpi:last-child{display:none}.va-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.va-card span{display:none}.va-toast{max-width:92%}}
+
 /* 2. Sound familiar: the boxes tick as you read down the list */
 .so-check{padding-block:clamp(96px,12vw,160px)}
 .so-check__grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px}

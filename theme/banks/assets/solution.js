@@ -56,6 +56,103 @@
       }
       // On scroll, the page inside the browser scrolls too.
       if (ST) gsap.to(vis.querySelector('.vw-page'), { yPercent: -28, ease: 'none', scrollTrigger: { trigger: '.so-hero', start: 'top top', end: 'bottom top', scrub: true } });
+    },
+
+    /* Web apps: a booking board that runs itself. A cursor drags each new booking to Confirmed,
+       the numbers tick up, a deposit lands, and confirmed bookings move on to Done. */
+    'web-apps': function (vis) {
+      var app = vis.querySelector('.va-app');
+      var cursor = vis.querySelector('.va-cursor');
+      var toast = vis.querySelector('.va-toast');
+      var toastText = vis.querySelector('[data-va-toast]');
+      var kBook = vis.querySelector('[data-va-kpi="bookings"]');
+      var kPaid = vis.querySelector('[data-va-kpi="paid"]');
+      var lists = {};
+      vis.querySelectorAll('.va-col').forEach(function (c) { lists[c.getAttribute('data-col')] = c.querySelector('.va-col__list'); });
+      var heads = function () {
+        vis.querySelectorAll('.va-col').forEach(function (c) { c.querySelector('.va-col__head span').textContent = c.querySelectorAll('.va-card').length; });
+      };
+      heads();
+      var cards = function () { return Array.prototype.slice.call(vis.querySelectorAll('.va-card')); };
+      // Move cards between columns and let every card glide from where it was to where it lands.
+      var flip = function (mutate, dur) {
+        var all = cards();
+        var before = all.map(function (c) { return c.getBoundingClientRect(); });
+        mutate();
+        all.forEach(function (c, i) {
+          var a = before[i];
+          var b = c.getBoundingClientRect();
+          if (Math.abs(a.left - b.left) > 0.5 || Math.abs(a.top - b.top) > 0.5) gsap.fromTo(c, { x: a.left - b.left, y: a.top - b.top }, { x: 0, y: 0, duration: dur, ease: 'power3.inOut' });
+        });
+        heads();
+      };
+      var at = function (el) {
+        var r = el.getBoundingClientRect();
+        var v = vis.getBoundingClientRect();
+        return { x: r.left - v.left + r.width * 0.62, y: r.top - v.top + r.height * 0.55 };
+      };
+      var bump = function (el, to, fmt) {
+        var o = { v: parseInt(el.textContent, 10) || 0 };
+        gsap.to(o, { v: to, duration: 0.8, ease: 'power2.out', onUpdate: function () { el.textContent = fmt ? fmt(o.v) : Math.round(o.v); } });
+      };
+      gsap.set(toast, { autoAlpha: 0, y: 20 });
+
+      var v = gsap.timeline();
+      v.from(app, { y: 60, rotationX: -14, opacity: 0, duration: 1.3, ease: 'expo.out', transformOrigin: '50% 100%' })
+        .from(vis.querySelectorAll('.va-side span'), { x: -14, opacity: 0, duration: 0.5, stagger: 0.05 }, 0.5)
+        .from(vis.querySelectorAll('.va-kpi'), { y: 20, opacity: 0, duration: 0.7, ease: 'expo.out', stagger: 0.08 }, 0.6)
+        .from(vis.querySelectorAll('.va-col'), { y: 30, opacity: 0, duration: 0.8, ease: 'expo.out', stagger: 0.08 }, 0.8)
+        .from(cards(), { y: -16, opacity: 0, duration: 0.6, ease: 'back.out(1.6)', stagger: 0.06, clearProps: 'opacity' }, 1.1);
+      tl.add(v, 0.3);
+
+      var live = true;
+      if (ST) ST.create({ trigger: vis, start: 'top bottom', end: 'bottom top', onToggle: function (self) { live = self.isActive; } });
+      var step = function () {
+        if (!live || document.hidden) { gsap.delayedCall(1, step); return; }
+        var card = lists['new'].querySelector('.va-card');
+        if (!card) {
+          // Board cleared: everything done goes back to New and the week starts again.
+          flip(function () { Array.prototype.slice.call(lists['done'].querySelectorAll('.va-card')).forEach(function (c) { lists['new'].appendChild(c); }); }, 0.9);
+          gsap.delayedCall(1.6, step);
+          return;
+        }
+        var from = at(card);
+        var name = card.querySelector('b').textContent;
+        var t = gsap.timeline({ onComplete: function () { gsap.delayedCall(2.2, step); } });
+        t.set(cursor, { x: from.x + 40, y: from.y + 50 })
+          .to(cursor, { opacity: 1, duration: 0.3 })
+          .to(cursor, { x: from.x, y: from.y, duration: 0.8, ease: 'power3.inOut' }, '<')
+          .add(function () { card.classList.add('is-held'); gsap.to(card, { scale: 1.05, rotate: -2, duration: 0.25 }); gsap.to(cursor, { scale: 0.85, duration: 0.15 }); })
+          .add(function () {
+            var to;
+            flip(function () { lists.confirmed.appendChild(card); to = at(card); }, 0.9);
+            gsap.to(cursor, { x: to.x, y: to.y, duration: 0.9, ease: 'power3.inOut' });
+          }, '+=0.25')
+          .add(function () {
+            card.classList.remove('is-held');
+            gsap.to(card, { scale: 1, rotate: 0, duration: 0.3, ease: 'back.out(2)' });
+            gsap.to(cursor, { scale: 1, opacity: 0, duration: 0.4, delay: 0.2 });
+            bump(kBook, (parseInt(kBook.textContent, 10) || 0) + 1);
+            bump(kPaid, (parseInt(kPaid.textContent, 10) || 0) + 45);
+            toastText.textContent = '₦45,000 from ' + name;
+            gsap.fromTo(toast, { autoAlpha: 0, y: 20, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.8)' });
+          }, '+=0.95')
+          .add(function () {
+            var oldest = lists.confirmed.querySelector('.va-card');
+            if (oldest && oldest !== card) flip(function () { lists.done.appendChild(oldest); }, 0.8);
+          }, '+=1.2')
+          .to(toast, { autoAlpha: 0, y: 12, duration: 0.4 }, '+=1.2');
+      };
+      gsap.delayedCall(3.4, step);
+
+      if (fine && !B.lite) {
+        var rx = gsap.quickTo(app, 'rotationX', { duration: 1.2, ease: 'power3.out' });
+        var ry = gsap.quickTo(app, 'rotationY', { duration: 1.2, ease: 'power3.out' });
+        document.querySelector('.so-hero__stage').addEventListener('mousemove', function (e) {
+          ry((e.clientX / window.innerWidth - 0.5) * 7);
+          rx((e.clientY / window.innerHeight - 0.5) * -5);
+        });
+      }
     }
   };
   var vis = document.querySelector('.so-vis[data-visual]');
