@@ -8,8 +8,9 @@ Baseplate. Run it at a quiet hour, with Promise's go-ahead on the day.
 
 - [ ] Promise has reviewed every staging page and signed off.
 - [ ] Legal pages (privacy, terms) have been reviewed by a lawyer.
-- [ ] Decide whether WPForms Lite and Animation Addons stay on live. Staging runs without them.
-      Check first that /contact/ doesn't use a WPForms form.
+- [x] WPForms Lite, Animation Addons and Novamira Pro were removed from live and staging on
+      2026-10-28 at Promise's request. They were moved, not deleted, to
+      `/home/bankssol/banks-backups/live-removed-20261028/`.
 - [ ] Company facts that are still placeholders: founder photo and bio, LinkedIn URL
       (option `banks_linkedin`), case-study results.
 
