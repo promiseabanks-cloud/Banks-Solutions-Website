@@ -163,8 +163,14 @@
     send.disabled = true;
     var label = send.textContent;
     send.textContent = 'Sending…';
-    fetch(form.getAttribute('data-rest'), { method: 'POST', body: new FormData(form), credentials: 'same-origin' })
-      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+    // Signed-in visitors (staging, editors) send the REST nonce so WordPress knows who they are.
+    var headers = form.getAttribute('data-nonce') ? { 'X-WP-Nonce': form.getAttribute('data-nonce') } : {};
+    fetch(form.getAttribute('data-rest'), { method: 'POST', body: new FormData(form), credentials: 'same-origin', headers: headers })
+      .then(function (r) {
+        // Anything but an answer about the brief itself: post the ordinary way instead.
+        if (r.status === 401 || r.status === 403 || r.status >= 500) throw new Error('blocked');
+        return r.json().then(function (d) { return { ok: r.ok, d: d }; });
+      })
       .then(function (res) {
         if (res.ok && res.d.ref) { done(res.d.ref); return; }
         send.disabled = false;

@@ -74,7 +74,7 @@ $b_step = function ( $n, $title, $hint ) {
 						<p>Tell us what you’re building on <a href="<?php echo esc_url( $b_wa ); ?>">WhatsApp</a> or at <a href="<?php echo esc_url( 'mailto:' . $b_mail ); ?>"><?php echo esc_html( $b_mail ); ?></a>, and we’ll reply within two working days.</p>
 					</div>
 				<?php else : ?>
-					<form class="st-form" method="post" action="<?php echo esc_url( banks_core_brief_action_url() ); ?>" data-rest="<?php echo esc_url( banks_core_brief_rest_url() ); ?>">
+					<form class="st-form" method="post" action="<?php echo esc_url( banks_core_brief_action_url() ); ?>" data-rest="<?php echo esc_url( banks_core_brief_rest_url() ); ?>"<?php echo is_user_logged_in() ? ' data-nonce="' . esc_attr( wp_create_nonce( 'wp_rest' ) ) . '"' : ''; ?>>
 						<input type="hidden" name="action" value="banks_brief">
 						<input type="hidden" name="banks_return" value="<?php echo esc_url( get_permalink() ); ?>">
 						<input type="hidden" name="banks_t" value="">

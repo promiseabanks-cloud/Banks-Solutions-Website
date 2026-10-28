@@ -97,7 +97,7 @@ function banks_core_submit_brief( array $raw ) {
 	);
 
 	$missing = array();
-	foreach ( array( 'business', 'problem', 'name' ) as $k ) {
+	foreach ( array( 'business', 'industry', 'problem', 'budget', 'timeline', 'name' ) as $k ) {
 		if ( '' === $brief[ $k ] ) {
 			$missing[] = $k;
 		}
