@@ -35,7 +35,7 @@
 	</div>
 	<div class="b-wrap">
 		<div class="b-footer__base">
-			<span>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> Banks Solutions</span>
+			<span>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php echo esc_html( banks_detail( 'legal' ) ); ?> &middot; RC <?php echo esc_html( banks_detail( 'rc' ) ); ?> &middot; <?php echo esc_html( banks_detail( 'locations' ) ); ?></span>
 			<span class="b-footer__receipt" data-receipt hidden></span>
 		</div>
 	</div>

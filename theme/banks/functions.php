@@ -159,11 +159,14 @@ function banks_img( $file ) {
 /** Contact details shared by header and footer, editable in Appearance > Customize > Banks details. */
 function banks_detail( $key ) {
 	$defaults = array(
+		'legal'     => 'Banks Solution Limited',
+		'rc'        => '8259372',
 		'email'     => 'hello@bankssolution.ng',
-		'whatsapp'  => '',
+		'whatsapp'  => '+2349132826032',
+		'locations' => 'Lagos and Ilorin, Nigeria',
 		'instagram' => 'https://instagram.com/bankssolutions',
 		'linkedin'  => '',
-		'tagline'   => 'Websites, web apps, plugins, automation and AI for businesses in any field.',
+		'tagline'   => 'Websites, web apps and custom solutions, automation and AI for businesses in any field.',
 	);
 	$v = get_option( 'banks_' . $key, null );
 	return null === $v || '' === $v ? ( $defaults[ $key ] ?? '' ) : $v;
@@ -175,6 +178,9 @@ add_action(
 		$c->add_section( 'banks', array( 'title' => 'Banks details', 'priority' => 30 ) );
 		$fields = array(
 			'tagline'   => 'Footer tagline',
+			'legal'     => 'Registered company name',
+			'rc'        => 'CAC registration number',
+			'locations' => 'Locations',
 			'email'     => 'Email',
 			'whatsapp'  => 'WhatsApp number (international, e.g. 2348030000000)',
 			'instagram' => 'Instagram URL',
