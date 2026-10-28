@@ -201,6 +201,73 @@
     });
   }
 
+  /* Entrances for everything below the hero. Each runs once, the first time its section comes into view. */
+  var once = function (trigger, start) { return { trigger: trigger, start: start || 'top 82%', once: true }; };
+
+  // Section labels decode from random characters into their text.
+  var glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/·+';
+  document.querySelectorAll('main .b-eyebrow').forEach(function (el) {
+    if (el.closest('.h-hero')) return;
+    var text = el.textContent;
+    el.setAttribute('aria-label', text);
+    ST.create({
+      trigger: el, start: 'top 90%', once: true,
+      onEnter: function () {
+        var o = { p: 0 };
+        gsap.to(o, {
+          p: 1, duration: 0.9, ease: 'power2.out',
+          onUpdate: function () {
+            var n = Math.floor(o.p * text.length);
+            el.textContent = text.slice(0, n) + text.slice(n).replace(/[^\s]/g, function () { return glyphs[Math.floor(Math.random() * glyphs.length)]; });
+          },
+          onComplete: function () { el.textContent = text; }
+        });
+      }
+    });
+  });
+
+  // Clients: names rise out of a soft blur, one after another.
+  gsap.fromTo('.h-marquee__track li', { y: 46, opacity: 0, filter: 'blur(8px)' }, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 1.1, ease: 'expo.out', stagger: 0.06, clearProps: 'filter,opacity,transform', scrollTrigger: once('.h-clients', 'top 88%') });
+
+  // The problem: a rule draws in from the left before the statement.
+  gsap.from('.h-problem .b-eyebrow', { x: -30, opacity: 0, duration: 0.8, scrollTrigger: once('.h-problem') });
+
+  // What we build: the dark stage opens out from a rounded card, then the panels sweep in.
+  if (!B.lite) {
+    gsap.fromTo('.h-build', { clipPath: 'inset(6% 4% 0% 4% round 40px)' }, { clipPath: 'inset(0% 0% 0% 0% round 0px)', ease: 'none', scrollTrigger: { trigger: '.h-build', start: 'top bottom', end: 'top 20%', scrub: true } });
+  }
+  mm.add('(min-width: 981px)', function () {
+    gsap.from('.h-panel__card', { x: 160, rotationY: -18, opacity: 0, duration: 1.3, ease: 'expo.out', stagger: 0.09, transformPerspective: 1200, scrollTrigger: once('.h-build', 'top 60%') });
+  });
+  gsap.from('.h-panel__num', { yPercent: 100, opacity: 0, duration: 0.8, stagger: 0.06, scrollTrigger: once('.h-build', 'top 55%') });
+
+  // Numbers: each rule draws across, then the figure rises into place.
+  gsap.timeline({ scrollTrigger: once('.h-numbers') })
+    .from('.h-stat__rule', { scaleX: 0, duration: 1.1, ease: 'expo.inOut', stagger: 0.12 })
+    .from('.h-stat__num, .h-stat__plus', { yPercent: 60, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.08 }, '-=0.8')
+    .from('.h-stat__label', { y: 12, opacity: 0, duration: 0.7, stagger: 0.08 }, '-=0.7');
+
+  // Process: the heading block slides in; each step's dot pops, then its text follows.
+  gsap.from('.h-process__head > *', { x: -40, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.08, scrollTrigger: once('.h-process') });
+  document.querySelectorAll('.h-step').forEach(function (step) {
+    gsap.timeline({ scrollTrigger: once(step, 'top 80%') })
+      .from(step.querySelector('.h-step__dot'), { scale: 0, rotate: -90, duration: 0.7, ease: 'back.out(2.2)' })
+      .from(step.querySelectorAll('h3, p'), { x: 36, opacity: 0, duration: 0.9, ease: 'expo.out', stagger: 0.08 }, '-=0.45');
+  });
+
+  // Products: the cards tip up from below, like they're being dealt onto the table.
+  gsap.from('.h-product', { y: 90, rotationX: -24, scale: 0.94, opacity: 0, duration: 1.3, ease: 'expo.out', stagger: 0.12, transformPerspective: 1000, transformOrigin: '50% 100%', scrollTrigger: once('.h-products__grid', 'top 85%') });
+
+  // Questions: rows slide in one by one, their icons spin into place.
+  gsap.timeline({ scrollTrigger: once('.h-faq__list') })
+    .from('.h-qa', { x: 60, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.08 })
+    .from('.h-qa__icon', { scale: 0, rotate: -180, duration: 0.8, ease: 'back.out(1.8)', stagger: 0.08 }, 0.2);
+
+  // Closing call: the line and the button arrive after the headline.
+  gsap.timeline({ scrollTrigger: once('.h-cta', 'top 65%') })
+    .from('.h-cta p', { y: 30, opacity: 0, duration: 0.9, ease: 'expo.out' }, 0.35)
+    .from('.h-cta .b-btn', { scale: 0.6, opacity: 0, duration: 1.1, ease: 'elastic.out(1, 0.55)' }, 0.5);
+
   /* 9. Closing call: the headline scales up into place */
   var cta = document.querySelector('.h-cta__title');
   if (cta && !B.lite) gsap.from(cta, { scale: 0.86, opacity: 0.4, ease: 'none', scrollTrigger: { trigger: '.h-cta', start: 'top bottom', end: 'top 30%', scrub: true } });

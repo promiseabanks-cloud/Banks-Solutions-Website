@@ -180,10 +180,10 @@ $b_faqs = array(
 
 <section class="h-numbers" aria-label="Banks Solutions in numbers">
 	<div class="b-wrap h-numbers__grid">
-		<div class="h-stat" data-reveal><span class="h-stat__num" data-count="9.0" data-decimals="1">9.0</span><span class="h-stat__label">client rating out of 10</span></div>
-		<div class="h-stat" data-reveal><span class="h-stat__num" data-count="7">7</span><span class="h-stat__plus">+</span><span class="h-stat__label">brands built</span></div>
-		<div class="h-stat" data-reveal><span class="h-stat__num" data-count="6">6</span><span class="h-stat__label">countries: Nigeria, US, UK, Canada, Kenya, Australia</span></div>
-		<div class="h-stat" data-reveal><span class="h-stat__num" data-count="5">5</span><span class="h-stat__label">weeks to a live website</span></div>
+		<div class="h-stat"><span class="h-stat__rule" aria-hidden="true"></span><span class="h-stat__num" data-count="9.0" data-decimals="1">9.0</span><span class="h-stat__label">client rating out of 10</span></div>
+		<div class="h-stat"><span class="h-stat__rule" aria-hidden="true"></span><span class="h-stat__num" data-count="7">7</span><span class="h-stat__plus">+</span><span class="h-stat__label">brands built</span></div>
+		<div class="h-stat"><span class="h-stat__rule" aria-hidden="true"></span><span class="h-stat__num" data-count="6">6</span><span class="h-stat__label">countries: Nigeria, US, UK, Canada, Kenya, Australia</span></div>
+		<div class="h-stat"><span class="h-stat__rule" aria-hidden="true"></span><span class="h-stat__num" data-count="5">5</span><span class="h-stat__label">weeks to a live website</span></div>
 	</div>
 </section>
 
@@ -199,7 +199,7 @@ $b_faqs = array(
 			<span class="h-steps__rail" aria-hidden="true"><span></span></span>
 			<ol class="h-steps__list">
 			<?php foreach ( $b_steps as $b_i => $b_s ) : ?>
-				<li class="h-step" data-reveal>
+				<li class="h-step">
 					<span class="h-step__dot" aria-hidden="true"><?php echo esc_html( $b_i + 1 ); ?></span>
 					<h3><?php echo esc_html( $b_s[0] ); ?></h3>
 					<p><?php echo esc_html( $b_s[1] ); ?></p>
@@ -217,7 +217,7 @@ $b_faqs = array(
 		<div class="h-products__grid">
 			<?php foreach ( $b_products as $b_p ) : ?>
 				<?php $b_tag = $b_p[3] ? 'a' : 'div'; ?>
-				<<?php echo esc_attr( $b_tag ); ?> class="h-product" data-reveal data-spot<?php echo $b_p[3] ? ' href="' . esc_url( $b_p[3] ) . '"' : ''; ?>>
+				<<?php echo esc_attr( $b_tag ); ?> class="h-product" data-spot<?php echo $b_p[3] ? ' href="' . esc_url( $b_p[3] ) . '"' : ''; ?>>
 					<h3><?php echo esc_html( $b_p[0] ); ?></h3>
 					<p><?php echo esc_html( $b_p[1] ); ?></p>
 					<span class="h-product__go"><?php echo esc_html( $b_p[3] ? $b_p[2] : 'Coming soon' ); ?><?php echo $b_p[3] ? ' <span aria-hidden="true">→</span>' : ''; ?></span>
