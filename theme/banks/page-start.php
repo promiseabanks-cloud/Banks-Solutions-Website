@@ -138,7 +138,7 @@ $b_step = function ( $n, $title, $hint ) {
 								<label class="st-field"><span>Your name</span><input type="text" name="name" required maxlength="100" autocomplete="name"></label>
 								<label class="st-field"><span>Email</span><input type="email" name="email" required maxlength="200" autocomplete="email"></label>
 								<label class="st-field"><span>Phone or WhatsApp <em>optional</em></span><input type="tel" name="phone" maxlength="30" autocomplete="tel"></label>
-								<label class="st-check"><input type="checkbox" name="consent" value="1" required><span>Banks Solutions may use these details to reply to this brief. We never sell or share them.</span></label>
+								<label class="st-check"><input type="checkbox" name="consent" value="1" required><span>Banks Solutions may use these details to reply to this brief. We never sell them.<?php $b_pp = banks_route( '/privacy-policy/' ); ?><?php if ( $b_pp ) : ?> See our <a href="<?php echo esc_url( $b_pp ); ?>" target="_blank" rel="noopener">privacy policy</a>.<?php endif; ?></span></label>
 								<button class="b-btn b-btn--signal b-btn--lg st-send" type="submit" data-magnetic>Send the brief</button>
 							</fieldset>
 						</div>

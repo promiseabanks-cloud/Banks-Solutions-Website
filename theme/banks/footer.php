@@ -37,6 +37,12 @@
 	<div class="b-wrap">
 		<div class="b-footer__base">
 			<span>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php echo esc_html( banks_detail( 'legal' ) ); ?> &middot; RC <?php echo esc_html( banks_detail( 'rc' ) ); ?> &middot; <?php echo esc_html( banks_detail( 'locations' ) ); ?></span>
+			<span class="b-footer__legal">
+				<?php foreach ( array( '/privacy-policy/' => 'Privacy', '/terms/' => 'Terms' ) as $b_path => $b_label ) : ?>
+					<?php $b_url = banks_route( $b_path ); ?>
+					<?php if ( $b_url ) : ?><a href="<?php echo esc_url( $b_url ); ?>"><?php echo esc_html( $b_label ); ?></a><?php endif; ?>
+				<?php endforeach; ?>
+			</span>
 			<span class="b-footer__receipt" data-receipt hidden></span>
 		</div>
 	</div>
