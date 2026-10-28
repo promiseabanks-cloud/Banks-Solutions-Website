@@ -153,6 +153,105 @@
           rx((e.clientY / window.innerHeight - 0.5) * -5);
         });
       }
+    },
+
+    /* Automation: enquiries flow along the river. Every one is replied to; some are quoted;
+       some of those pay. Each stage pulses and counts as a dot passes it. */
+    'automation-crm': function (vis) {
+      var panel = vis.querySelector('.vf-panel');
+      var river = vis.querySelector('.vf-river');
+      var path = vis.querySelector('.vf-line');
+      var dots = vis.querySelector('.vf-dots');
+      var stages = Array.prototype.slice.call(vis.querySelectorAll('.vf-stage'));
+      var counts = stages.map(function (st) { return st.querySelector('[data-vf-count]'); });
+      var msg = vis.querySelector('.vf-msg');
+      var msgText = vis.querySelector('[data-vf-msg]');
+      var paid = vis.querySelector('.vf-paid');
+      var paidText = vis.querySelector('[data-vf-paid]');
+      var follow = vis.querySelector('[data-vf-follow]');
+      var L = path.getTotalLength ? path.getTotalLength() : 0;
+      var asks = ['Hi, can I get a quote for 200 units?', 'Do you deliver to Port Harcourt?', 'Is the 3 pm slot still free on Friday?', 'How much for the full package?', 'Can I pay half now and half later?'];
+      var bills = ['₦320,000', '₦85,000', '₦1,150,000', '₦240,000', '₦560,000'];
+      var ai = 0;
+      var inv = 187;
+      gsap.set([msg, paid], { autoAlpha: 0 });
+
+      var v = gsap.timeline();
+      v.from(panel, { y: 60, rotationX: -14, opacity: 0, duration: 1.3, ease: 'expo.out', transformOrigin: '50% 100%' })
+        .from(vis.querySelector('.vf-bank'), { opacity: 0, duration: 1.2 }, 0.5)
+        .from(vis.querySelectorAll('.vf-stage__node'), { scale: 0, duration: 0.7, ease: 'back.out(2.4)', stagger: 0.12 }, 0.8)
+        .from(vis.querySelectorAll('.vf-stage__label'), { y: 10, opacity: 0, duration: 0.6, ease: 'expo.out', stagger: 0.12 }, 1)
+        .from(vis.querySelectorAll('.vf-foot span'), { y: 10, opacity: 0, duration: 0.6, stagger: 0.1 }, 1.3)
+        .fromTo(msg, { autoAlpha: 0, x: -30 }, { autoAlpha: 1, x: 0, duration: 0.8, ease: 'expo.out' }, 1.6);
+      if (L) {
+        gsap.set(path, { strokeDashoffset: 0 });
+        v.from(path, { opacity: 0, duration: 0.8 }, 0.7);
+        gsap.to(path, { strokeDashoffset: -40, duration: 2, ease: 'none', repeat: -1 });
+      }
+      tl.add(v, 0.3);
+      if (!L) return;
+
+      var bump = function (i) {
+        var n = counts[i];
+        n.textContent = (parseInt(n.textContent, 10) || 0) + 1;
+        gsap.fromTo(stages[i].querySelector('.vf-stage__node'), { scale: 1.5 }, { scale: 1, duration: 0.6, ease: 'expo.out' });
+        gsap.fromTo(n, { y: -4, color: 'var(--b-foam)' }, { y: 0, color: 'var(--b-on)', duration: 0.6 });
+      };
+      var spawn = function () {
+        var dot = document.createElement('span');
+        dot.className = 'vf-dot';
+        dots.appendChild(dot);
+        var w = river.clientWidth / 520;
+        var h = river.clientHeight / 300;
+        var fate = Math.random();
+        var end = fate < 0.45 ? 1 : (fate < 0.85 ? 0.82 : 0.5);
+        var hit = 0;
+        var o = { p: 0 };
+        bump(0);
+        hit = 1;
+        if (follow) follow.textContent = (parseInt(follow.textContent, 10) || 0) + 1;
+        gsap.to(o, {
+          p: end, duration: 5.2 * end, ease: 'none',
+          onUpdate: function () {
+            var pt = path.getPointAtLength(o.p * L);
+            dot.style.transform = 'translate(' + pt.x * w + 'px,' + pt.y * h + 'px)';
+            while (hit < 4 && o.p >= hit / 3 - 0.001) {
+              bump(hit);
+              if (hit === 3) {
+                inv += 1;
+                paidText.textContent = bills[inv % bills.length] + ' · Invoice #0' + inv;
+                gsap.fromTo(paid, { autoAlpha: 0, y: 16, scale: 0.94 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(1.8)', overwrite: true });
+                gsap.to(paid, { autoAlpha: 0, y: 10, duration: 0.4, delay: 2.4 });
+              }
+              hit += 1;
+            }
+          },
+          onComplete: function () { gsap.to(dot, { scale: end === 1 ? 2.4 : 0.2, opacity: 0, duration: 0.6, onComplete: function () { dot.remove(); } }); }
+        });
+      };
+      var live = true;
+      if (ST) ST.create({ trigger: vis, start: 'top bottom', end: 'bottom top', onToggle: function (self) { live = self.isActive; } });
+      var tick = function () {
+        if (live && !document.hidden) {
+          spawn();
+          // Every few enquiries, the WhatsApp bubble shows the next one arriving.
+          if (Math.random() < 0.4) {
+            ai = (ai + 1) % asks.length;
+            gsap.timeline().to(msg, { autoAlpha: 0, y: -8, duration: 0.3 }).add(function () { msgText.textContent = asks[ai]; }).fromTo(msg, { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'back.out(1.6)' });
+          }
+        }
+        gsap.delayedCall(B.lite ? 2.6 : 1.5, tick);
+      };
+      gsap.delayedCall(2.6, tick);
+
+      if (fine && !B.lite) {
+        var rx = gsap.quickTo(panel, 'rotationX', { duration: 1.2, ease: 'power3.out' });
+        var ry = gsap.quickTo(panel, 'rotationY', { duration: 1.2, ease: 'power3.out' });
+        document.querySelector('.so-hero__stage').addEventListener('mousemove', function (e) {
+          ry((e.clientX / window.innerWidth - 0.5) * 7);
+          rx((e.clientY / window.innerHeight - 0.5) * -5);
+        });
+      }
     }
   };
   var vis = document.querySelector('.so-vis[data-visual]');

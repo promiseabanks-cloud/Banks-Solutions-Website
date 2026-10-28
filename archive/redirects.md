@@ -7,7 +7,7 @@ Old addresses on bankssolution.ng and where they go (301). The live list is `ban
 | --- | --- | --- |
 | /services/digital-foundation/ | /solutions/websites/ | Active |
 | /services/ | /solutions/ | When all solution pages are built |
-| /services/automation-crm/ | /solutions/automation-crm/ | Planned |
+| /services/automation-crm/ | /solutions/automation-crm/ | Active |
 | /services/ai-custom-solutions/ | /solutions/ai/ | Planned |
 | /services/managed-technology/ | /solutions/care-plans/ | Planned |
 | /aeo/ | /solutions/seo-aeo/ | Planned |
