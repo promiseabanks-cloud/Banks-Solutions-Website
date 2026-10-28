@@ -9,7 +9,7 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   // Light mode for weak phones: fewer simultaneous effects, no smooth scroll.
-  var lite = (navigator.hardwareConcurrency || 8) <= 4 || (navigator.connection && navigator.connection.saveData);
+  var lite = !!((navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.hardwareConcurrency || 8) <= 2 || (navigator.connection && navigator.connection.saveData));
   var gsap = window.gsap;
   var header = document.querySelector('.b-header');
   var B = (window.Banks = window.Banks || {});
@@ -19,6 +19,31 @@
   function done() {
     window.__banksReady = true;
   }
+  /* Theme switch: remembers the choice; the new theme spreads out from the button */
+  var toggles = document.querySelectorAll('[data-theme-toggle]');
+  function label() {
+    var dark = doc.getAttribute('data-theme') === 'dark';
+    toggles.forEach(function (b) { b.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode'); b.setAttribute('aria-pressed', String(dark)); });
+  }
+  B.setTheme = function (t, from) {
+    function apply() {
+      doc.setAttribute('data-theme', t);
+      try { localStorage.setItem('banks-theme', t); } catch (err) {}
+      label();
+      document.dispatchEvent(new CustomEvent('banks:theme', { detail: t }));
+    }
+    if (from && document.startViewTransition && !reduce) {
+      var r = from.getBoundingClientRect();
+      doc.style.setProperty('--b-vt-x', (r.left + r.width / 2) + 'px');
+      doc.style.setProperty('--b-vt-y', (r.top + r.height / 2) + 'px');
+      document.startViewTransition(apply);
+    } else apply();
+  };
+  toggles.forEach(function (b) {
+    b.addEventListener('click', function () { B.setTheme(doc.getAttribute('data-theme') === 'dark' ? 'light' : 'dark', b); });
+  });
+  label();
+
   if (!gsap) {
     doc.classList.remove('js-motion');
     done();
@@ -53,16 +78,12 @@
 
   /* Header: gathers into a floating island after 24px, with a small spring as it lands */
   var inner = header && header.querySelector('.b-header__inner');
-  var brandImg = header && header.querySelector('.b-brand__img');
-  var brandLight = brandImg && brandImg.getAttribute('src');
   var island = false;
   function onScroll() {
     var on = (window.scrollY || 0) > 24;
     if (!header || on === island) return;
     island = on;
     header.classList.toggle('is-scrolled', on);
-    // The island is Lagoon, so it always carries the reverse lockup.
-    if (brandImg) brandImg.src = on ? brandLight.replace('lockup-lagoon', 'lockup-reverse') : brandLight;
     if (on && inner && !reduce) {
       inner.classList.remove('b-island-pulse');
       void inner.offsetWidth;

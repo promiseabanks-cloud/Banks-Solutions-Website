@@ -3,12 +3,21 @@
  --b-lagoon:#0B3B40;--b-paper:#F4F5F1;--b-signal:#F5B72E;--b-ink:#0E1A1B;
  --b-current:#16756C;--b-foam:#7FD6C6;--b-mist:#5E6E6E;--b-rule:#D9DEDA;--b-white:#FFFFFF;
  --b-bg:var(--b-paper);--b-fg:var(--b-ink);--b-muted:var(--b-mist);--b-line:var(--b-rule);--b-surface:var(--b-white);--b-link:var(--b-current);
+ /* Semantic tokens: page CSS uses these so light and dark themes come for free */
+ --b-strong:var(--b-lagoon);--b-hero:var(--b-lagoon);--b-hero-soft:#CFE0DB;--b-tint:rgba(11,59,64,.06);--b-glow:rgba(127,214,198,.22);
+ --b-shadow:0 30px 60px -30px rgba(14,26,27,.35);color-scheme:light;
  --b-head:"Familjen Grotesk","Helvetica Neue",Arial,sans-serif;
  --b-body:"Public Sans","Segoe UI",Roboto,Arial,sans-serif;
  --b-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
  --b-wrap:1240px;--b-r:4px;--b-header:76px;
  /* Motion tokens: every animation borrows from these so the site moves as one family */
  --b-ease-out:cubic-bezier(.2,.8,.2,1);--b-ease-inout:cubic-bezier(.7,0,.2,1);--b-dur:.45s;
+}
+/* Dark theme: set on <html data-theme> before first paint (see banks_theme_boot) */
+:root[data-theme="dark"]{
+ --b-bg:#071719;--b-fg:var(--b-paper);--b-muted:#9DB2AE;--b-line:rgba(244,245,241,.12);--b-surface:#0E2427;--b-link:var(--b-foam);
+ --b-strong:var(--b-foam);--b-hero:#041012;--b-hero-soft:#B5CCC7;--b-tint:rgba(127,214,198,.08);--b-glow:rgba(127,214,198,.16);
+ --b-shadow:0 30px 60px -30px rgba(0,0,0,.7);color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -45,7 +54,25 @@ p{margin:0 0 1em}
 .b-header__inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:var(--b-header)}
 .b-brand{display:inline-flex;align-items:center;line-height:0}
 .b-brand__img{height:34px;width:auto}
-.b-nav{display:flex;align-items:center;gap:26px}
+/* The header carries both lockups; CSS shows the one that reads on the current background */
+.b-brand__img--rev{display:none}
+[data-theme="dark"] .b-header .b-brand__img--std,.b-hero-dark .b-header:not(.is-scrolled) .b-brand__img--std,.b-header.is-scrolled .b-brand__img--std{display:none}
+[data-theme="dark"] .b-header .b-brand__img--rev,.b-hero-dark .b-header:not(.is-scrolled) .b-brand__img--rev,.b-header.is-scrolled .b-brand__img--rev{display:block}
+.b-nav-open .b-header .b-brand__img--std{display:none}.b-nav-open .b-header .b-brand__img--rev{display:block}
+
+/* Theme switch: sun in dark mode, moon in light mode */
+.b-theme{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;border:1px solid var(--b-line);background:transparent;color:inherit;cursor:pointer;transition:border-color var(--b-dur),transform .6s var(--b-ease-inout)}
+.b-theme:hover{border-color:currentColor;transform:rotate(-25deg)}
+.b-theme svg{width:18px;height:18px}
+.b-theme__sun{display:none}
+[data-theme="dark"] .b-theme__sun{display:block}[data-theme="dark"] .b-theme__moon{display:none}
+.b-header .b-theme{color:var(--b-fg)}
+.b-hero-dark .b-header:not(.is-scrolled) .b-theme,.b-header.is-scrolled .b-theme{color:var(--b-paper);border-color:rgba(244,245,241,.28)}
+/* The switch spreads the new theme out from the button (View Transitions, where supported) */
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+::view-transition-new(root){animation:b-theme-in .8s var(--b-ease-inout)}
+@keyframes b-theme-in{from{clip-path:circle(0 at var(--b-vt-x,50%) var(--b-vt-y,0))}to{clip-path:circle(150vmax at var(--b-vt-x,50%) var(--b-vt-y,0))}}
+.b-nav{display:flex;align-items:center;gap:26px;margin-left:auto}
 .b-nav__list{display:flex;gap:26px;list-style:none;margin:0;padding:0}
 .b-nav__list a,.b-nav__portal{color:var(--b-fg);text-decoration:none;font-weight:500;font-size:15.5px}
 .b-nav__portal{font-family:var(--b-mono);font-size:13px;letter-spacing:.04em;opacity:.8}
@@ -58,7 +85,8 @@ p{margin:0 0 1em}
 .b-nav-open .b-burger span:first-child::before{transform:translateY(7px) rotate(45deg)}
 .b-nav-open .b-burger span:first-child::after{transform:translateY(-7px) rotate(-45deg)}
 @media (max-width:980px){
- .b-burger{display:block}
+ .b-burger{display:block;order:3}
+ .b-theme{order:2;margin-left:auto}
  .b-nav{display:none;position:absolute;left:0;right:0;top:var(--b-header);background:var(--b-bg);border-bottom:1px solid var(--b-line);flex-direction:column;align-items:stretch;padding:12px 20px 24px;gap:14px}
  .b-nav-open .b-nav{display:flex}
  .b-nav__list{flex-direction:column;gap:0}
@@ -73,13 +101,13 @@ p{margin:0 0 1em}
 .b-404{padding-block:120px}
 .b-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;margin-bottom:40px}
 .b-card{display:grid;gap:10px;align-content:start;padding:24px;background:var(--b-surface);border:1px solid var(--b-line);border-radius:var(--b-r);text-decoration:none;color:var(--b-fg);transition:border-color var(--b-dur),transform var(--b-dur) var(--b-ease-out)}
-.b-card:hover{border-color:var(--b-current);transform:translateY(-3px)}
+.b-card:hover{border-color:var(--b-link);transform:translateY(-3px)}
 .b-card__meta{font:400 12.5px/1 var(--b-mono);color:var(--b-muted)}
 .b-card__title{font:600 1.25rem/1.2 var(--b-head);letter-spacing:-.01em}
 .b-card__excerpt{color:var(--b-muted);font-size:15.5px}
 
 /* Footer */
-.b-footer{background:var(--b-lagoon);color:#BFD3CF;padding-block:72px 28px;font-size:15.5px}
+.b-footer{border-top:1px solid color-mix(in srgb,var(--b-paper) 10%,transparent);background:var(--b-lagoon);color:#BFD3CF;padding-block:72px 28px;font-size:15.5px}
 .b-footer a{color:var(--b-paper);text-decoration:none}
 .b-footer a:hover{color:var(--b-signal)}
 .b-footer__grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1.2fr;gap:40px}

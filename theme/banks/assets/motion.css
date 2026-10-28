@@ -40,7 +40,7 @@
  .b-nav-open .b-nav{visibility:visible;opacity:1;transition:opacity .35s}
  .b-nav-open .b-header{background:transparent;border-color:transparent}
  .b-nav-open .b-header .b-header__inner{background-color:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;margin:0 auto;border-radius:0;max-width:var(--b-wrap)}
- .b-nav-open .b-burger,.b-nav-open .b-nav__portal{color:var(--b-paper)!important}
+ .b-nav-open .b-burger,.b-nav-open .b-nav__portal,.b-nav-open .b-theme{color:var(--b-paper)!important}
  .b-nav .b-nav__list a{font:700 clamp(2.4rem,11vw,3.4rem)/1.1 var(--b-head);letter-spacing:-.03em;color:var(--b-paper)!important;border:0;padding:6px 0}
  .b-nav .b-nav__list a::after{display:none}
  .b-nav .b-btn{padding:18px 24px;font-size:17px}
@@ -59,4 +59,5 @@ html.lenis,html.lenis body{height:auto}
 .lenis.lenis-stopped{overflow:hidden}
 
 /* SplitText masks */
-.b-split-mask{padding-bottom:.08em;margin-bottom:-.08em}
+/* SplitText mask wrappers: room for descenders so g, p and y are never clipped */
+[class$="word-mask"],[class$="line-mask"]{padding-bottom:.14em;margin-bottom:-.14em}
