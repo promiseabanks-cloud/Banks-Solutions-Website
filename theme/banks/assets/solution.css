@@ -170,6 +170,48 @@
 .vi-draft.is-sent .vi-approve{background:transparent;color:var(--b-foam)}
 @media (max-width:560px){.vi-panel{inset:0 0 30% 0}.vi-cats{display:none}.vi-foot span:last-child{display:none}.vi-draft{width:88%;padding:12px 14px}.vi-draft p{min-height:4.35em;margin-bottom:10px;font-size:12.5px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.vi-draft__actions span:first-child{display:none}}
 
+/* Care plans visual: a site-health monitor running tonight's routine, and a support request getting done */
+.vc-panel{position:absolute;inset:0 6% 16% 0;overflow:hidden;border:1px solid var(--b-on-line);border-radius:18px;background:color-mix(in srgb,var(--b-hero) 70%,var(--b-paper) 6%);box-shadow:0 50px 100px -50px rgba(0,0,0,.7);display:flex;flex-direction:column;will-change:transform}
+.vc-chrome{display:flex;align-items:center;gap:6px;padding:12px 14px;border-bottom:1px solid var(--b-on-line);font:400 11.5px/1 var(--b-mono);color:var(--b-on-soft)}
+.vc-chrome i{width:9px;height:9px;border-radius:50%;background:var(--b-on-line)}
+.vc-chrome>span{margin-left:10px;padding:5px 10px;border-radius:999px;background:color-mix(in srgb,var(--b-paper) 6%,transparent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vc-chrome em{margin-left:auto;display:inline-flex;align-items:center;font-style:normal;letter-spacing:.08em;text-transform:uppercase;color:var(--b-foam);white-space:nowrap}
+.vc-chrome .s-live{width:6px;height:6px;margin-right:7px}
+.vc-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px 14px 0}
+.vc-kpi{padding:10px 12px;border:1px solid var(--b-on-line);border-radius:12px;background:color-mix(in srgb,var(--b-paper) 4%,transparent)}
+.vc-kpi em{display:block;margin-bottom:5px;font:400 10px/1.2 var(--b-mono);font-style:normal;letter-spacing:.07em;text-transform:uppercase;color:var(--b-on-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vc-kpi b{display:block;font:700 1.35rem/1 var(--b-head);letter-spacing:-.03em;color:var(--b-on);font-variant-numeric:tabular-nums;transition:color .6s}
+.vc-kpi b.is-hot{color:var(--b-foam);transition:none}
+.vc-pulse{position:relative;height:64px;margin:8px 14px 0;overflow:hidden;border-radius:12px;background:color-mix(in srgb,var(--b-foam) 5%,transparent)}
+.vc-pulse svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.vc-pulse path{fill:none;stroke:var(--b-foam);stroke-width:2px;stroke-linejoin:round;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 6px color-mix(in srgb,var(--b-foam) 60%,transparent))}
+.vc-pulse::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,color-mix(in srgb,var(--b-hero) 90%,transparent),transparent 18%,transparent 82%,color-mix(in srgb,var(--b-hero) 90%,transparent))}
+.vc-pulse__dot{position:absolute;right:18%;top:50%;width:9px;height:9px;margin:-5px 0 0 -5px;border-radius:50%;background:var(--b-foam);box-shadow:0 0 0 5px color-mix(in srgb,var(--b-foam) 18%,transparent);opacity:0}
+.vc-run{flex:1;min-height:0;display:flex;flex-direction:column;gap:6px;padding:10px 14px 14px}
+.vc-run__head{display:flex;justify-content:space-between;margin:0 0 2px;font:500 10.5px/1.2 var(--b-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--b-on-soft)}
+.vc-run__head span{color:var(--b-on);font-variant-numeric:tabular-nums}
+.vc-check{position:relative;flex:none;display:grid;grid-template-columns:26px minmax(0,1fr) auto;align-items:center;gap:10px;padding:8px 11px;overflow:hidden;border:1px solid var(--b-on-line);border-radius:11px;background:color-mix(in srgb,var(--b-hero) 80%,var(--b-paper) 8%);font-size:12.5px}
+.vc-check__icon{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--b-on-line)}
+.vc-check__icon svg{width:13px;height:13px}
+.vc-check__icon path{fill:none;stroke:var(--b-ink);stroke-width:2.2px;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.vc-check.is-done .vc-check__icon{border-color:var(--b-foam);background:var(--b-foam)}
+.vc-check.is-done .vc-check__icon path{opacity:1}
+.vc-check.is-busy .vc-check__icon{border-color:color-mix(in srgb,var(--b-foam) 30%,transparent);border-top-color:var(--b-foam)}
+.vc-check__text{min-width:0}
+.vc-check__text b{font-weight:600;font-size:13px;margin-right:8px}
+.vc-check__text span{color:var(--b-on-soft);white-space:nowrap}
+.vc-check__state{font:500 10.5px/1 var(--b-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--b-on-soft);white-space:nowrap}
+.vc-check.is-done .vc-check__state{color:var(--b-foam)}
+.vc-check__bar{position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--b-foam);transform-origin:0 50%;transform:scaleX(0)}
+.vc-ticket{position:absolute;right:0;bottom:0;width:min(300px,58%);padding:14px 16px;border:1px solid var(--b-on-line);border-radius:16px;background:color-mix(in srgb,var(--b-hero) 80%,var(--b-paper) 8%);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 30px 60px -30px rgba(0,0,0,.8);color:var(--b-on)}
+.vc-ticket em{display:block;margin-bottom:6px;font:400 10.5px/1.3 var(--b-mono);font-style:normal;letter-spacing:.07em;text-transform:uppercase;color:var(--b-on-soft)}
+.vc-ticket p{margin:0 0 12px;min-height:2.9em;font:600 14px/1.45 var(--b-body)}
+.vc-ticket__foot{display:flex;align-items:center;justify-content:space-between;gap:10px;font:400 11px/1.3 var(--b-mono);color:var(--b-on-soft)}
+.vc-status{padding:6px 10px;border-radius:999px;border:1px solid var(--b-foam);color:var(--b-foam);font-weight:500;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+.vc-status[data-state="busy"]{border-color:var(--b-on-line);color:var(--b-on)}
+.vc-ticket__foot span:last-child{text-align:right}
+@media (max-width:560px){.vc-panel{inset:0 0 21% 0}.vc-kpis{display:none}.vc-check__text span{display:none}.vc-check{padding:7px 10px}.vc-pulse{height:44px}.vc-ticket{width:84%;padding:12px 14px}.vc-ticket p{min-height:0;margin-bottom:10px;font-size:13px}.vc-ticket__foot span:last-child{display:none}}
+
 /* 2. Sound familiar: the boxes tick as you read down the list */
 .so-check{padding-block:clamp(96px,12vw,160px)}
 .so-check__grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px}

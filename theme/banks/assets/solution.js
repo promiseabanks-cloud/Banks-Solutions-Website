@@ -370,6 +370,120 @@
           rx((e.clientY / window.innerHeight - 0.5) * -5);
         });
       }
+    },
+
+    /* Care plans: the pulse keeps beating, tonight's routine runs check by check, and a support
+       request from the portal goes from received to done */
+    'care-plans': function (vis) {
+      var panel = vis.querySelector('.vc-panel');
+      var checks = Array.prototype.slice.call(vis.querySelectorAll('.vc-check'));
+      var finals = checks.map(function (c) { return c.querySelector('.vc-check__state').textContent; });
+      var clock = vis.querySelector('[data-vc-time]');
+      var backup = vis.querySelector('[data-vc-backup]');
+      var ticket = vis.querySelector('.vc-ticket');
+      var tid = vis.querySelector('[data-vc-id]');
+      var ask = vis.querySelector('[data-vc-ask]');
+      var status = vis.querySelector('[data-vc-status]');
+      var dot = vis.querySelector('.vc-pulse__dot');
+      var asks = [
+        ['Please update our opening hours for the holiday', '1h 40m'],
+        ['Add the new branch address to the contact page', '2h 05m'],
+        ['Swap the homepage photo for the new one attached', '55m'],
+        ['A customer says the form is not sending. Can you check?', '35m'],
+        ['Add our new price list as a downloadable PDF', '1h 20m']
+      ];
+      var n = 1;
+      var id = 214;
+
+      var v = gsap.timeline();
+      v.from(panel, { y: 60, rotationX: -14, opacity: 0, duration: 1.3, ease: 'expo.out', transformOrigin: '50% 100%' })
+        .from(vis.querySelectorAll('.vc-kpi'), { y: 14, opacity: 0, duration: 0.7, ease: 'expo.out', stagger: 0.08 }, 0.5)
+        .from(vis.querySelector('.vc-pulse'), { scaleX: 0.6, opacity: 0, duration: 1, ease: 'expo.out' }, 0.7)
+        .from(checks, { x: -24, opacity: 0, duration: 0.8, ease: 'expo.out', stagger: 0.08 }, 0.9)
+        .from(ticket, { y: 40, scale: 0.94, opacity: 0, duration: 1, ease: 'expo.out' }, 1.4);
+      tl.add(v, 0.3);
+
+      // The heartbeat: two drawn copies slide left forever, a dot rides the leading edge.
+      gsap.to(vis.querySelector('.vc-beat'), { x: -600, duration: B.lite ? 9 : 6, ease: 'none', repeat: -1 });
+      gsap.to(dot, { opacity: 1, duration: 0.6, delay: 1.6 });
+      gsap.to(dot, { scale: 1.5, duration: 0.5, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+
+      var hot = function (el, text) {
+        el.textContent = text;
+        el.classList.add('is-hot');
+        gsap.fromTo(el, { y: -5 }, { y: 0, duration: 0.6, ease: 'expo.out', clearProps: 'transform' });
+        gsap.delayedCall(0.3, function () { el.classList.remove('is-hot'); });
+      };
+
+      // Tonight's routine: each check waits, spins while its bar fills, then ticks.
+      var routine = function () {
+        var r = gsap.timeline();
+        var t = { m: 0 };
+        checks.forEach(function (c) {
+          c.classList.remove('is-done', 'is-busy');
+          c.querySelector('.vc-check__state').textContent = 'Waiting';
+        });
+        r.to(t, { m: 4, duration: 5.2, ease: 'none', onUpdate: function () { clock.textContent = '02:0' + Math.floor(t.m); } }, 0);
+        checks.forEach(function (c, i) {
+          var icon = c.querySelector('.vc-check__icon');
+          var bar = c.querySelector('.vc-check__bar');
+          var state = c.querySelector('.vc-check__state');
+          var at = 0.4 + i * 1.2;
+          r.add(function () { c.classList.add('is-busy'); state.textContent = 'Running'; }, at)
+            .fromTo(icon, { rotation: 0 }, { rotation: 360, duration: 1, ease: 'none' }, at)
+            .fromTo(bar, { scaleX: 0, opacity: 1 }, { scaleX: 1, duration: 1, ease: 'power1.inOut' }, at)
+            .add(function () {
+              c.classList.remove('is-busy');
+              c.classList.add('is-done');
+              state.textContent = finals[i];
+              if (i === 1) hot(backup, 'Just now');
+            }, at + 1)
+            .fromTo(icon, { scale: 0.6 }, { scale: 1, duration: 0.5, ease: 'back.out(2.6)', clearProps: 'transform' }, at + 1)
+            .to(bar, { opacity: 0, duration: 0.4 }, at + 1.1);
+        });
+        return r;
+      };
+
+      // A support request arrives from the portal and is worked through to done.
+      var request = function () {
+        var a = asks[n];
+        n = (n + 1) % asks.length;
+        id += 1;
+        var r = gsap.timeline();
+        r.to(ticket, { y: 12, opacity: 0, duration: 0.35, ease: 'power2.in' })
+          .add(function () {
+            tid.textContent = '#' + id;
+            ask.textContent = a[0];
+            status.textContent = 'Received';
+            status.setAttribute('data-state', 'busy');
+          })
+          .fromTo(ticket, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'back.out(1.6)', clearProps: 'transform,opacity' })
+          .add(function () { status.textContent = 'In progress'; }, '+=1.2')
+          .fromTo(status, { scale: 0.85 }, { scale: 1, duration: 0.4, ease: 'back.out(2.4)' }, '<')
+          .add(function () { status.textContent = 'Done · ' + a[1]; status.removeAttribute('data-state'); }, '+=1.6')
+          .fromTo(status, { scale: 0.85 }, { scale: 1, duration: 0.5, ease: 'back.out(2.4)', clearProps: 'transform' }, '<');
+        return r;
+      };
+
+      var live = true;
+      if (ST) ST.create({ trigger: vis, start: 'top bottom', end: 'bottom top', onToggle: function (self) { live = self.isActive; } });
+      var cycle = function () {
+        if (live && !document.hidden) {
+          routine();
+          gsap.delayedCall(2.8, request);
+        }
+        gsap.delayedCall(B.lite ? 11 : 8.5, cycle);
+      };
+      gsap.delayedCall(3, cycle);
+
+      if (fine && !B.lite) {
+        var rx = gsap.quickTo(panel, 'rotationX', { duration: 1.2, ease: 'power3.out' });
+        var ry = gsap.quickTo(panel, 'rotationY', { duration: 1.2, ease: 'power3.out' });
+        document.querySelector('.so-hero__stage').addEventListener('mousemove', function (e) {
+          ry((e.clientX / window.innerWidth - 0.5) * 7);
+          rx((e.clientY / window.innerHeight - 0.5) * -5);
+        });
+      }
     }
   };
   var vis = document.querySelector('.so-vis[data-visual]');

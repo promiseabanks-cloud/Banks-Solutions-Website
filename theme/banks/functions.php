@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.2.9' );
+define( 'BANKS_VERSION', '0.3.0' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
@@ -377,6 +377,7 @@ function banks_redirects() {
 		'services/digital-foundation'  => '/solutions/websites/',
 		'services/automation-crm'      => '/solutions/automation-crm/',
 		'services/ai-custom-solutions' => '/solutions/ai/',
+		'services/managed-technology'  => '/solutions/care-plans/',
 	);
 }
 
