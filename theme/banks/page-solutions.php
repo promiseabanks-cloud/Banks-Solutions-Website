@@ -88,7 +88,7 @@ $b_faqs = array(
 	array( 'How do I know which solution I need?', 'Start with the brief. It takes about 10 minutes and asks what is slowing the business down. Within two working days we come back with what we would build, how long it takes and what it costs. We will also tell you which solutions you do not need.' ),
 	array( 'Can you combine solutions in one project?', 'Yes. A common pairing is a website with automation, so every enquiry from the site lands in a CRM and gets a WhatsApp reply. That takes about 8 weeks. You get one plan, one timeline and one client portal for the whole project.' ),
 	array( 'How much do your solutions cost?', 'Websites start at ₦499,000 and online stores at ₦750,000. Automation and CRM starts at ₦800,000 plus ₦250,000 a month, and care plans at ₦150,000 a month. Web apps, custom solutions and AI are priced from a written spec, so you see the full cost before you commit.' ),
-	array( 'Do you only work with certain industries?', 'No. We work with businesses in any field. Clients include a microfinance bank, law firms, a hotel group, a fashion designer, beauty salons, a coach and a foundation, in Nigeria, the United States, the United Kingdom, Canada, Kenya and Australia. We also build for schools, clinics and the wider health sector.' ),
+	array( 'Do you only work with certain industries?', 'No. We work with businesses in any field. Clients include a microfinance bank, law firms, a hotel, a fashion designer, beauty salons, a coach and a foundation, in Nigeria, the United States, the United Kingdom, Canada, Kenya and Australia. We also build for schools, clinics and the wider health sector.' ),
 );
 ?>
 <section class="sl-hero" data-dark data-hero>
