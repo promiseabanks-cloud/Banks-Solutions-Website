@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.8.0' );
+define( 'BANKS_VERSION', '0.9.0' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
@@ -68,7 +68,7 @@ add_action(
 add_filter(
 	'script_loader_tag',
 	function ( $tag, $handle ) {
-		if ( in_array( $handle, array( 'gsap', 'gsap-scrolltrigger', 'gsap-splittext', 'lenis', 'banks-motion', 'banks-scenes', 'banks-home', 'banks-solutions', 'banks-solution', 'banks-start', 'banks-pricing', 'banks-work', 'banks-case', 'banks-devices', 'banks-about', 'banks-contact', 'banks-engine', 'banks-shop', 'banks-labs', 'banks-nav' ), true ) ) {
+		if ( in_array( $handle, array( 'gsap', 'gsap-scrolltrigger', 'gsap-splittext', 'lenis', 'banks-motion', 'banks-scenes', 'banks-home', 'banks-solutions', 'banks-solution', 'banks-start', 'banks-pricing', 'banks-work', 'banks-case', 'banks-devices', 'banks-about', 'banks-contact', 'banks-engine', 'banks-shop', 'banks-labs', 'banks-dev', 'banks-nav' ), true ) ) {
 			return str_replace( ' src=', ' defer src=', $tag );
 		}
 		return $tag;
@@ -169,6 +169,9 @@ function banks_scene() {
 	}
 	if ( is_page( 'banks-business-engine' ) && ! wp_get_post_parent_id( get_queried_object_id() ) ) {
 		return 'engine';
+	}
+	if ( is_page( 'wordpress-development' ) && ! wp_get_post_parent_id( get_queried_object_id() ) ) {
+		return 'dev';
 	}
 	foreach ( array( 'start', 'pricing', 'work', 'about', 'contact', 'shop', 'labs' ) as $b_scene ) {
 		if ( is_page( $b_scene ) && ! wp_get_post_parent_id( get_queried_object_id() ) ) {
