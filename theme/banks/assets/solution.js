@@ -195,7 +195,9 @@
         var n = counts[i];
         n.textContent = (parseInt(n.textContent, 10) || 0) + 1;
         gsap.fromTo(stages[i].querySelector('.vf-stage__node'), { scale: 1.5 }, { scale: 1, duration: 0.6, ease: 'expo.out' });
-        gsap.fromTo(n, { y: -4, color: 'var(--b-foam)' }, { y: 0, color: 'var(--b-on)', duration: 0.6 });
+        gsap.fromTo(n, { y: -4 }, { y: 0, duration: 0.6, clearProps: 'transform' });
+        n.classList.add('is-hot');
+        gsap.delayedCall(0.3, function () { n.classList.remove('is-hot'); });
       };
       var spawn = function () {
         var dot = document.createElement('span');
@@ -243,6 +245,122 @@
         gsap.delayedCall(B.lite ? 2.6 : 1.5, tick);
       };
       gsap.delayedCall(2.6, tick);
+
+      if (fine && !B.lite) {
+        var rx = gsap.quickTo(panel, 'rotationX', { duration: 1.2, ease: 'power3.out' });
+        var ry = gsap.quickTo(panel, 'rotationY', { duration: 1.2, ease: 'power3.out' });
+        document.querySelector('.so-hero__stage').addEventListener('mousemove', function (e) {
+          ry((e.clientX / window.innerWidth - 0.5) * 7);
+          rx((e.clientY / window.innerHeight - 0.5) * -5);
+        });
+      }
+    },
+
+    /* AI: messages arrive and are read, tagged with how sure the AI is, and routine ones get a
+       drafted reply that waits for a person to approve it */
+    ai: function (vis) {
+      var panel = vis.querySelector('.vi-panel');
+      var list = vis.querySelector('.vi-list');
+      var draft = vis.querySelector('.vi-draft');
+      var draftText = vis.querySelector('[data-vi-draft]');
+      var state = vis.querySelector('[data-vi-state]');
+      var approve = vis.querySelector('[data-vi-approve]');
+      var sorted = vis.querySelector('[data-vi-sorted]');
+      var tags = { quote: 'Quote', booking: 'Booking', payment: 'Payment', support: 'Support' };
+      var inbox = [
+        ['A', 'Amaka U.', 'What would a logo and website cost together?', 'quote', 97, 'Hi Amaka, a logo and five-page website together start at ₦640,000. Want me to book a short call to scope it?'],
+        ['T', 'Tunde S.', 'Can I move my fitting to Thursday?', 'booking', 95, 'Hi Tunde, Thursday at 2 pm is free. Shall I move your fitting and send a reminder the day before?'],
+        ['H', 'Halima B.', 'Transfer done, please confirm', 'payment', 93, 'Hi Halima, we have received your ₦85,000 transfer. Your receipt is attached and your order is confirmed.'],
+        ['E', 'Emeka J.', 'Where can I see my order status?', 'support', 98, null],
+        ['R', 'Rita O.', 'Price for 300 printed flyers?', 'quote', 99, 'Hi Rita, 300 A5 flyers in full colour come to ₦48,000, ready in 3 days. Shall I send the invoice?'],
+        ['S', 'Seun A.', 'Any slots this Saturday morning?', 'booking', 96, 'Hi Seun, Saturday has 9 am and 11 am open. Reply with the one you want and I will hold it for you.'],
+        ['G', 'Gbemi L.', 'The app logged me out again', 'support', 91, null]
+      ];
+      var k = 0;
+      var sentText = 'Approved by you · sent';
+
+      var v = gsap.timeline();
+      v.from(panel, { y: 60, rotationX: -14, opacity: 0, duration: 1.3, ease: 'expo.out', transformOrigin: '50% 100%' })
+        .from(vis.querySelectorAll('.vi-cat'), { y: 14, opacity: 0, duration: 0.7, ease: 'expo.out', stagger: 0.07 }, 0.5)
+        .from(vis.querySelectorAll('.vi-row'), { x: -24, opacity: 0, duration: 0.8, ease: 'expo.out', stagger: 0.08 }, 0.7)
+        .from(vis.querySelectorAll('.vi-row .vi-tag'), { scale: 0.6, opacity: 0, duration: 0.6, ease: 'back.out(2.2)', stagger: 0.08 }, 1)
+        .from(vis.querySelectorAll('.vi-foot span'), { y: 10, opacity: 0, duration: 0.6, stagger: 0.1 }, 1.3)
+        .from(draft, { y: 40, scale: 0.94, opacity: 0, duration: 1, ease: 'expo.out' }, 1.5);
+      tl.add(v, 0.3);
+
+      var bump = function (el) {
+        el.textContent = (parseInt(el.textContent, 10) || 0) + 1;
+        gsap.fromTo(el, { y: -5 }, { y: 0, duration: 0.6, ease: 'expo.out', clearProps: 'transform' });
+        el.classList.add('is-hot');
+        gsap.delayedCall(0.3, function () { el.classList.remove('is-hot'); });
+      };
+
+      // The draft card writes the reply, waits, then a person approves it.
+      var write = function (text) {
+        draft.classList.remove('is-sent');
+        approve.textContent = 'Approve & send';
+        state.textContent = 'Writing a draft…';
+        var t = { n: 0 };
+        gsap.timeline()
+          .fromTo(draft, { y: 10 }, { y: 0, duration: 0.5, ease: 'expo.out' })
+          .to(t, { n: text.length, duration: Math.min(2.2, text.length * 0.022), ease: 'none', onUpdate: function () { draftText.textContent = text.slice(0, Math.round(t.n)); } }, 0)
+          .add(function () { state.textContent = 'Draft ready · waiting for you'; })
+          .fromTo(approve, { scale: 1 }, { scale: 1.08, duration: 0.25, yoyo: true, repeat: 3, ease: 'sine.inOut' }, '+=0.4')
+          .add(function () {
+            draft.classList.add('is-sent');
+            approve.textContent = 'Sent ✓';
+            state.textContent = sentText;
+          }, '+=0.2');
+      };
+
+      var arrive = function () {
+        var m = inbox[k];
+        k = (k + 1) % inbox.length;
+        var row = document.createElement('div');
+        row.className = 'vi-row is-new';
+        row.setAttribute('data-tag', m[3]);
+        row.innerHTML = '<span class="vi-row__av"></span><span class="vi-row__text"><b></b><span></span></span><span class="vi-tag"></span>';
+        row.querySelector('.vi-row__av').textContent = m[0];
+        row.querySelector('b').textContent = m[1];
+        row.querySelector('.vi-row__text span').textContent = m[2];
+        var tag = row.querySelector('.vi-tag');
+        tag.innerHTML = tags[m[3]] + ' <em>0%</em>';
+        var conf = tag.querySelector('em');
+        var scan = document.createElement('span');
+        scan.className = 'vi-scan';
+        row.appendChild(scan);
+
+        // Everything below slides down to make room; the oldest message leaves the bottom.
+        var olds = Array.prototype.slice.call(list.children);
+        list.insertBefore(row, list.firstChild);
+        var shift = row.offsetHeight + 7;
+        gsap.fromTo(olds, { y: -shift }, { y: 0, duration: 0.8, ease: 'expo.out', clearProps: 'transform' });
+        if (olds.length > 5) olds.slice(5).forEach(function (o) { gsap.to(o, { opacity: 0, duration: 0.4, onComplete: function () { o.remove(); } }); });
+        olds.forEach(function (o) { o.classList.remove('is-new'); });
+
+        var c = { n: 0 };
+        var r = gsap.timeline();
+        r.fromTo(row, { x: -30, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: 'expo.out', clearProps: 'transform,opacity' })
+          .set(tag, { autoAlpha: 0, scale: 0.6 }, 0)
+          .fromTo(scan, { xPercent: -110 }, { xPercent: 270, duration: 1, ease: 'power2.inOut' }, 0.3)
+          .add(function () { scan.remove(); })
+          .to(tag, { autoAlpha: 1, scale: 1, duration: 0.6, ease: 'back.out(2.4)', clearProps: 'all' })
+          .to(c, { n: m[4], duration: 0.7, ease: 'power2.out', onUpdate: function () { conf.textContent = Math.round(c.n) + '%'; } }, '<')
+          .add(function () {
+            var cat = vis.querySelector('[data-vi-cat="' + m[3] + '"]');
+            if (cat) bump(cat);
+            bump(sorted);
+            if (m[5]) write(m[5]);
+          });
+      };
+
+      var live = true;
+      if (ST) ST.create({ trigger: vis, start: 'top bottom', end: 'bottom top', onToggle: function (self) { live = self.isActive; } });
+      var tick = function () {
+        if (live && !document.hidden) arrive();
+        gsap.delayedCall(B.lite ? 6.5 : 4.8, tick);
+      };
+      gsap.delayedCall(3.4, tick);
 
       if (fine && !B.lite) {
         var rx = gsap.quickTo(panel, 'rotationX', { duration: 1.2, ease: 'power3.out' });
