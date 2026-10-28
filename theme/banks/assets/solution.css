@@ -1,0 +1,156 @@
+/* Solution pages (children of /solutions/). Colours come from the tokens in main.css, so both themes work. */
+
+/* 1. Hero: the answer on the left, the solution's own visual on the right */
+.so-hero{background:var(--b-bg)}
+.so-hero__stage{position:relative;overflow:hidden;min-height:100svh;display:grid;align-items:center;background:var(--b-hero);color:var(--b-on);padding-block:calc(var(--b-header) + 40px) 80px;will-change:clip-path}
+.so-hero__stage::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(var(--b-on-line) 1px,transparent 1px),linear-gradient(90deg,var(--b-on-line) 1px,transparent 1px);background-size:88px 88px;-webkit-mask-image:radial-gradient(ellipse at 72% 40%,#000 0,transparent 68%);mask-image:radial-gradient(ellipse at 72% 40%,#000 0,transparent 68%);opacity:.4}
+.so-hero__inner{position:relative;z-index:1;width:100%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:56px}
+@media (max-width:1080px){.so-hero__inner{grid-template-columns:minmax(0,1fr);gap:48px}}
+.so-crumbs{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;font:500 12.5px/1.3 var(--b-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--b-on-soft)}
+.so-crumbs a{color:var(--b-foam);text-decoration:none}
+.so-crumbs a:hover{text-decoration:underline}
+.so-hero__title{font-size:clamp(2.5rem,5.2vw,5rem);line-height:.98;letter-spacing:-.045em;max-width:14ch;margin-bottom:26px}
+.so-hero__lede{max-width:52ch;font-size:clamp(1.05rem,1.4vw,1.2rem);color:var(--b-on-soft);margin-bottom:36px}
+.so-hero__actions{display:flex;flex-wrap:wrap;gap:14px}
+.so-hero__facts{display:grid;grid-template-columns:repeat(3,max-content);gap:12px clamp(20px,3vw,40px);list-style:none;margin:40px 0 0;padding:22px 0 0;border-top:1px solid var(--b-on-line);font:400 13px/1.3 var(--b-mono);letter-spacing:.04em;color:var(--b-on-soft)}
+.so-hero__facts strong{display:block;font:700 clamp(1.5rem,2.4vw,2rem)/1.1 var(--b-head);letter-spacing:-.03em;color:var(--b-on);margin-bottom:4px}
+.so-vis{position:relative;height:min(560px,62vh);min-height:440px;perspective:1400px}
+@media (max-width:1080px){.so-vis{height:460px;min-height:0;max-width:600px}}
+@media (max-width:560px){.so-vis{height:380px}}
+
+/* Websites visual: a site that wireframes, then paints itself, then shows its phone version */
+.vw-browser{position:absolute;left:0;top:2%;width:86%;height:84%;overflow:hidden;border:1px solid var(--b-on-line);border-radius:18px;background:color-mix(in srgb,var(--b-hero) 70%,var(--b-paper) 6%);box-shadow:0 50px 100px -50px rgba(0,0,0,.7);will-change:transform}
+.vw-chrome{display:flex;align-items:center;gap:6px;padding:12px 14px;border-bottom:1px solid var(--b-on-line);font:400 11.5px/1 var(--b-mono);color:var(--b-on-soft)}
+.vw-chrome i{width:9px;height:9px;border-radius:50%;background:var(--b-on-line)}
+.vw-chrome span{margin-left:10px;padding:5px 10px;border-radius:999px;background:color-mix(in srgb,var(--b-paper) 6%,transparent)}
+.vw-view{position:relative;height:calc(100% - 40px);overflow:hidden}
+.vw-page{display:flex;flex-direction:column;gap:14px;padding:18px 20px 40px}
+.vw-b{position:relative;display:block;isolation:isolate;border:1px dashed transparent;border-radius:8px;transition:border-color .6s}
+.vw.is-wire .vw-browser .vw-b{border-color:var(--b-on-line)}
+.vw-b::before{content:"";position:absolute;inset:-1px;z-index:-1;border-radius:inherit;background:var(--fill,transparent);opacity:var(--f,1)}
+.vw-nav{display:flex;align-items:center;gap:12px}
+.vw-logo{width:64px;height:16px;--fill:var(--b-foam)}
+.vw-link{width:40px;height:8px;margin-left:auto;--fill:color-mix(in srgb,var(--b-paper) 22%,transparent)}
+.vw-link+.vw-link{margin-left:0}
+.vw-pill{width:66px;height:22px;border-radius:999px;--fill:var(--b-signal)}
+.vw-hero{display:grid;gap:9px;padding:14px 0 4px}
+.vw-h{height:22px;width:86%;--fill:color-mix(in srgb,var(--b-paper) 78%,transparent)}
+.vw-h--2{width:58%}
+.vw-t{height:8px;width:70%;--fill:color-mix(in srgb,var(--b-paper) 22%,transparent)}
+.vw-t--2{width:52%}
+.vw-btn{justify-self:start;margin-top:6px;padding:9px 15px;border-radius:999px;font:600 12px/1 var(--b-body);color:var(--b-ink);--fill:var(--b-signal)}
+.vw-img{height:120px;border-radius:12px;--fill:linear-gradient(135deg,color-mix(in srgb,var(--b-foam) 45%,transparent),color-mix(in srgb,var(--b-current) 50%,transparent))}
+.vw-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.vw-card{height:70px;border-radius:10px;--fill:color-mix(in srgb,var(--b-paper) 8%,transparent)}
+.vw-band{height:54px;border-radius:12px;--fill:color-mix(in srgb,var(--b-current) 45%,transparent)}
+.vw-grid{position:absolute;inset:0 20px;display:flex;justify-content:space-between;pointer-events:none;opacity:0}
+.vw-grid i{width:1px;height:100%;background:color-mix(in srgb,var(--b-foam) 35%,transparent);transform-origin:top}
+.vw-phone{position:absolute;right:0;bottom:0;width:31%;aspect-ratio:9/18.5;padding:16px 10px 10px;border:6px solid color-mix(in srgb,var(--b-paper) 12%,var(--b-hero));border-radius:30px;background:var(--b-hero);box-shadow:0 40px 80px -30px rgba(0,0,0,.8);overflow:hidden}
+.vw-phone__notch{position:absolute;left:50%;top:6px;width:34%;height:8px;margin-left:-17%;border-radius:8px;background:color-mix(in srgb,var(--b-paper) 12%,var(--b-hero))}
+.vw-phone__page{display:grid;gap:8px;padding-top:6px}
+.vw-phone .vw-logo{width:44px;height:11px}
+.vw-phone .vw-h{height:14px;width:92%}
+.vw-phone .vw-h--2{width:66%}
+.vw-phone .vw-t{height:6px}
+.vw-phone .vw-btn{padding:6px 10px;font-size:9.5px}
+.vw-phone .vw-img{height:70px}
+.vw-badge{position:absolute;display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--b-on-line);border-radius:16px;background:color-mix(in srgb,var(--b-hero) 80%,var(--b-paper) 8%);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 30px 60px -30px rgba(0,0,0,.8);font:600 14px/1.3 var(--b-body);color:var(--b-on)}
+.vw-badge em{display:block;font:400 11px/1.3 var(--b-mono);font-style:normal;letter-spacing:.07em;text-transform:uppercase;color:var(--b-on-soft);margin-bottom:3px}
+.vw-badge--speed{left:-3%;bottom:6%;display:block}
+.vw-badge--speed b{font:700 2rem/1 var(--b-head);letter-spacing:-.04em;color:var(--b-foam)}
+.vw-badge--lead{right:-2%;top:10%}
+.vw-badge__icon{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:color-mix(in srgb,var(--b-foam) 22%,transparent);color:var(--b-foam)}
+@media (max-width:560px){.vw-browser{width:94%}.vw-phone{width:36%}.vw-img{height:80px}.vw-card{height:50px}.vw-badge--speed{left:0;bottom:2%}.vw-badge--speed b{font-size:1.5rem}.vw-badge--lead{right:0;top:-4%}}
+
+/* 2. Sound familiar: the boxes tick as you read down the list */
+.so-check{padding-block:clamp(96px,12vw,160px)}
+.so-check__grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px}
+@media (max-width:900px){.so-check__grid{grid-template-columns:minmax(0,1fr);gap:36px}}
+@media (min-width:901px){.so-check__head{position:sticky;top:calc(var(--b-header) + 40px);align-self:start}}
+.so-check__head h2{font-size:clamp(2.1rem,4.6vw,3.8rem);letter-spacing:-.04em;max-width:13ch}
+.so-check__head p{color:var(--b-muted);max-width:42ch}
+.so-check__score{margin-top:28px;font:500 13px/1.3 var(--b-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--b-strong)!important}
+.so-check__score span{display:inline-block;min-width:1ch;font:700 2.4rem/1 var(--b-head);letter-spacing:-.04em;vertical-align:-6px;margin-right:4px}
+.so-check__list{list-style:none;margin:0;padding:0;border-top:1px solid var(--b-line)}
+.so-sym{display:grid;grid-template-columns:44px minmax(0,1fr);gap:18px;padding:28px 0;border-bottom:1px solid var(--b-line);color:var(--b-muted);font-size:clamp(1rem,1.3vw,1.1rem)}
+.so-sym strong{display:block;margin-bottom:4px;font:600 clamp(1.2rem,2vw,1.6rem)/1.2 var(--b-head);letter-spacing:-.02em;color:var(--b-fg)}
+.so-sym__box{display:grid;place-items:center;width:36px;height:36px;margin-top:2px;border:2px solid var(--b-line);border-radius:10px;transition:background .4s,border-color .4s}
+.so-sym__box svg{width:20px;height:20px;fill:none;stroke:var(--b-bg);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.so-sym.is-on .so-sym__box{background:var(--b-strong);border-color:var(--b-strong)}
+
+/* 3. The statement: lights up word by word */
+.so-say{background:var(--b-hero);color:var(--b-on);padding-block:clamp(110px,14vw,190px)}
+.so-say .b-eyebrow{color:var(--b-foam)}
+.so-say__big{max-width:24ch;margin:0 0 56px;font:600 clamp(1.9rem,4.4vw,3.8rem)/1.12 var(--b-head);letter-spacing:-.03em}
+.so-say__text{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px;max-width:960px;margin-left:auto;color:var(--b-on-soft)}
+@media (max-width:800px){.so-say__text{grid-template-columns:minmax(0,1fr);gap:8px}}
+
+/* 4. What's included: three groups of cards */
+.so-inc{padding-block:clamp(96px,12vw,160px)}
+.so-inc__head{margin-bottom:56px}
+.so-inc__head h2{font-size:clamp(2.2rem,5vw,4.2rem);letter-spacing:-.04em}
+.so-inc__head p{color:var(--b-muted);max-width:52ch}
+.so-inc__groups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+@media (max-width:900px){.so-inc__groups{grid-template-columns:minmax(0,1fr)}}
+.so-group{display:grid;gap:14px;align-content:start}
+.so-group__head{display:flex;align-items:baseline;gap:12px;padding-bottom:14px;margin:0 0 4px;border-bottom:2px solid var(--b-strong);font:600 1.15rem/1.3 var(--b-head);letter-spacing:-.01em}
+.so-group__head span{font:500 12.5px/1 var(--b-mono);color:var(--b-current)}
+.so-item{padding:24px;border:1px solid var(--b-line);border-radius:20px;background:radial-gradient(360px circle at var(--mx,-200px) var(--my,-200px),var(--b-glow),transparent 60%),var(--b-surface);box-shadow:var(--b-shadow)}
+.so-item h3{font-size:1.2rem;letter-spacing:-.015em;margin-bottom:8px}
+.so-item p{color:var(--b-muted);font-size:15.5px;margin:0}
+
+/* 5. How it runs: a timeline that draws across as you scroll */
+.so-run{padding-block:0 clamp(96px,12vw,160px)}
+.so-run__head{margin-bottom:64px}
+.so-run__head h2{font-size:clamp(2.2rem,5vw,4.2rem);letter-spacing:-.04em}
+.so-run__head p{color:var(--b-muted);max-width:56ch}
+.so-run__track{position:relative}
+.so-run__line{position:absolute;left:0;right:0;top:17px;height:2px;background:var(--b-line)}
+.so-run__line span{position:absolute;inset:0;background:var(--b-strong);transform-origin:left}
+.so-run__list{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:28px;list-style:none;margin:0;padding:0}
+.so-stage__dot{display:grid;place-items:center;width:36px;height:36px;margin-bottom:22px;border:2px solid var(--b-strong);border-radius:50%;background:var(--b-bg);font:600 14px/1 var(--b-mono);color:var(--b-strong);transition:background .4s,color .4s}
+.so-stage.is-on .so-stage__dot{background:var(--b-strong);color:var(--b-bg)}
+.so-stage__when{margin:0 0 6px;font:500 12px/1.3 var(--b-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--b-current)}
+.so-stage h3{font-size:1.3rem;letter-spacing:-.02em;margin-bottom:8px}
+.so-stage p:last-child{color:var(--b-muted);font-size:15.5px}
+@media (max-width:900px){.so-run__line{left:17px;right:auto;top:0;bottom:0;width:2px;height:auto}.so-run__line span{transform-origin:top}.so-run__list{grid-template-columns:minmax(0,1fr);gap:40px}.so-stage{position:relative;padding-left:60px}.so-stage__dot{position:absolute;left:0;top:0}}
+
+/* 6. Fit: for you, and not for you */
+.so-fit{padding-block:clamp(96px,12vw,150px);border-top:1px solid var(--b-line)}
+.so-fit__head{margin-bottom:48px}
+.so-fit__head h2{font-size:clamp(2rem,4.4vw,3.4rem);letter-spacing:-.035em;max-width:16ch}
+.so-fit__head p{color:var(--b-muted)}
+.so-fit__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+@media (max-width:800px){.so-fit__grid{grid-template-columns:minmax(0,1fr)}}
+.so-fit__col{padding:clamp(24px,3.4vw,40px);border:1px solid var(--b-line);border-radius:24px;background:var(--b-surface)}
+.so-fit__col--yes{border-color:color-mix(in srgb,var(--b-current) 45%,var(--b-line))}
+.so-fit__col h3{font-size:1.4rem;letter-spacing:-.02em;margin-bottom:18px}
+.so-fit__col ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.so-fit__col li{position:relative;padding-left:36px}
+.so-fit__col li::before{position:absolute;left:0;top:1px;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;font:700 13px/1 var(--b-body)}
+.so-fit__col--yes li::before{content:"✓";background:var(--b-strong);color:var(--b-bg)}
+.so-fit__col--no li{color:var(--b-muted)}
+.so-fit__col--no li::before{content:"✕";border:1.5px solid var(--b-line);color:var(--b-muted)}
+
+/* 7. Prices: three cards, the middle one featured */
+.so-plans{padding-block:clamp(96px,12vw,150px);border-top:1px solid var(--b-line)}
+.so-plans__head{margin-bottom:48px}
+.so-plans__head h2{font-size:clamp(2rem,4.4vw,3.4rem);letter-spacing:-.035em;max-width:18ch}
+.so-plans__head p{color:var(--b-muted);max-width:56ch}
+.so-plans__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:stretch}
+@media (max-width:900px){.so-plans__grid{grid-template-columns:minmax(0,1fr)}}
+.so-plan{display:flex;flex-direction:column;align-items:flex-start;padding:clamp(26px,3vw,36px);border:1px solid var(--b-line);border-radius:24px;background:radial-gradient(420px circle at var(--mx,-200px) var(--my,-200px),var(--b-glow),transparent 60%),var(--b-surface);box-shadow:var(--b-shadow)}
+.so-plan--featured{border-color:var(--b-on-line);background:radial-gradient(420px circle at var(--mx,-200px) var(--my,-200px),var(--b-glow),transparent 60%),var(--b-hero);color:var(--b-on)}
+.so-plan h3{font-size:1.3rem;letter-spacing:-.02em;margin-bottom:18px}
+.so-plan__price{display:flex;align-items:baseline;gap:8px;margin:0 0 4px}
+.so-plan__price small{font:500 12px/1 var(--b-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--b-muted)}
+.so-plan__price strong{font:700 clamp(2rem,3.4vw,2.8rem)/1 var(--b-head);letter-spacing:-.04em;color:var(--b-strong);font-variant-numeric:tabular-nums}
+.so-plan--featured .so-plan__price strong{color:var(--b-foam)}
+.so-plan--featured .so-plan__price small,.so-plan--featured p{color:var(--b-on-soft)}
+.so-plan__when{margin:0 0 18px;font:400 13px/1.3 var(--b-mono);color:var(--b-current)}
+.so-plan--featured .so-plan__when{color:var(--b-foam)!important}
+.so-plan p{color:var(--b-muted)}
+.so-plan .b-btn{margin-top:auto}
+.so-plans__note{margin:28px 0 0;color:var(--b-muted);max-width:70ch;font-size:15px}
+
+@media (prefers-reduced-motion:reduce){.so-sym__box,.so-stage__dot{transition:none}}

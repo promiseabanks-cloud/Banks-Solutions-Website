@@ -178,19 +178,10 @@
       .from(card.querySelectorAll('.sl-card__label, .sl-card__items li'), { y: 18, scale: 0.9, opacity: 0, duration: 0.7, ease: 'back.out(1.8)', stagger: 0.05 }, 0.3);
   });
 
-  /* 4. Prices: rows rise in turn and the naira figures count up to their value */
+  /* 4. Prices: rows rise in turn (scenes.js counts the naira figures up) */
   var prices = document.querySelector('.sl-table');
   if (prices) {
     gsap.from(prices.querySelectorAll('tr'), { y: 30, opacity: 0, duration: 0.9, ease: 'expo.out', stagger: 0.08, scrollTrigger: once(prices, 'top 85%') });
-    prices.querySelectorAll('[data-naira]').forEach(function (el) {
-      var end = parseInt(el.getAttribute('data-naira'), 10);
-      var o = { v: 0 };
-      gsap.to(o, {
-        v: end, duration: 1.6, ease: 'power3.out', scrollTrigger: once(el, 'top 90%'),
-        onUpdate: function () { el.textContent = Math.round(o.v).toLocaleString('en-NG'); },
-        onComplete: function () { el.textContent = end.toLocaleString('en-NG'); }
-      });
-    });
   }
 
   /* 5. Any field: the two lines of type drift in opposite directions as the section passes */

@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.2.5' );
+define( 'BANKS_VERSION', '0.2.6' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
@@ -61,7 +61,7 @@ add_action(
 add_filter(
 	'script_loader_tag',
 	function ( $tag, $handle ) {
-		if ( in_array( $handle, array( 'gsap', 'gsap-scrolltrigger', 'gsap-splittext', 'lenis', 'banks-motion', 'banks-scenes', 'banks-home', 'banks-solutions', 'banks-nav' ), true ) ) {
+		if ( in_array( $handle, array( 'gsap', 'gsap-scrolltrigger', 'gsap-splittext', 'lenis', 'banks-motion', 'banks-scenes', 'banks-home', 'banks-solutions', 'banks-solution', 'banks-nav' ), true ) ) {
 			return str_replace( ' src=', ' defer src=', $tag );
 		}
 		return $tag;
@@ -89,6 +89,20 @@ add_action(
 		echo "<script>(function(d){if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;d.classList.add('js-motion');setTimeout(function(){if(!window.__banksReady)d.classList.remove('js-motion')},4000)})(document.documentElement);</script>\n";
 	},
 	1
+);
+
+/** Short page name for the browser-tab titles in motion.js (the real <title> stays Rank Math's). */
+add_action(
+	'wp_head',
+	function () {
+		if ( 'main' !== banks_site() ) {
+			return;
+		}
+		$name = is_front_page() ? 'Home' : ( is_singular() ? get_the_title() : wp_strip_all_tags( wp_get_document_title() ) );
+		$name = preg_replace( '/\s*[|\-–·]\s*Banks Solutions?$/u', '', html_entity_decode( (string) $name, ENT_QUOTES, 'UTF-8' ) );
+		echo '<meta name="banks-tab" content="' . esc_attr( $name ) . '" data-tagline="' . esc_attr( 'Systems, not spreadsheets.' ) . '">' . "\n";
+	},
+	3
 );
 
 add_action(
@@ -129,14 +143,22 @@ add_filter(
 
 /**
  * Pages built as scenes, by asset name: front-page.php uses home.{css,js}, page-solutions.php
- * uses solutions.{css,js}. Every scene page opens on a dark hero. Empty for everything else.
+ * uses solutions.{css,js}, and every solution page (a child of /solutions/, page-<slug>.php)
+ * shares solution.{css,js}. Every scene page opens on a dark hero. Empty for everything else.
  */
 function banks_scene() {
 	if ( is_front_page() ) {
 		return 'home';
 	}
+	if ( ! is_page() ) {
+		return '';
+	}
 	if ( is_page( 'solutions' ) ) {
 		return 'solutions';
+	}
+	$parent = wp_get_post_parent_id( get_queried_object_id() );
+	if ( $parent && 'solutions' === get_post_field( 'post_name', $parent ) && locate_template( 'page-' . get_post_field( 'post_name', get_queried_object_id() ) . '.php' ) ) {
+		return 'solution';
 	}
 	return '';
 }
@@ -310,7 +332,8 @@ add_filter(
 		if ( ! $scene || 'main' !== banks_site() ) {
 			return $template;
 		}
-		$own = locate_template( 'home' === $scene ? 'front-page.php' : 'page-' . $scene . '.php' );
+		$file = 'home' === $scene ? 'front-page.php' : 'page-' . get_post_field( 'post_name', get_queried_object_id() ) . '.php';
+		$own  = locate_template( $file );
 		return $own ? $own : $template;
 	},
 	999
@@ -343,4 +366,30 @@ add_filter(
 		return banks_scene() ? preg_grep( '/^elementor/', $classes, PREG_GREP_INVERT ) : $classes;
 	},
 	999
+);
+
+/**
+ * Old addresses that now live elsewhere. A redirect only fires once its new page exists, so an
+ * old page keeps working until its replacement is published. Full map: archive/redirects.md.
+ */
+function banks_redirects() {
+	return array(
+		'services/digital-foundation' => '/solutions/websites/',
+	);
+}
+
+add_action(
+	'template_redirect',
+	function () {
+		if ( 'main' !== banks_site() || is_admin() ) {
+			return;
+		}
+		$path = trim( (string) wp_parse_url( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '', PHP_URL_PATH ), '/' ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- compared against a fixed map only.
+		$map  = banks_redirects();
+		if ( isset( $map[ $path ] ) && get_page_by_path( trim( $map[ $path ], '/' ) ) ) {
+			wp_safe_redirect( banks_main_url( $map[ $path ] ), 301 );
+			exit;
+		}
+	},
+	1
 );

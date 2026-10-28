@@ -73,6 +73,23 @@
     });
   });
 
+  // Statements light up word by word as they scroll through.
+  document.querySelectorAll('[data-scrub-words]').forEach(function (p) {
+    var words = window.SplitText ? window.SplitText.create(p, { type: 'words', aria: 'auto' }).words : [p];
+    gsap.fromTo(words, { opacity: 0.14 }, { opacity: 1, stagger: 0.1, ease: 'none', scrollTrigger: { trigger: p, start: 'top 78%', end: 'bottom 42%', scrub: true } });
+  });
+
+  // Naira figures count up to their value the first time they come into view.
+  document.querySelectorAll('[data-naira]').forEach(function (el) {
+    var end = parseInt(el.getAttribute('data-naira'), 10);
+    var o = { v: 0 };
+    gsap.to(o, {
+      v: end, duration: 1.6, ease: 'power3.out', scrollTrigger: once(el, 'top 90%'),
+      onUpdate: function () { el.textContent = Math.round(o.v).toLocaleString('en-NG'); },
+      onComplete: function () { el.textContent = end.toLocaleString('en-NG'); }
+    });
+  });
+
   // Questions: rows slide in one by one, their icons spin into place.
   document.querySelectorAll('.s-faq__list').forEach(function (list) {
     gsap.timeline({ scrollTrigger: once(list) })

@@ -119,12 +119,6 @@
     mq.addEventListener('mouseleave', function () { gsap.to(loop, { timeScale: 1, duration: 0.6 }); });
   }
 
-  /* 3. The problem paragraph lights up word by word */
-  document.querySelectorAll('[data-scrub-words]').forEach(function (p) {
-    var words = window.SplitText ? window.SplitText.create(p, { type: 'words', aria: 'auto' }).words : [p];
-    gsap.fromTo(words, { opacity: 0.14 }, { opacity: 1, stagger: 0.1, ease: 'none', scrollTrigger: { trigger: p, start: 'top 78%', end: 'bottom 42%', scrub: true } });
-  });
-
   /* 4. What we build: pinned, scrolls sideways on large screens; a reveal everywhere else */
   var build = document.querySelector('.h-build');
   var mm = gsap.matchMedia();

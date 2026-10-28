@@ -19,6 +19,27 @@
   function done() {
     window.__banksReady = true;
   }
+  /* Tab titles: the page and the company while you're here, the tagline every 30 seconds,
+     and a little nudge while you're in another tab. Search engines still read the real <title>. */
+  var tabMeta = document.querySelector('meta[name="banks-tab"]');
+  if (tabMeta) {
+    var brand = 'Banks Solutions';
+    var page = tabMeta.getAttribute('content');
+    var titles = [page && page !== 'Home' ? page + ' · ' + brand : brand, brand + ' · ' + tabMeta.getAttribute('data-tagline')];
+    var ti = 0;
+    var back = null;
+    var show = function () { document.title = titles[ti]; };
+    show();
+    setInterval(function () { if (!document.hidden && !back) { ti = (ti + 1) % titles.length; show(); } }, 30000);
+    document.addEventListener('visibilitychange', function () {
+      clearTimeout(back);
+      back = null;
+      if (document.hidden) { document.title = 'Come back to ' + brand + ' 😢'; return; }
+      document.title = 'Welcome back 👋 · ' + brand;
+      back = setTimeout(function () { back = null; show(); }, 2000);
+    });
+  }
+
   /* Theme switch: remembers the choice; the new theme spreads out from the button */
   var toggles = document.querySelectorAll('[data-theme-toggle]');
   function label() {
