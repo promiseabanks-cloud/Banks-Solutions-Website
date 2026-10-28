@@ -16,8 +16,6 @@
 .b-article__title{max-width:22ch;margin:20px 0 18px}
 .b-article__meta{font:400 13.5px/1.4 var(--b-mono,monospace);color:var(--b-muted,#5E6E6E)}
 .b-article .b-prose{padding-bottom:96px}
-.b-progress{position:fixed;left:0;right:0;top:0;height:3px;z-index:60;pointer-events:none}
-.b-progress span{display:block;height:100%;background:var(--b-signal,#F5B72E);transform-origin:left;transform:scaleX(0)}
 
 /* Old-site article parts: lead, contents list, FAQs, related chips */
 .b-article__lead{max-width:60ch;font-size:clamp(1.1rem,1.8vw,1.3rem);line-height:1.55;color:var(--b-fg,#0E1A1B);margin-top:28px}

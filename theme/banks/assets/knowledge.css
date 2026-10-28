@@ -1,0 +1,81 @@
+/* Knowledge (/knowledge/). Colours come from the tokens in main.css, so both themes work. */
+
+/* 1. Hero: the invitation on the left, a fan of the latest covers on the right */
+.kn-hero{background:var(--b-bg)}
+.kn-stage{position:relative;overflow:hidden;min-height:100svh;display:grid;align-items:center;background:var(--b-hero);color:var(--b-on);padding-block:calc(var(--b-header) + 40px) 80px;will-change:clip-path}
+.kn-inner{position:relative;z-index:1;width:100%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.85fr);gap:64px;align-items:center}
+@media (max-width:1000px){.kn-inner{grid-template-columns:minmax(0,1fr);gap:56px}}
+.kn-eyebrow{color:var(--b-foam)}
+.kn-title{font-size:clamp(2.8rem,6.2vw,6rem);line-height:.94;letter-spacing:-.05em;max-width:11ch;margin-bottom:28px}
+.kn-lede{max-width:52ch;font-size:clamp(1.02rem,1.3vw,1.15rem);color:var(--b-on-soft);margin-bottom:40px}
+.kn-stats{display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:16px 40px;margin:0}
+@media (max-width:560px){.kn-stats{grid-template-columns:repeat(2,auto)}}
+.kn-stats div{display:flex;flex-direction:column}
+.kn-stats dt{order:2;font:500 10.5px/1.4 var(--b-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--b-on-soft)}
+.kn-stats dd{order:1;margin:0 0 4px;font:700 clamp(1.8rem,3vw,2.6rem)/1 var(--b-head);letter-spacing:-.04em}
+
+.kn-fan{position:relative;justify-self:center;width:min(100%,460px);aspect-ratio:1/1.05;perspective:1400px}
+@media (max-width:1000px){.kn-fan{width:min(80%,380px)}}
+.kn-fan__card{position:absolute;left:14%;top:8%;width:72%;aspect-ratio:4/5;overflow:hidden;border:1px solid var(--b-on-line);border-radius:20px;background:var(--b-current);box-shadow:0 50px 90px -40px rgba(0,0,0,.85);transform-origin:50% 120%}
+.kn-fan__card img{width:100%;height:100%;object-fit:cover;display:block}
+.kn-fan__card--0{z-index:3;transform:rotate(0deg)}
+.kn-fan__card--1{z-index:2;transform:rotate(-11deg) translateX(-14%)}
+.kn-fan__card--2{z-index:1;transform:rotate(11deg) translateX(14%)}
+.kn-fan__cap{position:absolute;left:14px;bottom:14px;padding:6px 11px;border-radius:99px;background:color-mix(in srgb,var(--b-hero) 82%,transparent);backdrop-filter:blur(6px);font:500 10px/1 var(--b-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--b-paper)}
+
+/* Article card, shared by every block */
+.kn-card{display:flex;flex-direction:column;gap:10px;height:100%;color:var(--b-fg);text-decoration:none}
+.kn-card__img{display:block;aspect-ratio:16/10;overflow:hidden;border-radius:18px;background:var(--b-tint);margin-bottom:8px}
+.kn-card__img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s var(--b-ease-out)}
+.kn-card:hover .kn-card__img img,.kn-card:focus-visible .kn-card__img img{transform:scale(1.05)}
+.kn-card__meta{font:500 10.5px/1.4 var(--b-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--b-link)}
+.kn-card__title{font:700 clamp(1.15rem,1.6vw,1.4rem)/1.2 var(--b-head);letter-spacing:-.025em;transition:color var(--b-dur)}
+.kn-card:hover .kn-card__title{color:var(--b-link)}
+.kn-card__sum{color:var(--b-muted);font-size:15px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+
+/* 2. Newest and most read */
+.kn-top{padding-block:clamp(110px,13vw,160px) clamp(60px,8vw,100px)}
+.kn-top__grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(40px,6vw,80px);align-items:start}
+@media (max-width:900px){.kn-top__grid{grid-template-columns:minmax(0,1fr)}}
+.kn-feature .kn-card__title{font-size:clamp(1.7rem,3.2vw,2.6rem);line-height:1.08;letter-spacing:-.04em}
+.kn-feature .kn-card__sum{font-size:clamp(1rem,1.3vw,1.1rem);-webkit-line-clamp:4}
+.kn-popular__list{list-style:none;margin:0;padding:0;border-top:1px solid var(--b-line)}
+.kn-popular__list a{display:grid;grid-template-columns:48px minmax(0,1fr);gap:4px 12px;padding:24px 0;border-bottom:1px solid var(--b-line);color:var(--b-fg);text-decoration:none}
+.kn-popular__n{grid-row:span 2;font:700 clamp(2rem,3vw,2.6rem)/1 var(--b-head);letter-spacing:-.05em;color:var(--b-link)}
+.kn-popular__t{font:600 clamp(1.08rem,1.4vw,1.25rem)/1.3 var(--b-head);letter-spacing:-.02em;transition:color var(--b-dur)}
+.kn-popular__list a:hover .kn-popular__t{color:var(--b-link)}
+.kn-popular__m{font:500 10.5px/1.4 var(--b-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--b-muted)}
+
+/* 3. The library */
+.kn-lib{padding-block:clamp(60px,8vw,100px) clamp(100px,12vw,150px)}
+.kn-lib__head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:24px;margin-bottom:28px}
+.kn-head{max-width:640px}
+.kn-head h2{font-size:clamp(2rem,4.4vw,3.4rem);letter-spacing:-.035em;margin:0}
+.kn-head p:not(.b-eyebrow){color:var(--b-muted);max-width:52ch;margin-top:14px}
+.kn-head--dark p:not(.b-eyebrow){color:var(--b-on-soft)}
+.kn-search input{width:min(340px,82vw);padding:14px 20px;border:1px solid var(--b-line);border-radius:99px;background:var(--b-surface);color:var(--b-fg);font:inherit;font-size:15px}
+.kn-search input:focus{outline:2px solid var(--b-link);outline-offset:2px}
+.kn-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:40px}
+.kn-chip{padding:9px 15px;border:1px solid var(--b-line);border-radius:99px;background:transparent;color:var(--b-fg);font:inherit;font-size:14px;cursor:pointer;transition:background-color var(--b-dur),border-color var(--b-dur),color var(--b-dur)}
+.kn-chip span{font-family:var(--b-mono);font-size:12px;color:var(--b-muted)}
+.kn-chip:hover{border-color:var(--b-link)}
+.kn-chip.is-on{background:var(--b-strong);border-color:var(--b-strong);color:var(--b-bg)}
+.kn-chip.is-on span{color:inherit;opacity:.7}
+.kn-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px 28px;list-style:none;margin:0;padding:0}
+@media (max-width:1000px){.kn-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.kn-grid{grid-template-columns:minmax(0,1fr)}}
+.kn-grid__item[hidden]{display:none}
+.kn-more{margin:56px 0 0;text-align:center}
+.kn-empty{margin:24px 0 0;color:var(--b-muted)}
+.kn-empty a{color:var(--b-link)}
+
+/* 4. Glossary run */
+.kn-gloss{background:var(--b-hero);color:var(--b-on);padding-block:clamp(100px,12vw,150px);overflow:hidden}
+.kn-gloss__head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:24px;margin-bottom:48px}
+.kn-terms{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;list-style:none;margin:0 auto;padding:0 16px;max-width:1240px}
+.kn-terms a{display:block;padding:12px 20px;border:1px solid var(--b-on-line);border-radius:99px;color:var(--b-on);text-decoration:none;font:600 clamp(.95rem,1.3vw,1.1rem)/1.2 var(--b-head);transition:background-color var(--b-dur),color var(--b-dur),border-color var(--b-dur)}
+.kn-terms a:hover,.kn-terms a:focus-visible{background:var(--b-foam);border-color:var(--b-foam);color:var(--b-hero)}
+.kn-gloss.is-rows .kn-terms{display:grid;gap:14px;max-width:none;padding:0}
+.kn-row{display:flex;gap:12px;width:max-content;list-style:none;margin:0;padding:0}
+
+@media (prefers-reduced-motion:reduce){.kn-card__img img,.kn-chip,.kn-terms a{transition:none}}
