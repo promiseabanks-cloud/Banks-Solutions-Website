@@ -10,6 +10,7 @@
 			<ul class="b-footer__list">
 				<?php banks_nav_item( '/solutions/', 'Solutions', '/services/' ); ?>
 				<?php banks_nav_item( '/work/', 'Work' ); ?>
+				<?php banks_nav_item( '/industries/', 'Industries' ); ?>
 				<?php banks_nav_item( '/banks-business-engine/', 'Banks Business Engine' ); ?>
 				<?php banks_nav_item( '/shop/', 'Shop' ); ?>
 			</ul>

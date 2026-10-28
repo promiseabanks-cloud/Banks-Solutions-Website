@@ -10,6 +10,8 @@ get_header();
 
 $b_ready = function_exists( 'banks_core_brief_options' );
 $b_opts  = $b_ready ? banks_core_brief_options() : array();
+// An industry page links here with ?industry=<slug>, so the field is already chosen.
+$b_field = isset( $_GET['industry'] ) ? sanitize_key( wp_unslash( $_GET['industry'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 // After a no-JavaScript submit, Banks Core sends the visitor back with ?brief=<ref> or ?brief_error=<code>.
 $b_ref   = isset( $_GET['brief'] ) ? sanitize_text_field( wp_unslash( $_GET['brief'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display only.
 $b_ref   = preg_match( '/^BS-\d{6}-\d{4,}$/', $b_ref ) ? $b_ref : '';
@@ -102,7 +104,7 @@ $b_step = function ( $n, $title, $hint ) {
 									<select name="industry" required>
 										<option value="">Choose one</option>
 										<?php foreach ( $b_opts['industry'] as $b_k => $b_l ) : ?>
-											<option value="<?php echo esc_attr( $b_k ); ?>"><?php echo esc_html( $b_l ); ?></option>
+											<option value="<?php echo esc_attr( $b_k ); ?>"<?php selected( $b_k, $b_field ); ?>><?php echo esc_html( $b_l ); ?></option>
 										<?php endforeach; ?>
 									</select>
 								</label>

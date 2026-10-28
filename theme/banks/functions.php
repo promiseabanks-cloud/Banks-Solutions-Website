@@ -3,9 +3,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.11.0' );
+define( 'BANKS_VERSION', '0.12.0' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
+
+require_once __DIR__ . '/inc/industries.php';
 
 add_action(
 	'after_setup_theme',
@@ -53,7 +55,7 @@ add_action(
 			wp_enqueue_script( 'banks-scenes', $uri . 'scenes.js', array( 'banks-motion' ), BANKS_VERSION, true );
 			$deps = array( 'banks-scenes' );
 			// Work and the case studies share the device frames.
-			if ( in_array( $scene, array( 'work', 'case' ), true ) ) {
+			if ( in_array( $scene, array( 'work', 'case', 'industry' ), true ) ) {
 				wp_enqueue_style( 'banks-devices', $uri . 'devices.css', array( 'banks-scenes' ), BANKS_VERSION );
 				wp_enqueue_script( 'banks-devices', $uri . 'devices.js', array( 'banks-scenes' ), BANKS_VERSION, true );
 				$deps = array( 'banks-devices' );
@@ -68,7 +70,7 @@ add_action(
 add_filter(
 	'script_loader_tag',
 	function ( $tag, $handle ) {
-		if ( in_array( $handle, array( 'gsap', 'gsap-scrolltrigger', 'gsap-splittext', 'lenis', 'banks-motion', 'banks-scenes', 'banks-home', 'banks-solutions', 'banks-solution', 'banks-start', 'banks-pricing', 'banks-work', 'banks-case', 'banks-devices', 'banks-about', 'banks-contact', 'banks-engine', 'banks-shop', 'banks-labs', 'banks-dev', 'banks-legal', 'banks-knowledge', 'banks-glossary', 'banks-read', 'banks-nav' ), true ) ) {
+		if ( in_array( $handle, array( 'gsap', 'gsap-scrolltrigger', 'gsap-splittext', 'lenis', 'banks-motion', 'banks-scenes', 'banks-home', 'banks-solutions', 'banks-solution', 'banks-start', 'banks-pricing', 'banks-work', 'banks-case', 'banks-devices', 'banks-about', 'banks-contact', 'banks-engine', 'banks-shop', 'banks-labs', 'banks-dev', 'banks-legal', 'banks-knowledge', 'banks-glossary', 'banks-read', 'banks-industries', 'banks-industry', 'banks-nav' ), true ) ) {
 			return str_replace( ' src=', ' defer src=', $tag );
 		}
 		return $tag;
@@ -179,12 +181,15 @@ function banks_scene() {
 	if ( is_page( array( 'privacy-policy', 'terms' ) ) && ! wp_get_post_parent_id( get_queried_object_id() ) ) {
 		return 'legal';
 	}
-	foreach ( array( 'start', 'pricing', 'work', 'about', 'contact', 'shop', 'labs', 'knowledge', 'glossary' ) as $b_scene ) {
+	foreach ( array( 'start', 'pricing', 'work', 'about', 'contact', 'shop', 'labs', 'knowledge', 'glossary', 'industries' ) as $b_scene ) {
 		if ( is_page( $b_scene ) && ! wp_get_post_parent_id( get_queried_object_id() ) ) {
 			return $b_scene;
 		}
 	}
 	$parent = wp_get_post_parent_id( get_queried_object_id() );
+	if ( $parent && 'industries' === get_post_field( 'post_name', $parent ) && isset( banks_industries()[ get_post_field( 'post_name', get_queried_object_id() ) ] ) ) {
+		return 'industry';
+	}
 	if ( $parent && 'solutions' === get_post_field( 'post_name', $parent ) && locate_template( 'page-' . get_post_field( 'post_name', get_queried_object_id() ) . '.php' ) ) {
 		return 'solution';
 	}
@@ -388,6 +393,9 @@ add_filter(
 		}
 		if ( 'case' === $scene ) {
 			return $template;
+		}
+		if ( 'industry' === $scene ) {
+			return locate_template( 'page-industry.php' );
 		}
 		$file = 'home' === $scene ? 'front-page.php' : 'page-' . get_post_field( 'post_name', get_queried_object_id() ) . '.php';
 		$own  = locate_template( $file );
