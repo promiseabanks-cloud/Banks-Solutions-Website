@@ -14,6 +14,8 @@ $b_opts  = $b_ready ? banks_core_brief_options() : array();
 $b_ref   = isset( $_GET['brief'] ) ? sanitize_text_field( wp_unslash( $_GET['brief'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display only.
 $b_ref   = preg_match( '/^BS-\d{6}-\d{4,}$/', $b_ref ) ? $b_ref : '';
 $b_error = isset( $_GET['brief_error'] ) ? sanitize_key( wp_unslash( $_GET['brief_error'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display only.
+// Links from product and solution pages can tick a need in advance: /start/?need=ai.
+$b_need  = isset( $_GET['need'] ) ? array_map( 'sanitize_key', explode( ',', sanitize_text_field( wp_unslash( $_GET['need'] ) ) ) ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display only.
 $b_wa    = 'https://wa.me/' . preg_replace( '/\D/', '', banks_detail( 'whatsapp' ) );
 $b_mail  = banks_detail( 'email' );
 
@@ -88,7 +90,7 @@ $b_step = function ( $n, $title, $hint ) {
 								<?php $b_step( 1, 'What do you need?', 'Pick as many as you like.' ); ?>
 								<div class="st-tiles st-tiles--two" data-need="needs">
 									<?php foreach ( $b_opts['needs'] as $b_k => $b_l ) : ?>
-										<label class="st-tile"><input type="checkbox" name="needs[]" value="<?php echo esc_attr( $b_k ); ?>"><span><?php echo esc_html( $b_l ); ?></span></label>
+										<label class="st-tile"><input type="checkbox" name="needs[]" value="<?php echo esc_attr( $b_k ); ?>"<?php checked( in_array( $b_k, $b_need, true ) ); ?>><span><?php echo esc_html( $b_l ); ?></span></label>
 									<?php endforeach; ?>
 								</div>
 							</fieldset>
