@@ -1,0 +1,22 @@
+/* Homepage */
+.h-hero{position:relative;overflow:hidden;background:var(--b-lagoon);color:var(--b-paper);padding-block:calc(var(--b-header) + 96px) 120px}
+.h-hero__inner{position:relative;z-index:1}
+.h-hero__eyebrow{color:var(--b-foam)}
+.h-hero__title{font-size:clamp(2.8rem,7.4vw,6.6rem);line-height:.98;letter-spacing:-.035em;max-width:13ch;margin-bottom:28px}
+.h-dot{color:var(--b-signal)}
+.h-hero__lede{max-width:52ch;font-size:clamp(1.05rem,1.6vw,1.25rem);color:#CFE0DB;margin-bottom:40px}
+.h-hero__actions{display:flex;flex-wrap:wrap;gap:14px}
+
+/* The flow line: two river banks drawn as the page loads, the brand idea "banks hold the flow" */
+.h-flow{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.h-flow path{fill:none;vector-effect:non-scaling-stroke}
+.h-flow__bank{stroke:rgba(127,214,198,.14);stroke-width:90px}
+.h-flow__line{stroke:var(--b-foam);stroke-width:2px;opacity:.8}
+
+.h-proof{padding-block:72px;border-bottom:1px solid var(--b-line)}
+.h-proof__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px}
+@media (max-width:700px){.h-proof__grid{grid-template-columns:minmax(0,1fr)}}
+.h-stat{display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:4px;border-top:2px solid var(--b-lagoon);padding-top:18px}
+.h-stat__num{font:700 clamp(3rem,6vw,4.6rem)/1 var(--b-head);letter-spacing:-.04em;color:var(--b-lagoon);font-variant-numeric:tabular-nums}
+.h-stat__plus{font:700 clamp(2rem,4vw,3rem)/1 var(--b-head);color:var(--b-signal)}
+.h-stat__label{grid-column:1/-1;font:500 13px/1.4 var(--b-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--b-muted);margin-top:10px}

@@ -1,0 +1,351 @@
+<title>Banks Solutions Website Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a working plan document. Lagoon masthead band, then a sticky contents rail beside a 68ch reading column; Signal yellow is reserved for decisions and actions, as the brand guide says. */
+:root{
+  --lagoon:#0B3B40; --paper:#F4F5F1; --signal:#F5B72E; --ink:#0E1A1B;
+  --current:#16756C; --foam:#7FD6C6; --mist:#5E6E6E; --rule:#D9DEDA;
+  --bg:var(--paper); --fg:var(--ink); --muted:var(--mist); --line:var(--rule);
+  --surface:#FFFFFF; --accent:var(--current); --band:var(--lagoon); --band-fg:#F4F5F1;
+  --tag-bg:#E6EEEA; --signal-ink:#0E1A1B;
+  --display:"Familjen Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --body:"Public Sans", "Segoe UI", Roboto, Arial, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0A1415; --fg:#E7ECE8; --muted:#97A6A3; --line:#21302F; --surface:#0F1E20;
+  --accent:#7FD6C6; --band:#0B3B40; --band-fg:#F4F5F1; --tag-bg:#142B2C; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0A1415; --fg:#E7ECE8; --muted:#97A6A3; --line:#21302F; --surface:#0F1E20;
+  --accent:#7FD6C6; --band:#0B3B40; --band-fg:#F4F5F1; --tag-bg:#142B2C; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.65 var(--body);margin:0;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--signal);outline-offset:2px}
+
+/* Masthead */
+.mast{background:var(--band);color:var(--band-fg)}
+.mast .wrap{padding-block:56px 48px;display:grid;gap:20px}
+.mast .eyebrow{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--foam)}
+.mast h1{font:700 clamp(36px,6vw,64px)/1.02 var(--display);letter-spacing:-.02em;margin:0;text-wrap:balance;max-width:18ch}
+.mast h1 .dot{color:var(--signal)}
+.mast p{margin:0;max-width:62ch;font-size:18px;color:#CFDCD8}
+.meta{display:flex;flex-wrap:wrap;gap:8px 24px;font:400 13px/1.4 var(--mono);color:#A9C4BE}
+
+/* Body grid */
+.grid{display:grid;grid-template-columns:220px minmax(0,1fr);gap:56px;padding-block:48px 96px}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr);gap:24px}.toc{position:static!important}}
+.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);align-self:start;font:400 13px/1.5 var(--mono)}
+.toc ol{list-style:none;margin:0;padding:0;display:grid;gap:6px;counter-reset:t}
+.toc li{counter-increment:t}
+.toc a{color:var(--muted);text-decoration:none;display:flex;gap:10px}
+.toc a::before{content:counter(t,decimal-leading-zero);color:var(--accent)}
+.toc a:hover{color:var(--fg)}
+@media (max-width:900px){.toc ol{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}}
+
+main{min-width:0}
+section{padding-block:8px 40px;border-bottom:1px solid var(--line);margin-bottom:40px}
+section:last-child{border-bottom:0}
+.kicker{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
+h2{font:700 clamp(26px,3.4vw,36px)/1.1 var(--display);letter-spacing:-.015em;margin:0 0 16px;text-wrap:balance}
+h3{font:600 20px/1.25 var(--display);margin:32px 0 8px;letter-spacing:-.005em}
+p,ul,ol{max-width:68ch}
+p{margin:0 0 14px}
+ul.clean{padding-left:20px;margin:0 0 14px}
+ul.clean li{margin-bottom:6px}
+.lead{font-size:18px}
+code,.mono{font-family:var(--mono);font-size:.9em}
+
+/* Callouts */
+.decide{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--signal);padding:16px 20px;margin:20px 0;max-width:68ch;border-radius:2px}
+.decide b{display:block;font:600 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.found{background:var(--tag-bg);padding:16px 20px;margin:20px 0;max-width:68ch;border-radius:2px}
+.found b{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:6px}
+
+/* Tables */
+.tbl{overflow-x:auto;margin:16px 0 20px;border:1px solid var(--line);border-radius:2px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:560px}
+th,td{text-align:left;vertical-align:top;padding:11px 14px;border-bottom:1px solid var(--line)}
+th{font:500 11.5px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600;white-space:nowrap}
+
+/* Architecture diagram */
+.arch{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:20px 0}
+@media (max-width:700px){.arch{grid-template-columns:minmax(0,1fr)}}
+.node{background:var(--surface);border:1px solid var(--line);padding:16px;border-radius:2px;min-width:0}
+.node h4{font:600 16px/1.2 var(--display);margin:0 0 4px}
+.node .host{font:400 12px/1.3 var(--mono);color:var(--accent);margin-bottom:10px;display:block;overflow-wrap:anywhere}
+.node ul{margin:0;padding-left:18px;font-size:14px}
+.node.wide{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:4px 24px;background:var(--tag-bg)}
+.node.wide h4,.node.wide .host{grid-column:1/-1}
+
+/* Journey */
+.journey{list-style:none;padding:0;margin:20px 0;display:grid;gap:0;max-width:72ch;counter-reset:j}
+.journey li{counter-increment:j;display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;padding:12px 0;border-top:1px solid var(--line)}
+.journey li::before{content:counter(j);font:600 15px/44px var(--display);text-align:center;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent)}
+.journey strong{display:block;font-family:var(--display);font-size:17px}
+.journey span{color:var(--muted);font-size:15px}
+
+/* Feature cards */
+.feats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:20px 0}
+@media (max-width:700px){.feats{grid-template-columns:minmax(0,1fr)}}
+.feat{border-top:2px solid var(--accent);padding:14px 0 6px}
+.feat h4{font:600 17px/1.25 var(--display);margin:0 0 6px}
+.feat p{font-size:15px;margin:0;color:var(--fg)}
+.feat .tag{font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+
+/* Phases */
+.phases{display:grid;gap:10px;margin:20px 0}
+.phase{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;padding:14px 0;border-top:1px solid var(--line)}
+@media (max-width:600px){.phase{grid-template-columns:minmax(0,1fr);gap:4px}}
+.phase .when{font:500 13px/1.4 var(--mono);color:var(--accent)}
+.phase h4{font:600 17px/1.25 var(--display);margin:0 0 4px}
+.phase p{margin:0;font-size:15px;color:var(--muted)}
+
+.qs{counter-reset:q;list-style:none;padding:0;max-width:70ch}
+.qs li{counter-increment:q;padding:14px 0 14px 44px;position:relative;border-top:1px solid var(--line)}
+.qs li::before{content:counter(q);position:absolute;left:0;top:12px;width:28px;height:28px;border-radius:50%;background:var(--signal);color:var(--signal-ink);font:600 14px/28px var(--display);text-align:center}
+.qs strong{font-family:var(--display);font-size:17px}
+.foot{font:400 13px/1.5 var(--mono);color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="eyebrow">Website rebuild · Plan for review · v0.1</div>
+    <h1>The new bankssolution.ng<span class="dot">.</span></h1>
+    <p>A custom-coded site with GSAP motion, a client portal where projects are onboarded, paid for and tracked, a retainer desk, a shop for our themes and plugins, and a developer page. Nothing on the live site is lost on the way.</p>
+    <div class="meta"><span>Prepared 28 Oct 2026</span><span>For Promise Banks</span><span>Status: planning, no code yet</span></div>
+  </div>
+</header>
+
+<div class="wrap grid">
+  <nav class="toc" aria-label="Contents">
+    <ol>
+      <li><a href="#summary">The short version</a></li>
+      <li><a href="#preserve">Preserve first</a></li>
+      <li><a href="#architecture">How it's built</a></li>
+      <li><a href="#site">The public site</a></li>
+      <li><a href="#portal">Client portal</a></li>
+      <li><a href="#retainer">Retainer desk</a></li>
+      <li><a href="#shop">Shop</a></li>
+      <li><a href="#labs">Developer page</a></li>
+      <li><a href="#standout">Standout features</a></li>
+      <li><a href="#phases">Phases</a></li>
+      <li><a href="#decisions">Your calls</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <section id="summary">
+      <p class="kicker">01 · The short version</p>
+      <h2>Copy the 1904 Solutions recipe, then add a business on top</h2>
+      <p class="lead">I looked inside the 1904 Solutions build to see exactly how we did it. It is a hand-coded WordPress theme with one template per page and a shared motion layer (GSAP, ScrollTrigger and Lenis smooth scroll), plus a separate "1904 Core" plugin that holds the customer app, wallet and Paystack payments. Elementor is still installed there but only one page uses it.</p>
+      <p>We do the same here, in two pieces:</p>
+      <ul class="clean">
+        <li><strong>The Banks theme</strong> draws everything people see: pages, motion, micro-interactions. It holds no business data, so it can be redesigned later without touching clients' projects.</li>
+        <li><strong>The Banks Core plugin</strong> runs the business: onboarding, the portal, file uploads, progress tracking, invoices and payments, the retainer desk and product licences.</li>
+      </ul>
+      <p>Banks Business Engine stays what it already is, its own plugin, and plugs into both.</p>
+      <div class="found"><b>What I found on the live site</b>
+        At least 38 published articles (served under Knowledge), a Glossary of 30 terms stored as its own content type, 12 or so service and info pages, Rank Math SEO data, WPForms and Elementor form entries, and Banks Business Engine running as a plugin with its own leads, customers, bookings, automations and licensing data. That list is the preservation checklist in the next section.</div>
+    </section>
+
+    <section id="preserve">
+      <p class="kicker">02 · Preserve first</p>
+      <h2>Nothing gets deleted until we've proved we can restore it</h2>
+      <p>The live site keeps running the whole time. We build on a staging copy and switch over in one move at the end, so visitors and Google never see a half-built site.</p>
+      <h3>Step by step</h3>
+      <div class="tbl"><table>
+        <thead><tr><th>Step</th><th>What happens</th><th>Where it goes</th></tr></thead>
+        <tbody>
+          <tr><td>Full snapshot</td><td>Complete files and database backup of the live site, taken before any change.</td><td>Off-site cloud storage (two copies: an object-storage bucket and Google Drive), plus the host's own backup.</td></tr>
+          <tr><td>Restore test</td><td>Restore that snapshot onto a throwaway staging site and click through it. A backup we haven't restored is a guess.</td><td>staging.bankssolution.ng (password protected, hidden from Google)</td></tr>
+          <tr><td>Content archive</td><td>Every article, glossary term and page exported three ways: WordPress export file, a raw JSON copy from the site's API, and readable Markdown files with their images.</td><td>The project's Git repository, so every word is versioned and searchable forever.</td></tr>
+          <tr><td>SEO map</td><td>Every live URL, its Rank Math title, description and schema, and its current Google ranking pages.</td><td>A spreadsheet that becomes the redirect plan. Every old URL either survives as-is or gets a 301 to its new home.</td></tr>
+          <tr><td>Banks Business Engine</td><td>Export its database tables (leads, customers, bookings, automations, licences) and settings, and note where Elementor currently embeds its chat on the homepage.</td><td>Same backup set, with its encrypted API keys left encrypted.</td></tr>
+          <tr><td>Form entries</td><td>Download every past WPForms and Elementor form submission so no enquiry history is lost when Elementor's role shrinks.</td><td>CSV in the archive; imported into Engine leads where useful.</td></tr>
+        </tbody>
+      </table></div>
+      <h3>Keeping Banks Business Engine alive</h3>
+      <p>Because the Engine is a plugin and not part of the current theme, swapping themes doesn't remove it or its data. The only part tied to Elementor is how the chat box is placed on the homepage. In the new theme we rebuild that placement as a native component, so the hero demo ("Try it now") and the site-wide concierge both call the same Engine underneath. Its dashboard stays where it is in wp-admin.</p>
+    </section>
+
+    <section id="architecture">
+      <p class="kicker">03 · How it's built</p>
+      <h2>One WordPress install, three front doors</h2>
+      <p>1904 Solutions runs its customer app and staff app on their own subdomains of one WordPress network. I recommend the same shape here, because a client typing <span class="mono">portal.bankssolution.ng</span> feels like a product, not a page on a marketing site.</p>
+      <div class="arch" role="list">
+        <div class="node" role="listitem"><h4>Public site</h4><span class="host">bankssolution.ng</span>
+          <ul><li>Banks theme + motion layer</li><li>Services, work, knowledge, glossary</li><li>Shop and developer page</li><li>Engine concierge chat</li></ul></div>
+        <div class="node" role="listitem"><h4>Client portal</h4><span class="host">portal.bankssolution.ng</span>
+          <ul><li>Onboarding, uploads, tracking</li><li>Invoices and payments</li><li>Retainer desk</li><li>Installable app (PWA)</li></ul></div>
+        <div class="node" role="listitem"><h4>Team view</h4><span class="host">portal.bankssolution.ng/team</span>
+          <ul><li>All clients and projects</li><li>Update progress, post previews</li><li>Raise invoices, answer tickets</li><li>Same login, staff role</li></ul></div>
+        <div class="node wide" role="listitem"><h4>Shared underneath</h4><span class="host">Banks Core plugin · Banks Business Engine · Paystack · cloud file storage</span>
+          <ul><li>Clients, projects, milestones, invoices as structured WordPress data</li><li>Big uploads go straight to cloud storage, never through the web server</li></ul>
+          <ul><li>Email and WhatsApp notifications</li><li>Engine leads become portal clients in one click</li></ul></div>
+      </div>
+      <h3>The motion layer</h3>
+      <p>The 1904 layer already has smooth scroll, a header that gathers into a floating island, a page-transition curtain, a custom cursor, magnetic buttons and scroll reveals. We bring that over and push further. GSAP's bonus plugins became free in 2025, so SplitText (letter-by-letter type), Flip (layout morphs), MorphSVG and DrawSVG are all on the table at no licence cost.</p>
+      <ul class="clean">
+        <li>Motion is set up with HTML attributes such as <span class="mono">data-reveal</span> and <span class="mono">data-magnetic</span>, so any new page gets the effects without new code.</li>
+        <li>Easing and timing live as brand tokens next to the colours, so every animation feels like one family.</li>
+        <li>Anyone with "reduce motion" switched on gets the calm version. Phones with weak hardware get lighter effects.</li>
+        <li><strong>Speed budget:</strong> the page is usable in under 2.5 seconds on a mid-range Android on 4G in Lagos, and the motion scripts load after the content. Badass is no good if it's slow on the phones our clients' customers use.</li>
+      </ul>
+      <div class="decide"><b>Your call: where Elementor fits</b>
+        You said Elementor is still an important concept. My recommendation: every core page is coded in the theme (that's where the crazy motion lives), and Elementor stays installed with a blank "Canvas" template so the team can spin up a campaign landing page in an afternoon without a developer. Blog articles move to the normal WordPress editor, which the theme styles automatically.</div>
+    </section>
+
+    <section id="site">
+      <p class="kicker">04 · The public site</p>
+      <h2>Lead with "we build for any business", not one product</h2>
+      <p>The new map, with Banks Business Engine as one product among others:</p>
+      <div class="tbl"><table>
+        <thead><tr><th>Section</th><th>Pages</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Home</td><td>One page</td><td>Hero with live Engine demo, what we build, proof (9.0 rating, 7+ brands), work, how we work</td></tr>
+          <tr><td>Solutions</td><td>Websites · Web apps · Custom plugins · WordPress themes &amp; plugins · Automation &amp; CRM · AI · Managed technology · AEO</td><td>Each one a coded template with its own signature interaction</td></tr>
+          <tr><td>Products</td><td>Banks Business Engine · Shop</td><td>Engine gets its own product page and demo</td></tr>
+          <tr><td>Work</td><td>Index + one scroll story per case study</td><td>Before/after sliders, real numbers</td></tr>
+          <tr><td>Knowledge</td><td>All existing articles + Glossary</td><td>Same URLs kept; reading progress, related posts, Ask-the-article</td></tr>
+          <tr><td>Labs</td><td>Developer page, product docs, changelogs</td><td>See section 08</td></tr>
+          <tr><td>Company</td><td>About · Pricing · Contact / Start a project</td><td>Start a project feeds straight into onboarding</td></tr>
+          <tr><td>Portal</td><td>Client login</td><td>Always visible in the header</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="portal">
+      <p class="kicker">05 · Client portal</p>
+      <h2>From "yes" to launch without a single WhatsApp file dump</h2>
+      <p>The path a new client walks, start to finish. Steps 1 to 4 can run without anyone on the team lifting a finger, and the team can also create a portal by hand for clients who come in by referral.</p>
+      <ol class="journey">
+        <li><div><strong>Accept the proposal</strong><span>The client opens a proposal link, picks a payment plan and signs the agreement on screen.</span></div></li>
+        <li><div><strong>Pay the deposit</strong><span>Card, bank transfer or USSD through Paystack. Payment confirmed means the portal builds itself.</span></div></li>
+        <li><div><strong>Portal is created</strong><span>Account, project, milestones and an upload checklist are generated from the service they bought. Login link arrives by email and WhatsApp.</span></div></li>
+        <li><div><strong>Onboarding questionnaire</strong><span>Business, audience, competitors, sites they like, logins we'll need. Saved as they go, so they can finish it later.</span></div></li>
+        <li><div><strong>Upload everything</strong><span>Guided folders for logo, brand files, copy, photos, videos and documents, with a "still needed" list that ticks itself off.</span></div></li>
+        <li><div><strong>Kickoff call</strong><span>Booked from inside the portal, using the Engine's bookings.</span></div></li>
+        <li><div><strong>Watch it being built</strong><span>Live progress, preview links, approvals at each milestone.</span></div></li>
+        <li><div><strong>Pay the balance and launch</strong><span>Final invoice unlocks the handover pack: logins, training videos and files.</span></div></li>
+      </ol>
+      <h3>The file vault</h3>
+      <ul class="clean">
+        <li><strong>Structured, not a dumping ground:</strong> Brand (logos, fonts, colours), Content (page copy, product lists), Media (photos, videos), Documents (CAC, policies), Access (logins).</li>
+        <li><strong>Big files welcome:</strong> uploads go directly to cloud storage in resumable pieces, so a 2 GB video survives a network drop and the website itself never slows down. Clients can also paste a Google Drive or Dropbox link.</li>
+        <li><strong>Logins stored safely:</strong> passwords go in an encrypted field (the same AES-256-GCM approach the Engine uses for API keys), shown only to assigned team members, and every view is logged.</li>
+        <li>Every file shows who uploaded it and when, has comments, and keeps old versions.</li>
+      </ul>
+      <h3>Progress tracking</h3>
+      <ul class="clean">
+        <li>A timeline of phases (Discovery, Design, Build, Content, Review, Launch) with a percentage and the date each one is due.</li>
+        <li>Each milestone has a preview link and an <strong>Approve</strong> button. Approval is recorded with a timestamp, which also ends "I never agreed to that" arguments.</li>
+        <li>Feedback can be pinned onto a screenshot of the exact spot on the page.</li>
+        <li>An activity feed of what the team did today, plus a "waiting on you" box when the client is the blocker.</li>
+      </ul>
+      <h3>Payments</h3>
+      <div class="tbl"><table>
+        <thead><tr><th>Plan</th><th>How it splits</th><th>Typical use</th></tr></thead>
+        <tbody>
+          <tr><td>Full</td><td>100% upfront, with an optional discount</td><td>Smaller websites</td></tr>
+          <tr><td>Half</td><td>50% to start, 50% before launch</td><td>Most website projects</td></tr>
+          <tr><td>Milestones</td><td>e.g. 40% / 30% / 30% tied to approvals</td><td>Web apps, custom plugins, automation</td></tr>
+          <tr><td>Monthly</td><td>Recurring charge</td><td>Retainers, managed technology</td></tr>
+        </tbody>
+      </table></div>
+      <p>Paystack handles cards, transfers and USSD, the same gateway that's already working on 1904. Each client can get their own <strong>dedicated bank account number</strong> through Paystack, so a bank transfer is matched to the right invoice automatically instead of someone checking alerts. Invoices and receipts are generated as PDFs in ₦ (or USD/GBP for clients abroad), with reminders before and after the due date.</p>
+    </section>
+
+    <section id="retainer">
+      <p class="kicker">06 · Retainer desk</p>
+      <h2>Yes, build it, as a mode of the same portal</h2>
+      <p>You asked me to judge this one. A retainer desk is worth it: it turns "Managed Technology from ₦150k a month" from a promise into something clients can see working, and it stops support requests arriving scattered across WhatsApp, calls and email. But it should not be a separate system. When a project launches and the client signs a retainer, their portal simply switches on a Support tab. One login, one history.</p>
+      <ul class="clean">
+        <li><strong>Raise a request</strong> by type (something broke, content update, new feature, question), with screenshots or a screen recording attached.</li>
+        <li><strong>Response clock</strong> by plan, shown openly: "We'll respond within 4 working hours". The team view flags anything close to breaching.</li>
+        <li><strong>Hours or credits used</strong> this month against the plan, so extra work becomes a quote, not a surprise.</li>
+        <li><strong>Site health panel:</strong> uptime, last backup, plugin updates applied, speed score. Proof of what they're paying for, every day.</li>
+        <li><strong>Monthly report</strong> sent automatically: what we fixed, what we improved, what we recommend next. That last line is where upsells come from.</li>
+      </ul>
+    </section>
+
+    <section id="shop">
+      <p class="kicker">07 · Shop</p>
+      <h2>Sell themes and plugins with real licence keys</h2>
+      <p>Selling software is different from selling shirts. Buyers need a licence key, automatic updates inside their own WordPress, renewals, and limits on how many sites a key covers. The Engine already has licensing built in, so this is familiar ground.</p>
+      <div class="decide"><b>Your call: which engine runs the shop</b>
+        My recommendation is <strong>Easy Digital Downloads with its Software Licensing add-on</strong>, styled entirely by our theme and charging through Paystack. It was made for exactly this (keys, updates, renewals, site limits) and is lighter than WooCommerce, which is built for physical stock. WooCommerce is the alternative if you ever expect to sell physical products too.</div>
+      <ul class="clean">
+        <li>Product pages with a live demo site, changelog, requirements and screenshots.</li>
+        <li>Buyers' licences, downloads and renewals sit in the same portal as project clients, under a Licences tab.</li>
+        <li>Pricing in ₦ for Nigerian buyers and USD for everyone else.</li>
+        <li>Free versions can go on WordPress.org and point back to the shop for Pro.</li>
+      </ul>
+    </section>
+
+    <section id="labs">
+      <p class="kicker">08 · Developer page</p>
+      <h2>Banks Labs: the page our plugins link home to</h2>
+      <p>Every theme and plugin we ship has an "Author URI" and "Plugin URI". Those point to <span class="mono">bankssolution.ng/labs</span>, which does three jobs:</p>
+      <ul class="clean">
+        <li><strong>Shows the catalogue:</strong> every theme and plugin, free and paid, with version, last update and active installs.</li>
+        <li><strong>Supports users:</strong> documentation, changelogs, a known-issues list and a support form that lands in the retainer desk queue.</li>
+        <li><strong>Sells custom development:</strong> "Need a plugin built for your business?" with examples like the 1904 car-wash system and the Engine, leading into the Start a project flow.</li>
+      </ul>
+      <p>This page is also where developers and other agencies judge us, so it's the right place for a public build log and code-quality badges.</p>
+    </section>
+
+    <section id="standout">
+      <p class="kicker">09 · Standout features</p>
+      <h2>Ideas that make the site one of a kind</h2>
+      <p>Ranked roughly by impact for the effort. None of these block launch; we pick which ones go in phase 1.</p>
+      <div class="feats">
+        <div class="feat"><span class="tag">Signature motion</span><h4>The flow line</h4><p>The brand idea is "banks hold the flow". A single Lagoon river line runs down the whole homepage, drawn as you scroll, bending around sections and channelling into the Start a project button. The yellow Signal dot is the cursor.</p></div>
+        <div class="feat"><span class="tag">Lead generation</span><h4>Instant project estimator</h4><p>Pick what you need, answer five questions, and get an honest ₦ range on the spot. It creates a qualified lead in the Engine and can turn into a proposal with one click.</p></div>
+        <div class="feat"><span class="tag">Lead generation</span><h4>Free site X-ray</h4><p>Paste your website address and see its speed, SEO and AI-search (AEO) health with plain-English fixes. Upgrades the current audit page into a tool people share.</p></div>
+        <div class="feat"><span class="tag">Trust</span><h4>Live build room</h4><p>In the portal, the client's staging site appears inside phone and laptop frames that update as we push work, with a slider to scrub back through earlier versions.</p></div>
+        <div class="feat"><span class="tag">AI</span><h4>Engine as concierge</h4><p>The Engine answers on every page with voice, knows our services and prices, books calls, and in the portal answers "where's my project at?" from real data.</p></div>
+        <div class="feat"><span class="tag">AI</span><h4>Smart onboarding</h4><p>Clients drop messy files in one go. AI sorts them into the right folders, pulls brand colours from the logo, and drafts a sitemap from their questionnaire for us to refine.</p></div>
+        <div class="feat"><span class="tag">Credibility</span><h4>Speed receipt</h4><p>A small footer note on every page: "This page loaded in 0.8s and weighed 410 KB". It proves the speed claim to every visitor on Nigerian networks.</p></div>
+        <div class="feat"><span class="tag">Credibility</span><h4>Live rating</h4><p>Clients rate each approved milestone. The 9.0 score on the homepage is calculated from those ratings, with the count shown, instead of being a typed-in number.</p></div>
+        <div class="feat"><span class="tag">Delight</span><h4>Command menu</h4><p>Press Ctrl/⌘ K anywhere on the site or portal to jump to a page, search articles, or ask the Engine.</p></div>
+        <div class="feat"><span class="tag">Delight</span><h4>Case studies as scroll stories</h4><p>Each project told as a short film: the old site, the problem, the build, the result, with numbers counting up as you reach them.</p></div>
+      </div>
+    </section>
+
+    <section id="phases">
+      <p class="kicker">10 · Phases</p>
+      <h2>Ship in order, live site safe throughout</h2>
+      <p>Week counts are estimates for planning, not promises; they firm up once you've signed off this plan.</p>
+      <div class="phases">
+        <div class="phase"><div class="when">Week 1</div><div><h4>Preserve</h4><p>Backups, restore test, content archive, SEO map, staging site, code repository.</p></div></div>
+        <div class="phase"><div class="when">Weeks 2–6</div><div><h4>Theme and public site</h4><p>Motion layer, homepage, solutions pages, knowledge and glossary migrated, Engine embedded natively. Ends with the switchover and redirects.</p></div></div>
+        <div class="phase"><div class="when">Weeks 6–10</div><div><h4>Portal, first version</h4><p>Onboarding, file vault, progress tracking, Paystack invoices and payments, team view.</p></div></div>
+        <div class="phase"><div class="when">Weeks 10–12</div><div><h4>Retainer desk</h4><p>Support requests, response clock, hours used, site health, monthly report.</p></div></div>
+        <div class="phase"><div class="when">Weeks 12–14</div><div><h4>Shop and Labs</h4><p>Licensed sales, product pages, developer page, docs.</p></div></div>
+        <div class="phase"><div class="when">Ongoing</div><div><h4>Standout features</h4><p>Estimator and site X-ray first, since they bring in leads; the rest as we go.</p></div></div>
+      </div>
+    </section>
+
+    <section id="decisions">
+      <p class="kicker">11 · Your calls</p>
+      <h2>What I need from you to start</h2>
+      <ol class="qs">
+        <li><strong>Approve or change this plan.</strong> Comment on anything that's off, especially the feature ranking.</li>
+        <li><strong>A GitHub repository.</strong> Please create an empty private repo (for example <span class="mono">banks-solutions-site</span>) and tell me its name. The theme, Core plugin and content archive all live there.</li>
+        <li><strong>Hosting access for the backup.</strong> Which host is bankssolution.ng on, and can I get a staging site there? The site connector for bankssolution.ng also needs reconnecting on your side.</li>
+        <li><strong>Portal address.</strong> portal.bankssolution.ng (my recommendation) or bankssolution.ng/portal.</li>
+        <li><strong>Elementor's role</strong> and <strong>the shop engine</strong>, as set out in sections 03 and 07.</li>
+      </ol>
+      <p class="foot">Sources: live site and its public API, read 28 Oct 2026; 1904 Solutions theme and plugin files, read 28 Oct 2026; Banks Solutions brand guide v1.0.</p>
+    </section>
+  </main>
+</div>

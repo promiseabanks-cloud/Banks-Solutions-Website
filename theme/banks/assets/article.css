@@ -1,0 +1,20 @@
+/* Knowledge articles and plain pages: long-form reading, also loaded in the block editor */
+.b-prose{max-width:68ch;font-size:18px;line-height:1.7}
+.b-prose h2{font-size:clamp(1.6rem,2.6vw,2.1rem);margin:2em 0 .5em}
+.b-prose h3{margin:1.6em 0 .4em}
+.b-prose a{color:var(--b-current,#16756C);text-underline-offset:3px;text-decoration-thickness:1px}
+.b-prose ul,.b-prose ol{padding-left:1.3em}
+.b-prose li{margin-bottom:.4em}
+.b-prose blockquote{margin:1.6em 0;padding:4px 0 4px 22px;border-left:3px solid var(--b-current,#16756C);font-size:1.1em}
+.b-prose img,.b-prose figure{border-radius:4px;margin:1.6em 0}
+.b-prose table{width:100%;border-collapse:collapse;font-size:15.5px;display:block;overflow-x:auto}
+.b-prose th,.b-prose td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--b-rule,#D9DEDA)}
+.b-prose code{font-family:var(--b-mono,monospace);font-size:.88em;background:rgba(11,59,64,.06);padding:2px 5px;border-radius:3px}
+.b-article__head{padding-block:72px 40px}
+.b-article__back{font:500 12.5px/1 var(--b-mono,monospace);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--b-current,#16756C)}
+.b-article__back::before{content:"← "}
+.b-article__title{max-width:22ch;margin:20px 0 18px}
+.b-article__meta{font:400 13.5px/1.4 var(--b-mono,monospace);color:var(--b-mist,#5E6E6E)}
+.b-article .b-prose{padding-bottom:96px}
+.b-progress{position:fixed;left:0;right:0;top:0;height:3px;z-index:60;pointer-events:none}
+.b-progress span{display:block;height:100%;background:var(--b-signal,#F5B72E);transform-origin:left;transform:scaleX(0)}
