@@ -191,3 +191,17 @@ function banks_is_elementor_page( $id = null ) {
 	$doc = \Elementor\Plugin::$instance->documents->get( $id );
 	return $doc && $doc->is_built_with_elementor();
 }
+
+/**
+ * The old site's Elementor Pro theme-builder templates (header, footer, article single,
+ * glossary single) would otherwise replace this theme's templates. Elementor stays for
+ * page content and Canvas campaign pages only.
+ */
+add_filter(
+	'elementor/theme/get_location_templates/template_id',
+	function ( $template_id, $location ) {
+		return in_array( $location, array( 'header', 'footer', 'single', 'archive' ), true ) ? 0 : $template_id;
+	},
+	10,
+	2
+);
