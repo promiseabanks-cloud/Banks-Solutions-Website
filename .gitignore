@@ -1,0 +1,14 @@
+# Never commit site backups, database dumps or secrets
+backups/
+*.sql
+*.sql.gz
+*.wpress
+*.zip
+.env
+.env.*
+wp-config.php
+
+# Tooling
+node_modules/
+.DS_Store
+*.log
