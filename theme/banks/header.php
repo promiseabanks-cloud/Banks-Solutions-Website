@@ -23,8 +23,8 @@ $b_site = banks_site();
 				banks_default_nav();
 			}
 			?>
-			<a class="b-nav__portal" href="<?php echo esc_url( banks_portal_url( '/' ) ); ?>">Client portal</a>
-			<a class="b-btn b-btn--signal" href="<?php echo esc_url( banks_main_url( '/start/' ) ); ?>" data-magnetic>Start a project</a>
+			<?php if ( banks_has_portal() ) : ?><a class="b-nav__portal" href="<?php echo esc_url( banks_portal_url( '/' ) ); ?>">Client portal</a><?php endif; ?>
+			<a class="b-btn b-btn--signal" href="<?php echo esc_url( banks_route( '/start/', '/contact/' ) ); ?>" data-magnetic>Start a project</a>
 		</nav>
 	</div>
 </header>

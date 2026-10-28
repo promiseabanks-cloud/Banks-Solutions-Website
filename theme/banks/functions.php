@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.1.0' );
+define( 'BANKS_VERSION', '0.1.1' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
@@ -35,6 +35,7 @@ add_action(
 		if ( is_singular( array( 'post', 'glossary' ) ) || ( is_page() && ! banks_is_elementor_page() ) ) {
 			wp_enqueue_style( 'banks-article', $uri . 'article.css', array( 'banks' ), BANKS_VERSION );
 		}
+		banks_legacy_styles();
 		if ( 'main' !== banks_site() ) {
 			return;
 		}
@@ -122,6 +123,31 @@ function banks_main_url( $path = '/' ) {
 	return is_multisite() ? get_home_url( get_main_site_id(), $path ) : home_url( $path );
 }
 
+/**
+ * Link to a main-site page that may not be built yet. Until the page exists the link
+ * goes to $fallback, or is dropped when there is none, so the menus never lead to a 404.
+ */
+function banks_route( $path, $fallback = '' ) {
+	$slug = trim( $path, '/' );
+	if ( '' === $slug || 'main' !== banks_site() || get_page_by_path( $slug ) ) {
+		return banks_main_url( $path );
+	}
+	return $fallback ? banks_main_url( $fallback ) : '';
+}
+
+/** One menu item through banks_route(); prints nothing when the page has no stand-in yet. */
+function banks_nav_item( $path, $label, $fallback = '' ) {
+	$url = banks_route( $path, $fallback );
+	if ( $url ) {
+		echo '<li><a href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a></li>';
+	}
+}
+
+/** The portal links stay hidden until the portal site (or a /portal/ page) exists. */
+function banks_has_portal() {
+	return defined( 'BANKS_PORTAL_DOMAIN' ) || 'main' !== banks_site() || get_page_by_path( 'portal' );
+}
+
 function banks_portal_url( $path = '/' ) {
 	return defined( 'BANKS_PORTAL_DOMAIN' ) ? 'https://' . BANKS_PORTAL_DOMAIN . $path : banks_main_url( '/portal' . $path );
 }
@@ -168,18 +194,36 @@ function banks_brand( $variant = 'lagoon' ) {
 
 /** Fallback header links until a menu is assigned. */
 function banks_default_nav() {
-	$links = array(
-		'/solutions/' => 'Solutions',
-		'/work/'      => 'Work',
-		'/knowledge/' => 'Knowledge',
-		'/labs/'      => 'Labs',
-		'/about/'     => 'About',
-	);
 	echo '<ul class="b-nav__list">';
-	foreach ( $links as $p => $l ) {
-		echo '<li><a href="' . esc_url( banks_main_url( $p ) ) . '">' . esc_html( $l ) . '</a></li>';
-	}
+	banks_nav_item( '/solutions/', 'Solutions', '/services/' );
+	banks_nav_item( '/work/', 'Work' );
+	banks_nav_item( '/knowledge/', 'Knowledge' );
+	banks_nav_item( '/labs/', 'Labs' );
+	banks_nav_item( '/about/', 'About' );
 	echo '</ul>';
+}
+
+/**
+ * Transition only: the old Elementor pages were styled by Baseplate (its base.css plus
+ * the "baseplate" Customizer CSS), not by Elementor alone. Load that on those pages until
+ * each one is rebuilt as a theme template, then delete this function.
+ */
+function banks_legacy_styles() {
+	if ( is_front_page() || ! is_page() || ! banks_is_elementor_page() ) {
+		return;
+	}
+	$dir = get_theme_root() . '/baseplate/assets/css/';
+	$uri = get_theme_root_uri() . '/baseplate/assets/css/';
+	if ( file_exists( $dir . 'base.css' ) ) {
+		wp_enqueue_style( 'baseplate-fonts', $uri . 'fonts.css', array(), (string) filemtime( $dir . 'fonts.css' ) );
+		wp_enqueue_style( 'baseplate', $uri . 'base.css', array( 'baseplate-fonts', 'banks' ), (string) filemtime( $dir . 'base.css' ) );
+	}
+	$css = wp_get_custom_css( 'baseplate' );
+	if ( $css ) {
+		wp_register_style( 'baseplate-custom', false, array( 'banks' ), BANKS_VERSION );
+		wp_enqueue_style( 'baseplate-custom' );
+		wp_add_inline_style( 'baseplate-custom', wp_strip_all_tags( $css ) );
+	}
 }
 
 /** True when Elementor owns this page's layout (Canvas template or an Elementor-built page). */

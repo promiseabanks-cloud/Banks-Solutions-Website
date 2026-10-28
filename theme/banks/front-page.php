@@ -15,7 +15,7 @@ get_header();
 		<h1 class="h-hero__title" data-split-hero>Your website should do more than look good<span class="h-dot">.</span></h1>
 		<p class="h-hero__lede">We build the digital systems that bring in the right customers, turn more enquiries into sales and take repetitive work off your hands, for businesses in any field.</p>
 		<div class="h-hero__actions">
-			<a class="b-btn b-btn--signal b-btn--lg" href="<?php echo esc_url( banks_main_url( '/start/' ) ); ?>" data-magnetic>Start a project</a>
+			<a class="b-btn b-btn--signal b-btn--lg" href="<?php echo esc_url( banks_route( '/start/', '/contact/' ) ); ?>" data-magnetic>Start a project</a>
 			<a class="b-btn b-btn--line b-btn--lg" href="#h-proof">See the work</a>
 		</div>
 	</div>

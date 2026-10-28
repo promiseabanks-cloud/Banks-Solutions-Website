@@ -8,18 +8,18 @@
 		<div>
 			<h2 class="b-footer__title">Build</h2>
 			<ul class="b-footer__list">
-				<li><a href="<?php echo esc_url( banks_main_url( '/solutions/' ) ); ?>">Solutions</a></li>
-				<li><a href="<?php echo esc_url( banks_main_url( '/work/' ) ); ?>">Work</a></li>
-				<li><a href="<?php echo esc_url( banks_main_url( '/banks-business-engine/' ) ); ?>">Banks Business Engine</a></li>
-				<li><a href="<?php echo esc_url( banks_main_url( '/shop/' ) ); ?>">Shop</a></li>
+				<?php banks_nav_item( '/solutions/', 'Solutions', '/services/' ); ?>
+				<?php banks_nav_item( '/work/', 'Work' ); ?>
+				<?php banks_nav_item( '/banks-business-engine/', 'Banks Business Engine' ); ?>
+				<?php banks_nav_item( '/shop/', 'Shop' ); ?>
 			</ul>
 		</div>
 		<div>
 			<h2 class="b-footer__title">Learn</h2>
 			<ul class="b-footer__list">
-				<li><a href="<?php echo esc_url( banks_main_url( '/knowledge/' ) ); ?>">Knowledge</a></li>
-				<li><a href="<?php echo esc_url( banks_main_url( '/glossary/' ) ); ?>">Glossary</a></li>
-				<li><a href="<?php echo esc_url( banks_main_url( '/labs/' ) ); ?>">Labs</a></li>
+				<?php banks_nav_item( '/knowledge/', 'Knowledge' ); ?>
+				<?php banks_nav_item( '/glossary/', 'Glossary' ); ?>
+				<?php banks_nav_item( '/labs/', 'Labs' ); ?>
 			</ul>
 		</div>
 		<div>
@@ -29,7 +29,7 @@
 				<?php if ( banks_detail( 'whatsapp' ) ) : ?><li><a href="https://wa.me/<?php echo esc_attr( preg_replace( '/\D/', '', banks_detail( 'whatsapp' ) ) ); ?>">WhatsApp us</a></li><?php endif; ?>
 				<?php if ( banks_detail( 'instagram' ) ) : ?><li><a href="<?php echo esc_url( banks_detail( 'instagram' ) ); ?>" rel="noopener" target="_blank">Instagram</a></li><?php endif; ?>
 				<?php if ( banks_detail( 'linkedin' ) ) : ?><li><a href="<?php echo esc_url( banks_detail( 'linkedin' ) ); ?>" rel="noopener" target="_blank">LinkedIn</a></li><?php endif; ?>
-				<li><a href="<?php echo esc_url( banks_portal_url( '/' ) ); ?>">Client portal</a></li>
+				<?php if ( banks_has_portal() ) : ?><li><a href="<?php echo esc_url( banks_portal_url( '/' ) ); ?>">Client portal</a></li><?php endif; ?>
 			</ul>
 		</div>
 	</div>

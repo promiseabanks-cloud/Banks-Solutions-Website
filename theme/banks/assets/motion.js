@@ -176,9 +176,8 @@
   }
 
   if (ST && !reduce) {
-    /* Scroll reveals: theme blocks and Elementor widgets on Canvas pages */
-    var sel = '[data-reveal], .elementor .elementor-widget-text-editor, .elementor .elementor-widget-button, .elementor .elementor-widget-image';
-    var items = Array.prototype.filter.call(document.querySelectorAll(sel), function (el) { return !el.closest('.h-hero'); });
+    /* Scroll reveals on theme blocks. Old Elementor pages keep their own animations. */
+    var items = Array.prototype.filter.call(document.querySelectorAll('[data-reveal]'), function (el) { return !el.closest('.h-hero'); });
     gsap.set(items, { y: 40, opacity: 0 });
     ST.batch(items, {
       start: 'top 90%',
@@ -187,7 +186,7 @@
     });
 
     /* Split headings rise word by word */
-    document.querySelectorAll('[data-split], .elementor .elementor-widget-heading .elementor-heading-title').forEach(function (h) {
+    document.querySelectorAll('[data-split]').forEach(function (h) {
       if (h.closest('.h-hero')) return;
       var words = B.split(h);
       gsap.from(words, { yPercent: 110, duration: 1.1, ease: 'expo.out', stagger: 0.05, scrollTrigger: { trigger: h, start: 'top 90%', once: true } });
