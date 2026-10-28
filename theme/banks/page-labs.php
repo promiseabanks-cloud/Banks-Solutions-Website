@@ -170,7 +170,7 @@ $b_faqs = array(
 				<a class="lb-case" href="<?php echo esc_url( $b_1904 ); ?>">
 					<span class="lb-case__tag">Built for one client</span>
 					<span class="lb-case__title">1904 Solutions</span>
-					<span class="lb-case__text">A custom system built around how a car wash and hospitality business actually runs.</span>
+					<span class="lb-case__text">A custom system and web app built around how a car wash and hospitality business actually runs.</span>
 					<span class="lb-case__go">See the project <span aria-hidden="true">→</span></span>
 				</a>
 			</li>
