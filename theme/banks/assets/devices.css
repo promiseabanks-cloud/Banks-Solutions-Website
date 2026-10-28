@@ -1,0 +1,77 @@
+/* Device frames for Work and the case studies: a laptop and a phone, drawn in CSS, with the
+   project's recording, poster or a drawn stand-in on the screen. Sizes inside a screen are in
+   container units, so a frame can be any width. Mock colours use the fixed brand tokens. */
+
+.wk-device{position:relative}
+.wk-device__body{position:relative;background:linear-gradient(160deg,color-mix(in srgb,var(--b-ink) 88%,var(--b-paper)),var(--b-ink) 60%);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--b-paper) 16%,transparent),0 60px 110px -50px rgba(0,0,0,.75)}
+.wk-screen{position:relative;display:grid;grid-template-rows:auto minmax(0,1fr);height:100%;overflow:hidden;background:var(--b-paper);container-type:inline-size;isolation:isolate}
+.wk-view{position:relative;grid-row:2;grid-column:1;overflow:hidden;min-height:0}
+.wk-view + .wk-view{visibility:hidden}
+.wk-screen.is-cycling .wk-view{visibility:visible}
+
+/* Laptop: lid, screen, and the base with its thumb notch */
+.wk-device--laptop .wk-device__body{aspect-ratio:16/10.6;padding:1.9% 1.9% 2.6%;border-radius:3.4% 3.4% 1.2% 1.2% / 5.2% 5.2% 1.8% 1.8%}
+.wk-device--laptop .wk-device__body::before{content:"";position:absolute;top:.75%;left:50%;width:.7%;aspect-ratio:1;border-radius:50%;background:color-mix(in srgb,var(--b-paper) 22%,var(--b-ink));transform:translateX(-50%)}
+.wk-device--laptop .wk-screen{border-radius:.6%/1%}
+.wk-device__base{position:relative;width:114%;margin-left:-7%;aspect-ratio:100/3.4;border-radius:0 0 50% 50% / 0 0 100% 100%;background:linear-gradient(color-mix(in srgb,var(--b-paper) 72%,var(--b-mist)),color-mix(in srgb,var(--b-mist) 70%,var(--b-ink)));box-shadow:0 30px 50px -24px rgba(0,0,0,.6)}
+.wk-device__base::before{content:"";position:absolute;top:0;left:50%;width:15%;height:42%;border-radius:0 0 10px 10px;background:color-mix(in srgb,var(--b-mist) 60%,var(--b-ink));transform:translateX(-50%)}
+.wk-bar{grid-row:1;grid-column:1;display:flex;align-items:center;gap:.9cqw;height:3.6cqw;padding:0 1.6cqw;background:color-mix(in srgb,var(--b-ink) 6%,var(--b-paper));border-bottom:1px solid color-mix(in srgb,var(--b-ink) 10%,transparent)}
+.wk-bar span{width:1cqw;height:1cqw;border-radius:50%;background:color-mix(in srgb,var(--b-ink) 22%,var(--b-paper))}
+.wk-bar em{margin:0 auto;padding:.5cqw 4cqw;border-radius:99px;background:color-mix(in srgb,var(--b-ink) 7%,var(--b-paper));font:400 1.35cqw/1 var(--b-mono);font-style:normal;color:var(--b-mist);white-space:nowrap}
+
+/* Phone: rounded slab, island, no address bar */
+.wk-device--phone .wk-device__body{aspect-ratio:9/19.2;padding:3.4%;border-radius:15% / 7%}
+.wk-device--phone .wk-screen{grid-template-rows:minmax(0,1fr);border-radius:12% / 5.6%}
+.wk-device--phone .wk-view{grid-row:1}
+.wk-island{position:absolute;z-index:3;top:2.4%;left:50%;width:30%;height:2.6%;border-radius:99px;background:var(--b-ink);transform:translateX(-50%)}
+
+/* What plays on the screen */
+.wk-shot{display:block;width:100%;min-height:100%;object-fit:cover;object-position:top}
+.wk-vid{position:absolute;inset:0;z-index:2;width:100%;height:100%;object-fit:cover;object-position:top;opacity:0;transition:opacity .6s}
+.wk-vid.is-playing{opacity:1}
+
+/* The stand-in: a drawn page in the project's name, tall enough to scroll */
+.wk-mock{--m-bg:var(--b-lagoon);--m-fg:var(--b-paper);--m-ac:var(--b-foam);min-height:100%;padding:0 5cqw 4cqw;background:var(--m-bg);color:var(--m-fg);font-family:var(--b-head)}
+.wk-mock[data-tone="2"]{--m-bg:var(--b-paper);--m-fg:var(--b-ink);--m-ac:var(--b-current)}
+.wk-mock[data-tone="3"]{--m-bg:var(--b-ink);--m-fg:var(--b-paper);--m-ac:var(--b-foam)}
+.wk-mock[data-tone="4"]{--m-bg:var(--b-current);--m-fg:var(--b-paper);--m-ac:var(--b-paper)}
+.wk-mock i{display:block;border-radius:99px;background:color-mix(in srgb,var(--m-fg) 30%,transparent)}
+.wk-mock__nav{display:flex;align-items:center;gap:3cqw;height:8.4cqw}
+.wk-mock__nav b{display:grid;place-items:center;width:4.2cqw;aspect-ratio:1;margin-right:auto;border-radius:1cqw;background:var(--m-ac);color:var(--m-bg);font:700 2.4cqw/1 var(--b-head)}
+.wk-mock__nav i{width:6cqw;height:.8cqw}
+.wk-mock__nav span,.wk-mock__hero span{display:block;width:11cqw;height:3.6cqw;border-radius:99px;background:var(--m-ac)}
+.wk-mock__hero{padding:7cqw 0 8cqw}
+.wk-mock__hero small{display:block;font:500 1.5cqw/1 var(--b-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--m-ac)}
+.wk-mock__hero strong{display:block;max-width:12ch;margin:1.6cqw 0 3cqw;font:700 7.4cqw/.95 var(--b-head);letter-spacing:-.045em;overflow-wrap:anywhere}
+.wk-mock__hero i{width:46cqw;height:1.1cqw;margin-bottom:1.4cqw}
+.wk-mock__hero i + i{width:32cqw}
+.wk-mock__hero span{width:15cqw;height:4.4cqw;margin-top:3.4cqw}
+.wk-mock__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2.4cqw}
+.wk-mock__grid i{aspect-ratio:4/3;border-radius:1.4cqw;background:color-mix(in srgb,var(--m-fg) 12%,transparent)}
+.wk-mock__band{display:grid;gap:1.6cqw;margin:5cqw -5cqw;padding:7cqw 5cqw;background:color-mix(in srgb,var(--m-ac) 20%,var(--m-bg))}
+.wk-mock__band i{width:60cqw;height:2.6cqw}
+.wk-mock__band i + i{width:44cqw;height:1.1cqw}
+.wk-mock__band i + i + i{width:38cqw}
+.wk-mock__foot{display:flex;gap:4cqw;margin-top:6cqw;padding-top:5cqw;border-top:1px solid color-mix(in srgb,var(--m-fg) 18%,transparent)}
+.wk-mock__foot i{width:18cqw;height:1cqw}
+
+/* On a phone the same page stacks */
+.wk-device--phone .wk-mock{padding:0 7cqw 7cqw}
+.wk-device--phone .wk-mock__nav{height:20cqw;padding-top:6cqw;gap:4cqw}
+.wk-device--phone .wk-mock__nav b{width:10cqw;border-radius:2.4cqw;font-size:5.4cqw}
+.wk-device--phone .wk-mock__nav i{display:none}
+.wk-device--phone .wk-mock__nav span{width:9cqw;height:9cqw;border-radius:2.4cqw;background:color-mix(in srgb,var(--m-fg) 16%,transparent)}
+.wk-device--phone .wk-mock__hero{padding:12cqw 0 14cqw}
+.wk-device--phone .wk-mock__hero small{font-size:3.6cqw}
+.wk-device--phone .wk-mock__hero strong{font-size:14cqw;margin:4cqw 0 6cqw}
+.wk-device--phone .wk-mock__hero i{width:80cqw;height:2.6cqw;margin-bottom:3cqw}
+.wk-device--phone .wk-mock__hero i + i{width:60cqw}
+.wk-device--phone .wk-mock__hero span{width:44cqw;height:11cqw;margin-top:7cqw}
+.wk-device--phone .wk-mock__grid{grid-template-columns:minmax(0,1fr);gap:5cqw}
+.wk-device--phone .wk-mock__grid i{border-radius:4cqw}
+.wk-device--phone .wk-mock__band{margin:10cqw -7cqw;padding:14cqw 7cqw;gap:4cqw}
+.wk-device--phone .wk-mock__band i{width:80cqw;height:6cqw}
+.wk-device--phone .wk-mock__band i + i{width:70cqw;height:2.6cqw}
+.wk-device--phone .wk-mock__foot i{width:30cqw;height:2.6cqw}
+
+@media (prefers-reduced-motion:reduce){.wk-vid{transition:none}}

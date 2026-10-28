@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.4.1' );
+define( 'BANKS_VERSION', '0.5.0' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
@@ -51,8 +51,15 @@ add_action(
 		if ( $scene ) {
 			wp_enqueue_style( 'banks-scenes', $uri . 'scenes.css', array( 'banks-motion' ), BANKS_VERSION );
 			wp_enqueue_script( 'banks-scenes', $uri . 'scenes.js', array( 'banks-motion' ), BANKS_VERSION, true );
-			wp_enqueue_style( 'banks-' . $scene, $uri . $scene . '.css', array( 'banks-scenes' ), BANKS_VERSION );
-			wp_enqueue_script( 'banks-' . $scene, $uri . $scene . '.js', array( 'banks-scenes' ), BANKS_VERSION, true );
+			$deps = array( 'banks-scenes' );
+			// Work and the case studies share the device frames.
+			if ( in_array( $scene, array( 'work', 'case' ), true ) ) {
+				wp_enqueue_style( 'banks-devices', $uri . 'devices.css', array( 'banks-scenes' ), BANKS_VERSION );
+				wp_enqueue_script( 'banks-devices', $uri . 'devices.js', array( 'banks-scenes' ), BANKS_VERSION, true );
+				$deps = array( 'banks-devices' );
+			}
+			wp_enqueue_style( 'banks-' . $scene, $uri . $scene . '.css', $deps, BANKS_VERSION );
+			wp_enqueue_script( 'banks-' . $scene, $uri . $scene . '.js', $deps, BANKS_VERSION, true );
 		}
 	}
 );
@@ -61,7 +68,7 @@ add_action(
 add_filter(
 	'script_loader_tag',
 	function ( $tag, $handle ) {
-		if ( in_array( $handle, array( 'gsap', 'gsap-scrolltrigger', 'gsap-splittext', 'lenis', 'banks-motion', 'banks-scenes', 'banks-home', 'banks-solutions', 'banks-solution', 'banks-start', 'banks-pricing', 'banks-nav' ), true ) ) {
+		if ( in_array( $handle, array( 'gsap', 'gsap-scrolltrigger', 'gsap-splittext', 'lenis', 'banks-motion', 'banks-scenes', 'banks-home', 'banks-solutions', 'banks-solution', 'banks-start', 'banks-pricing', 'banks-work', 'banks-case', 'banks-devices', 'banks-nav' ), true ) ) {
 			return str_replace( ' src=', ' defer src=', $tag );
 		}
 		return $tag;
@@ -144,11 +151,15 @@ add_filter(
 /**
  * Pages built as scenes, by asset name: front-page.php uses home.{css,js}, page-solutions.php
  * uses solutions.{css,js}, and every solution page (a child of /solutions/, page-<slug>.php)
- * shares solution.{css,js}. Every scene page opens on a dark hero. Empty for everything else.
+ * shares solution.{css,js}, and a Work case study (single-banks_work.php) uses case.{css,js}.
+ * Every scene page opens on a dark hero. Empty for everything else.
  */
 function banks_scene() {
 	if ( is_front_page() ) {
 		return 'home';
+	}
+	if ( is_singular( 'banks_work' ) ) {
+		return 'case';
 	}
 	if ( ! is_page() ) {
 		return '';
@@ -156,7 +167,7 @@ function banks_scene() {
 	if ( is_page( 'solutions' ) ) {
 		return 'solutions';
 	}
-	foreach ( array( 'start', 'pricing' ) as $b_scene ) {
+	foreach ( array( 'start', 'pricing', 'work' ) as $b_scene ) {
 		if ( is_page( $b_scene ) && ! wp_get_post_parent_id( get_queried_object_id() ) ) {
 			return $b_scene;
 		}
@@ -205,6 +216,27 @@ function banks_has_portal() {
 
 function banks_portal_url( $path = '/' ) {
 	return defined( 'BANKS_PORTAL_DOMAIN' ) ? 'https://' . BANKS_PORTAL_DOMAIN . $path : banks_main_url( '/portal' . $path );
+}
+
+/** Projects for /work/ and the case studies, from Banks Core. Empty while the plugin is off. */
+function banks_work_items() {
+	return function_exists( 'banks_core_work_items' ) ? banks_core_work_items() : array();
+}
+
+/**
+ * A project's field as filter tags: "Automobile & hospitality" gives automobile and hospitality.
+ *
+ * @param string $industry The field as written in the dashboard.
+ * @return array slug => label
+ */
+function banks_work_tags( $industry ) {
+	$tags = array();
+	foreach ( preg_split( '/\s*(?:&|,|\band\b)\s*/i', (string) $industry ) as $b_part ) {
+		if ( '' !== trim( $b_part ) ) {
+			$tags[ sanitize_title( $b_part ) ] = ucfirst( trim( $b_part ) );
+		}
+	}
+	return $tags;
 }
 
 function banks_img( $file ) {
@@ -335,6 +367,9 @@ add_filter(
 	function ( $template ) {
 		$scene = banks_scene();
 		if ( ! $scene || 'main' !== banks_site() ) {
+			return $template;
+		}
+		if ( 'case' === $scene ) {
 			return $template;
 		}
 		$file = 'home' === $scene ? 'front-page.php' : 'page-' . get_post_field( 'post_name', get_queried_object_id() ) . '.php';
