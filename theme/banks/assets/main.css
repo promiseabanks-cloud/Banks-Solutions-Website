@@ -78,13 +78,14 @@ p{margin:0 0 1em}
 .b-nav__portal{font-family:var(--b-mono);font-size:13px;letter-spacing:.04em;opacity:.8}
 .b-nav__list a:hover,.b-nav__list .current-menu-item>a{color:var(--b-current)}
 .b-nav__list .sub-menu{display:none}
+@media (min-width:1181px) and (max-width:1360px){.b-nav,.b-nav__list{gap:18px}.b-nav__list a{font-size:15px}}
 .b-burger{display:none;background:none;border:0;width:44px;height:44px;cursor:pointer;position:relative;color:var(--b-fg)}
 .b-burger span:first-child,.b-burger span:first-child::before,.b-burger span:first-child::after{position:absolute;left:11px;width:22px;height:2px;background:currentColor;content:"";transition:transform .25s var(--b-ease-out)}
 .b-burger span:first-child{top:21px}.b-burger span:first-child::before{left:0;top:-7px}.b-burger span:first-child::after{left:0;top:7px}
 .b-nav-open .b-burger span:first-child{background:transparent}
 .b-nav-open .b-burger span:first-child::before{transform:translateY(7px) rotate(45deg)}
 .b-nav-open .b-burger span:first-child::after{transform:translateY(-7px) rotate(-45deg)}
-@media (max-width:980px){
+@media (max-width:1180px){
  .b-burger{display:block;order:3}
  .b-theme{order:2;margin-left:auto}
  .b-nav{display:none;position:absolute;left:0;right:0;top:var(--b-header);background:var(--b-bg);border-bottom:1px solid var(--b-line);flex-direction:column;align-items:stretch;padding:12px 20px 24px;gap:14px}
