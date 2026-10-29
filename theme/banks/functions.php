@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.12.7' );
+define( 'BANKS_VERSION', '0.12.8' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
@@ -334,8 +334,15 @@ function banks_brand( $variant = 'lagoon' ) {
 	$i = '<img class="b-brand__img%s" src="%s" width="239" height="36" alt="%s">';
 	if ( 'auto' === $variant ) {
 		// Both lockups; main.css shows the one that reads on the current background and theme.
+		// Phones get the mark alone (main.css swaps lockup for icon); the footer keeps the full lockup.
+		$m  = '<img class="b-brand__img%s" src="%s" width="78" height="72" alt="%s">';
+		$a .= '<span class="b-brand__lockup">';
 		$a .= sprintf( $i, ' b-brand__img--std', esc_url( banks_img( 'banks-solutions-lockup-lagoon.svg' ) ), 'Banks Solutions' );
 		$a .= sprintf( $i, ' b-brand__img--rev', esc_url( banks_img( 'banks-solutions-lockup-reverse.svg' ) ), '' );
+		$a .= '</span><span class="b-brand__icon">';
+		$a .= sprintf( $m, ' b-brand__img--std', esc_url( banks_img( 'banks-solutions-mark-lagoon.svg' ) ), 'Banks Solutions' );
+		$a .= sprintf( $m, ' b-brand__img--rev', esc_url( banks_img( 'banks-solutions-mark-reverse.svg' ) ), '' );
+		$a .= '</span>';
 	} else {
 		$file = 'reverse' === $variant ? 'banks-solutions-lockup-reverse.svg' : 'banks-solutions-lockup-lagoon.svg';
 		$a   .= sprintf( $i, '', esc_url( banks_img( $file ) ), 'Banks Solutions' );

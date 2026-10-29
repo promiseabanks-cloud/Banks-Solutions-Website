@@ -51,9 +51,13 @@ p{margin:0 0 1em}
 
 /* Header */
 .b-header{position:sticky;top:0;z-index:50;background:var(--b-bg);border-bottom:1px solid var(--b-line)}
-.b-header__inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:var(--b-header)}
-.b-brand{display:inline-flex;align-items:center;line-height:0}
+.b-header__inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:var(--b-header);min-width:0}
+.b-brand{display:inline-flex;align-items:center;line-height:0;flex-shrink:0}
+.b-brand__lockup,.b-brand__icon{display:inline-flex;align-items:center}
+.b-brand__icon{display:none}
 .b-brand__img{height:34px;width:auto}
+/* Phones: the mark alone keeps the bar inside the screen; the footer carries the full name */
+@media (max-width:640px){.b-header .b-brand__lockup{display:none}.b-header .b-brand__icon{display:inline-flex}.b-header .b-brand__img{height:32px}}
 /* The header carries both lockups; CSS shows the one that reads on the current background */
 .b-brand__img--rev{display:none}
 [data-theme="dark"] .b-header .b-brand__img--std,.b-hero-dark .b-header:not(.is-scrolled) .b-brand__img--std,.b-header.is-scrolled .b-brand__img--std{display:none}
@@ -74,7 +78,9 @@ p{margin:0 0 1em}
 @keyframes b-theme-in{from{clip-path:circle(0 at var(--b-vt-x,50%) var(--b-vt-y,0))}to{clip-path:circle(150vmax at var(--b-vt-x,50%) var(--b-vt-y,0))}}
 .b-nav{display:flex;align-items:center;gap:26px;margin-left:auto}
 .b-nav__list{display:flex;gap:26px;list-style:none;margin:0;padding:0}
-.b-nav__list a,.b-nav__portal{color:var(--b-fg);text-decoration:none;font-weight:500;font-size:15.5px}
+.b-nav__list a,.b-nav__portal{color:var(--b-fg);text-decoration:none;font-weight:500;font-size:15.5px;white-space:nowrap}
+.b-header .b-btn{white-space:nowrap;flex-shrink:0}
+.b-nav__meta{display:none}
 .b-nav__portal{font-family:var(--b-mono);font-size:13px;letter-spacing:.04em;opacity:.8}
 .b-nav__list a:hover,.b-nav__list .current-menu-item>a{color:var(--b-current)}
 .b-nav__list .sub-menu{display:none}
@@ -88,14 +94,17 @@ p{margin:0 0 1em}
 @media (max-width:1180px){
  .b-burger{display:block;order:3}
  .b-theme{order:2;margin-left:auto}
+ .b-header__inner{gap:12px}
  .b-nav{display:none;position:absolute;left:0;right:0;top:var(--b-header);background:var(--b-bg);border-bottom:1px solid var(--b-line);flex-direction:column;align-items:stretch;padding:12px 20px 24px;gap:14px}
  .b-nav-open .b-nav{display:flex}
  .b-nav__list{flex-direction:column;gap:0}
- .b-nav__list a{display:block;padding:12px 0;border-bottom:1px solid var(--b-line);font-size:18px}
+ .b-nav__list a{display:block;padding:12px 0;border-bottom:1px solid var(--b-line);font-size:18px;white-space:normal}
 }
 
 /* Content */
-.b-main{min-height:60vh}
+/* Clip here, not only on body: start states that sit off to the side (reveals, marquees) otherwise
+   widen the phone's layout viewport on first load and push the fixed header past the screen edge. */
+.b-main{min-height:60vh;overflow-x:clip}
 .b-content{padding-block:64px 96px}
 .b-entry__title{margin-bottom:28px;max-width:20ch}
 .b-entry__body{max-width:70ch}

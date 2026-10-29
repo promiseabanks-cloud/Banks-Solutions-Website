@@ -25,6 +25,7 @@ $b_site = banks_site();
 			?>
 			<?php if ( banks_has_portal() ) : ?><a class="b-nav__portal" href="<?php echo esc_url( banks_portal_url( '/' ) ); ?>">Client portal</a><?php endif; ?>
 			<a class="b-btn b-btn--signal" href="<?php echo esc_url( banks_route( '/start/', '/contact/' ) ); ?>" data-magnetic>Start a project</a>
+			<p class="b-nav__meta"><a href="mailto:<?php echo esc_attr( banks_detail( 'email' ) ); ?>"><?php echo esc_html( banks_detail( 'email' ) ); ?></a><?php if ( banks_detail( 'whatsapp' ) ) : ?><a href="https://wa.me/<?php echo esc_attr( preg_replace( '/\D/', '', banks_detail( 'whatsapp' ) ) ); ?>">WhatsApp</a><?php endif; ?></p>
 		</nav>
 		<?php banks_theme_toggle(); ?>
 	</div>
