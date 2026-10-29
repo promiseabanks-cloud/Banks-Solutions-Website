@@ -538,3 +538,16 @@ add_filter(
 	},
 	99
 );
+
+/**
+ * The old site's FAQ snippet (wp-content/novamira-sandbox/bs-schema-faq-service.php) reads the
+ * old Elementor accordions. Scene pages write their own questions schema, so it stays off there.
+ */
+add_action(
+	'wp',
+	function () {
+		if ( banks_scene() ) {
+			remove_action( 'wp_head', 'bs_output_faq_service_schema', 20 );
+		}
+	}
+);
