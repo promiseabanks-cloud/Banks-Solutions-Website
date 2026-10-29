@@ -53,16 +53,14 @@ p{margin:0 0 1em}
 .b-header{position:sticky;top:0;z-index:50;background:var(--b-bg);border-bottom:1px solid var(--b-line)}
 .b-header__inner{display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:var(--b-header);min-width:0}
 .b-brand{display:inline-flex;align-items:center;line-height:0;flex-shrink:0}
-.b-brand__lockup,.b-brand__icon{display:inline-flex;align-items:center}
-.b-brand__icon{display:none}
 .b-brand__img{height:34px;width:auto}
-/* Phones: the mark alone keeps the bar inside the screen; the footer carries the full name */
-@media (max-width:640px){.b-header .b-brand__lockup{display:none}.b-header .b-brand__icon{display:inline-flex}.b-header .b-brand__img{height:32px}}
-/* The header carries both lockups; CSS shows the one that reads on the current background */
-.b-brand__img--rev{display:none}
-[data-theme="dark"] .b-header .b-brand__img--std,.b-hero-dark .b-header:not(.is-scrolled) .b-brand__img--std,.b-header.is-scrolled .b-brand__img--std{display:none}
-[data-theme="dark"] .b-header .b-brand__img--rev,.b-hero-dark .b-header:not(.is-scrolled) .b-brand__img--rev,.b-header.is-scrolled .b-brand__img--rev{display:block}
-.b-nav-open .b-header .b-brand__img--std{display:none}.b-nav-open .b-header .b-brand__img--rev{display:block}
+/* Header mark: Lagoon on light, Paper on dark heroes, the island, dark mode and the open menu */
+.b-mark{display:block;height:34px;width:auto;overflow:visible;color:var(--b-strong)}
+.b-mark__bank{fill:currentColor}
+.b-mark__dot{fill:var(--b-signal)}
+.b-mark__ripple{fill:none;stroke:var(--b-signal);stroke-width:1.5;opacity:0}
+[data-theme="dark"] .b-header .b-mark,.b-hero-dark .b-header:not(.is-scrolled) .b-mark,.b-header.is-scrolled .b-mark,.b-nav-open .b-header .b-mark{color:var(--b-paper)}
+@media (max-width:640px){.b-mark{height:32px}}
 
 /* Theme switch: sun in dark mode, moon in light mode */
 .b-theme{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;border:1px solid var(--b-line);background:transparent;color:inherit;cursor:pointer;transition:border-color var(--b-dur),transform .6s var(--b-ease-inout)}

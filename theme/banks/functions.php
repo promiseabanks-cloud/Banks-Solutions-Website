@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.12.9' );
+define( 'BANKS_VERSION', '0.12.10' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
@@ -334,16 +334,15 @@ function banks_brand( $variant = 'lagoon' ) {
 	$a = '<a class="b-brand" href="' . esc_url( banks_main_url( '/' ) ) . '">';
 	$i = '<img class="b-brand__img%s" src="%s" width="239" height="36" alt="%s">';
 	if ( 'auto' === $variant ) {
-		// Both lockups; main.css shows the one that reads on the current background and theme.
-		// Phones get the mark alone (main.css swaps lockup for icon); the footer keeps the full lockup.
-		$m  = '<img class="b-brand__img%s" src="%s" width="78" height="72" alt="%s">';
-		$a .= '<span class="b-brand__lockup">';
-		$a .= sprintf( $i, ' b-brand__img--std', esc_url( banks_img( 'banks-solutions-lockup-lagoon.svg' ) ), 'Banks Solutions' );
-		$a .= sprintf( $i, ' b-brand__img--rev', esc_url( banks_img( 'banks-solutions-lockup-reverse.svg' ) ), '' );
-		$a .= '</span><span class="b-brand__icon">';
-		$a .= sprintf( $m, ' b-brand__img--std', esc_url( banks_img( 'banks-solutions-mark-lagoon.svg' ) ), 'Banks Solutions' );
-		$a .= sprintf( $m, ' b-brand__img--rev', esc_url( banks_img( 'banks-solutions-mark-reverse.svg' ) ), '' );
-		$a .= '</span>';
+		// Header: the mark alone, inline so it takes the header's colour and can animate in
+		// (motion.css: the two banks draw in, then the Signal dot settles with one ripple).
+		$a  = '<a class="b-brand b-brand--mark" href="' . esc_url( banks_main_url( '/' ) ) . '" aria-label="Banks Solutions home">';
+		$a .= '<svg class="b-mark" viewBox="10 12 82 76" width="36" height="34" aria-hidden="true" focusable="false">';
+		$a .= '<path class="b-mark__bank b-mark__bank--top" d="M12 14H51a17 17 0 0 1 0 34H12Z"/>';
+		$a .= '<path class="b-mark__bank b-mark__bank--bot" d="M12 54H55a16 16 0 0 1 0 32H12Z"/>';
+		$a .= '<circle class="b-mark__ripple" cx="83" cy="51" r="6.5"/>';
+		$a .= '<circle class="b-mark__dot" cx="83" cy="51" r="6.5"/>';
+		$a .= '</svg>';
 	} else {
 		$file = 'reverse' === $variant ? 'banks-solutions-lockup-reverse.svg' : 'banks-solutions-lockup-lagoon.svg';
 		$a   .= sprintf( $i, '', esc_url( banks_img( $file ) ), 'Banks Solutions' );
