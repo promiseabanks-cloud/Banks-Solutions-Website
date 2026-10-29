@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.12.3' );
+define( 'BANKS_VERSION', '0.12.4' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
@@ -332,9 +332,11 @@ function banks_default_nav() {
 	echo '<ul class="b-nav__list">';
 	banks_nav_item( '/solutions/', 'Solutions', '/services/' );
 	banks_nav_item( '/work/', 'Work' );
+	banks_nav_item( '/industries/', 'Industries' );
+	banks_nav_item( '/pricing/', 'Pricing' );
 	banks_nav_item( '/knowledge/', 'Knowledge' );
-	banks_nav_item( '/labs/', 'Labs' );
 	banks_nav_item( '/about/', 'About' );
+	banks_nav_item( '/contact/', 'Contact' );
 	echo '</ul>';
 }
 

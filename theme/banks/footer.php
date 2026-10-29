@@ -13,6 +13,8 @@
 				<?php banks_nav_item( '/industries/', 'Industries' ); ?>
 				<?php banks_nav_item( '/banks-business-engine/', 'Banks Business Engine' ); ?>
 				<?php banks_nav_item( '/shop/', 'Shop' ); ?>
+				<?php banks_nav_item( '/pricing/', 'Pricing' ); ?>
+				<?php banks_nav_item( '/about/', 'About' ); ?>
 			</ul>
 		</div>
 		<div>
@@ -27,6 +29,7 @@
 		<div>
 			<h2 class="b-footer__title">Talk</h2>
 			<ul class="b-footer__list">
+				<?php banks_nav_item( '/contact/', 'Contact us' ); ?>
 				<li><a href="mailto:<?php echo esc_attr( banks_detail( 'email' ) ); ?>"><?php echo esc_html( banks_detail( 'email' ) ); ?></a></li>
 				<?php if ( banks_detail( 'whatsapp' ) ) : ?><li><a href="https://wa.me/<?php echo esc_attr( preg_replace( '/\D/', '', banks_detail( 'whatsapp' ) ) ); ?>">WhatsApp us</a></li><?php endif; ?>
 				<?php if ( banks_detail( 'instagram' ) ) : ?><li><a href="<?php echo esc_url( banks_detail( 'instagram' ) ); ?>" rel="noopener" target="_blank">Instagram</a></li><?php endif; ?>
