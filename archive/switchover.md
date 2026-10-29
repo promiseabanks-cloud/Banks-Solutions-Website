@@ -22,14 +22,16 @@ Baseplate. Run it at a quiet hour, with Promise's go-ahead on the day.
 
 ## 2. Code (about 5 minutes)
 
-- [ ] Copy `theme/banks/` to `wp-content/themes/banks/` and `plugins/banks-core/` to
-      `wp-content/plugins/banks-core/`, from the commit approved for launch. Check each file's sha256.
+- [ ] Copy the staging `themes/banks/` and `plugins/banks-core/` folders to live on the server (both
+      sites are on the same host). First check that staging matches the commit approved for launch.
 - [ ] Activate Banks Core. Don't switch the theme yet.
 
 ## 3. Content (about 20 minutes)
 
-Recreate the new pages on live with the same slugs, parents, page template `default` and Rank Math
-title, description and focus keyword as on staging (staging IDs in brackets):
+Copy the page records from the staging database to live in one server-side script. Copy only the
+rows; nothing is rebuilt, because all the design and copy live in the theme. The script keeps the
+slugs, parents, page template `default`, Rank Math title, description and focus keyword, and maps
+parent IDs (staging IDs in brackets):
 
 - [ ] solutions (608) and its children websites, web-apps, automation-crm, ai, care-plans, seo-aeo (609-614)
 - [ ] start (615), pricing (617), work (618), about (629), banks-business-engine (630), shop (631),
