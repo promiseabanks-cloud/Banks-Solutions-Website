@@ -19,7 +19,7 @@
   if (rig) {
     var scrub = { trigger: rig, start: 'top 95%', end: 'center 55%', scrub: 0.8 };
     gsap.fromTo('.cs-rig__laptop', { rotationX: 34, scale: 0.86 }, { rotationX: 0, scale: 1, ease: 'none', scrollTrigger: scrub });
-    gsap.fromTo('.cs-rig__phone', { xPercent: 60, yPercent: 10, rotationY: -40, opacity: 0.3 }, { xPercent: 0, yPercent: 0, rotationY: 0, opacity: 1, ease: 'none', transformPerspective: 1200, scrollTrigger: scrub });
+    gsap.fromTo('.cs-rig__phone', { xPercent: 60, yPercent: 10, rotationY: -40, opacity: 0.3, transformPerspective: 1200 }, { xPercent: 0, yPercent: 0, rotationY: 0, opacity: 1, ease: 'none', transformPerspective: 1200, scrollTrigger: scrub });
     if (!B.lite) gsap.to('.cs-rig__phone .wk-device', { y: -12, duration: 3.2, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 2 });
   }
 
