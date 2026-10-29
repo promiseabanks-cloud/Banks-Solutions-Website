@@ -81,12 +81,18 @@ function banks_core_submit_brief( array $raw ) {
 		return isset( $opts[ $key ][ $v ] ) ? $v : '';
 	};
 
+	// People type a site as plain "banks.com" or "www.banks.com"; add the https:// for them.
+	$site = $text( 'website', 200 );
+	if ( '' !== $site && ! preg_match( '#^[a-z][a-z0-9+.-]*://#i', $site ) ) {
+		$site = 'https://' . ltrim( $site, '/' );
+	}
+
 	$needs = isset( $raw['needs'] ) ? array_map( 'sanitize_key', (array) $raw['needs'] ) : array();
 	$brief = array(
 		'needs'    => array_values( array_intersect( $needs, array_keys( $opts['needs'] ) ) ),
 		'business' => $text( 'business', 120 ),
 		'industry' => $pick( 'industry' ),
-		'website'  => esc_url_raw( $text( 'website', 200 ) ),
+		'website'  => esc_url_raw( $site ),
 		'problem'  => $area( 'problem', 4000 ),
 		'success'  => $area( 'success', 2000 ),
 		'budget'   => $pick( 'budget' ),

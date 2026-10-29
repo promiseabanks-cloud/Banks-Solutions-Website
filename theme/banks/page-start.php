@@ -108,7 +108,7 @@ $b_step = function ( $n, $title, $hint ) {
 										<?php endforeach; ?>
 									</select>
 								</label>
-								<label class="st-field"><span>Current website <em>if you have one</em></span><input type="url" name="website" maxlength="200" placeholder="https://" inputmode="url"></label>
+								<label class="st-field"><span>Current website <em>if you have one</em></span><input type="text" name="website" maxlength="200" placeholder="yourbusiness.com" inputmode="url" autocapitalize="off" spellcheck="false"></label>
 							</fieldset>
 
 							<fieldset class="st-step" data-step="3">
