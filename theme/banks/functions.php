@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.12.2' );
+define( 'BANKS_VERSION', '0.12.3' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
@@ -517,4 +517,24 @@ add_action(
 		}
 	},
 	1
+);
+
+/**
+ * Scene pages write their own questions schema, so Rank Math's copy (left on the old Elementor
+ * homepage) would list the same questions twice.
+ */
+add_filter(
+	'rank_math/json_ld',
+	function ( $data ) {
+		if ( ! banks_scene() || ! is_array( $data ) ) {
+			return $data;
+		}
+		foreach ( $data as $key => $entity ) {
+			if ( is_array( $entity ) && isset( $entity['@type'] ) && 'FAQPage' === $entity['@type'] ) {
+				unset( $data[ $key ] );
+			}
+		}
+		return $data;
+	},
+	99
 );
