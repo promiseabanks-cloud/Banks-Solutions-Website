@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.12.6' );
+define( 'BANKS_VERSION', '0.12.7' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
@@ -305,6 +305,27 @@ add_action(
 			$c->add_setting( 'banks_' . $k, array( 'type' => 'option', 'sanitize_callback' => 'sanitize_text_field' ) );
 			$c->add_control( 'banks_' . $k, array( 'label' => $label, 'section' => 'banks', 'type' => 'tagline' === $k ? 'textarea' : 'text' ) );
 		}
+	}
+);
+
+/**
+ * Alt text for an attachment: its own alt if set, else the given fallback (usually the post title).
+ *
+ * @param int    $id       Attachment ID.
+ * @param string $fallback Text to use when the attachment has no alt.
+ * @return string
+ */
+function banks_image_alt( $id, $fallback = '' ) {
+	$alt = trim( (string) get_post_meta( $id, '_wp_attachment_image_alt', true ) );
+	return '' !== $alt ? $alt : wp_strip_all_tags( $fallback );
+}
+
+/** The sizes WordPress makes from new JPEG uploads are saved as WebP, about a third smaller. */
+add_filter(
+	'image_editor_output_format',
+	function ( $formats ) {
+		$formats['image/jpeg'] = 'image/webp';
+		return $formats;
 	}
 );
 

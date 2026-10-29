@@ -11,6 +11,22 @@
   // Light mode for weak phones: fewer simultaneous effects, no smooth scroll.
   var lite = !!((navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.hardwareConcurrency || 8) <= 2 || (navigator.connection && navigator.connection.saveData));
   var gsap = window.gsap;
+  /* A from() tween would also animate transformPerspective down to none, and its last frames
+     warp the element far past the screen edge. Pin the perspective first, so only the turn moves. */
+  if (gsap) {
+    var pinPerspective = function (fn) {
+      return function (targets, vars) {
+        if (vars && vars.transformPerspective) {
+          gsap.set(targets, { transformPerspective: vars.transformPerspective });
+          vars = Object.assign({}, vars);
+          delete vars.transformPerspective;
+        }
+        return fn.apply(this, [targets, vars].concat([].slice.call(arguments, 2)));
+      };
+    };
+    gsap.from = pinPerspective(gsap.from);
+    gsap.core.Timeline.prototype.from = pinPerspective(gsap.core.Timeline.prototype.from);
+  }
   var header = document.querySelector('.b-header');
   var B = (window.Banks = window.Banks || {});
   B.reduce = reduce;

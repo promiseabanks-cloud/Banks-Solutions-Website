@@ -106,7 +106,7 @@ while ( have_posts() ) :
 			</div>
 			<?php if ( has_post_thumbnail() ) : ?>
 				<figure class="b-wrap rd-cover">
-					<span class="rd-cover__frame"><?php the_post_thumbnail( 'large', array( 'alt' => '', 'loading' => 'eager', 'fetchpriority' => 'high', 'sizes' => '(max-width: 1240px) 94vw, 1180px' ) ); ?></span>
+					<span class="rd-cover__frame"><?php the_post_thumbnail( 'large', array( 'alt' => banks_image_alt( get_post_thumbnail_id(), get_the_title() ), 'loading' => 'eager', 'fetchpriority' => 'high', 'sizes' => '(max-width: 1240px) 94vw, 1180px' ) ); ?></span>
 				</figure>
 			<?php endif; ?>
 		</header>

@@ -122,7 +122,7 @@
         at = i;
         steps.forEach(function (s, k) { s.classList.toggle('is-on', k === i); });
         if (from) gsap.to(from, { autoAlpha: 0, y: -30, duration: 0.45, ease: 'power2.in' });
-        gsap.fromTo(screens[i], { autoAlpha: 0, y: 40, rotationX: -8 }, { autoAlpha: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'expo.out', delay: from ? 0.2 : 0, transformPerspective: 1200 });
+        gsap.fromTo(screens[i], { autoAlpha: 0, y: 40, rotationX: -8, transformPerspective: 1200 }, { autoAlpha: 1, y: 0, rotationX: 0, duration: 0.8, ease: 'expo.out', delay: from ? 0.2 : 0, transformPerspective: 1200 });
         enter(screens[i]);
       };
       ST.create({
