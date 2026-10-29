@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.12.1' );
+define( 'BANKS_VERSION', '0.12.2' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
@@ -206,13 +206,19 @@ function banks_main_url( $path = '/' ) {
 	return is_multisite() ? get_home_url( get_main_site_id(), $path ) : home_url( $path );
 }
 
+/** True when the page at this path is published (a draft, such as an unreviewed legal page, is not). */
+function banks_page_live( $slug ) {
+	$page = get_page_by_path( $slug );
+	return $page && 'publish' === $page->post_status;
+}
+
 /**
  * Link to a main-site page that may not be built yet. Until the page exists the link
  * goes to $fallback, or is dropped when there is none, so the menus never lead to a 404.
  */
 function banks_route( $path, $fallback = '' ) {
 	$slug = trim( $path, '/' );
-	if ( '' === $slug || 'main' !== banks_site() || get_page_by_path( $slug ) ) {
+	if ( '' === $slug || 'main' !== banks_site() || banks_page_live( $slug ) ) {
 		return banks_main_url( $path );
 	}
 	return $fallback ? banks_main_url( $fallback ) : '';
@@ -505,7 +511,7 @@ add_action(
 			return;
 		}
 		$page = trim( (string) wp_parse_url( $to, PHP_URL_PATH ), '/' );
-		if ( '' === $page || get_page_by_path( $page ) ) {
+		if ( '' === $page || banks_page_live( $page ) ) {
 			wp_safe_redirect( banks_main_url( $to ), 301 );
 			exit;
 		}
