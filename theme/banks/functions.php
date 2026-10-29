@@ -3,11 +3,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.12.8' );
+define( 'BANKS_VERSION', '0.12.9' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
 require_once __DIR__ . '/inc/industries.php';
+require_once __DIR__ . '/inc/nav.php';
 
 add_action(
 	'after_setup_theme',
@@ -353,19 +354,6 @@ function banks_brand( $variant = 'lagoon' ) {
 /** Light/dark switch for the header. */
 function banks_theme_toggle() {
 	echo '<button class="b-theme" type="button" data-theme-toggle aria-label="Switch to dark mode"><svg class="b-theme__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg><svg class="b-theme__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>';
-}
-
-/** Fallback header links until a menu is assigned. */
-function banks_default_nav() {
-	echo '<ul class="b-nav__list">';
-	banks_nav_item( '/solutions/', 'Solutions', '/services/' );
-	banks_nav_item( '/work/', 'Work' );
-	banks_nav_item( '/industries/', 'Industries' );
-	banks_nav_item( '/pricing/', 'Pricing' );
-	banks_nav_item( '/knowledge/', 'Knowledge' );
-	banks_nav_item( '/about/', 'About' );
-	banks_nav_item( '/contact/', 'Contact' );
-	echo '</ul>';
 }
 
 /**
