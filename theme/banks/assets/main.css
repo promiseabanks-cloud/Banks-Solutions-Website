@@ -166,10 +166,9 @@ p{margin:0 0 1em}
 .b-footer__base{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;border-top:1px solid rgba(244,245,241,.14);margin-top:56px;padding-top:22px;font:400 13px/1.4 var(--b-mono);color:#8FB0AA}
 .b-footer__legal{display:flex;gap:18px}.b-footer__legal a{color:inherit;text-decoration:none}.b-footer__legal a:hover{color:var(--b-paper)}
 @media (max-width:860px){.b-footer__grid{grid-template-columns:1fr 1fr}.b-footer__brand{grid-column:1/-1}}
-/* Phones: one centred column */
+/* Phones: the two-column footer, centred */
 @media (max-width:767px){
  .b-footer{text-align:center}
- .b-footer__grid{grid-template-columns:1fr;gap:32px}
  .b-footer__brand p{margin-inline:auto}
  .b-footer__base{flex-direction:column;align-items:center}
  .b-footer__legal{justify-content:center}
