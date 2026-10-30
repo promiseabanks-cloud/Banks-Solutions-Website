@@ -1,0 +1,146 @@
+/* Homepage scenes. Colours come from the tokens in main.css, so both themes work. */
+
+/* 1. Hero: full screen, a drifting light that follows the cursor, the flow lines drawn on load.
+   On scroll the stage pulls in at the edges and rounds off, like a frame leaving the screen. */
+.h-hero{background:var(--b-bg)}
+.h-hero__stage{position:relative;overflow:hidden;min-height:100svh;display:grid;align-items:center;background:var(--b-hero);color:var(--b-on);padding-block:calc(var(--b-header) + 40px) 88px;will-change:clip-path}
+.h-hero__stage::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(var(--b-on-line) 1px,transparent 1px),linear-gradient(90deg,var(--b-on-line) 1px,transparent 1px);background-size:88px 88px;-webkit-mask-image:radial-gradient(ellipse at 70% 30%,#000 0,transparent 70%);mask-image:radial-gradient(ellipse at 70% 30%,#000 0,transparent 70%);opacity:.45}
+.h-hero__inner{position:relative;z-index:1;width:100%;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);align-items:center;gap:56px}
+@media (max-width:1080px){.h-hero__inner{grid-template-columns:minmax(0,1fr);gap:48px}}
+.h-hero__eyebrow{color:var(--b-foam)}
+.h-hero__title{font-size:clamp(2.7rem,6vw,5.9rem);line-height:.98;letter-spacing:-.045em;margin-bottom:28px}
+.h-hero__say{display:block}
+/* Rotating word: one line tall, sized to the current word; without JS it shows the first */
+.h-rot{position:relative;display:block;height:1.08em;overflow:hidden;color:var(--b-foam)}
+.h-rot__word{position:absolute;left:0;top:0;white-space:nowrap;visibility:hidden}
+.h-rot__word.is-on{visibility:visible}
+.h-rot::after{content:"";position:absolute;left:0;bottom:.02em;width:var(--rw,3.4em);height:.06em;border-radius:1em;background:currentColor;opacity:.5;transition:width .7s var(--b-ease-inout)}
+.h-hero__lede{max-width:50ch;font-size:clamp(1.05rem,1.5vw,1.25rem);color:var(--b-on-soft);margin-bottom:40px}
+.h-hero__actions{display:flex;flex-wrap:wrap;gap:14px}
+.h-hero__proof{display:flex;flex-wrap:wrap;gap:12px 36px;list-style:none;margin:40px 0 0;padding:22px 0 0;border-top:1px solid var(--b-on-line);font:400 13px/1.3 var(--b-mono);letter-spacing:.04em;color:var(--b-on-soft)}
+.h-hero__proof strong{display:block;font:700 clamp(1.5rem,2.4vw,2rem)/1.1 var(--b-head);letter-spacing:-.03em;color:var(--b-on);margin-bottom:4px}
+.h-hero__scroll{position:absolute;z-index:1;left:50%;bottom:28px;width:26px;height:42px;margin-left:-13px;border:1.5px solid var(--b-on-line);border-radius:999px}
+.h-hero__scroll span{position:absolute;left:50%;top:8px;width:4px;height:8px;margin-left:-2px;border-radius:4px;background:var(--b-foam);animation:h-scroll 1.8s var(--b-ease-inout) infinite}
+@keyframes h-scroll{0%{transform:translateY(0);opacity:1}70%{transform:translateY(14px);opacity:0}100%{opacity:0}}
+@media (max-width:700px){.h-hero__scroll{display:none}.h-hero__proof{gap:16px 28px}}
+
+/* The system on the right: what we build, shown working. Plain HTML, no images. */
+.h-sys{position:relative;height:min(560px,62vh);min-height:420px;perspective:1200px}
+.h-sys__card{position:absolute;border:1px solid var(--b-on-line);border-radius:18px;background:color-mix(in srgb,var(--b-hero) 70%,var(--b-paper) 6%);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 40px 80px -40px rgba(0,0,0,.6);color:var(--b-on);will-change:transform}
+.h-sys__label{margin:0;font:400 11.5px/1.3 var(--b-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--b-on-soft)}
+.h-sys__msg{margin:4px 0 0;font:600 15px/1.3 var(--b-body)}
+.h-sys__site{left:0;top:4%;width:78%;overflow:hidden}
+.h-sys__chrome{display:flex;align-items:center;gap:6px;padding:12px 14px;border-bottom:1px solid var(--b-on-line);font:400 11.5px/1 var(--b-mono);color:var(--b-on-soft)}
+.h-sys__chrome i{width:9px;height:9px;border-radius:50%;background:var(--b-on-line)}
+.h-sys__chrome span{margin-left:10px;padding:5px 10px;border-radius:999px;background:color-mix(in srgb,var(--b-paper) 6%,transparent)}
+.h-sys__page{display:grid;gap:10px;padding:26px 24px 24px}
+.h-sys__bar{display:block;height:10px;width:56%;border-radius:6px;background:color-mix(in srgb,var(--b-paper) 14%,transparent)}
+.h-sys__bar--lg{height:22px;width:82%;background:color-mix(in srgb,var(--b-paper) 70%,transparent)}
+.h-sys__bar--md{height:22px;width:64%;background:color-mix(in srgb,var(--b-paper) 70%,transparent)}
+.h-sys__pill{justify-self:start;margin:8px 0 6px;padding:9px 16px;border-radius:999px;background:var(--b-signal);color:var(--b-ink);font:600 13px/1 var(--b-body)}
+.h-sys__tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.h-sys__tiles span{height:74px;border-radius:10px;background:linear-gradient(140deg,color-mix(in srgb,var(--b-foam) 30%,transparent),color-mix(in srgb,var(--b-paper) 4%,transparent))}
+.h-sys__stats{right:0;top:30%;width:52%;padding:18px 20px 14px}
+.h-sys__big{margin:6px 0 8px;font:700 2.4rem/1 var(--b-head);letter-spacing:-.04em}
+.h-sys__big em{font:500 13px/1 var(--b-mono);font-style:normal;color:var(--b-foam);vertical-align:middle}
+.h-sys__spark{display:block;width:100%;height:56px}
+.h-sys__spark path{fill:none;stroke:var(--b-foam);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.h-sys__toast,.h-sys__pay{display:flex;align-items:center;gap:14px;padding:14px 18px 14px 14px}
+.h-sys__toast{left:8%;bottom:16%;width:64%}
+.h-sys__pay{right:4%;bottom:0;width:56%}
+.h-sys__icon,.h-sys__check{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:12px;font:700 16px/1 var(--b-body)}
+.h-sys__icon{background:color-mix(in srgb,var(--b-foam) 22%,transparent);color:var(--b-foam)}
+.h-sys__check{background:color-mix(in srgb,var(--b-current) 45%,transparent);color:var(--b-paper)}
+@media (max-width:1080px){.h-sys{height:440px;min-height:0;max-width:560px}}
+@media (max-width:560px){.h-sys{height:360px}.h-sys__site{width:88%}.h-sys__stats{width:62%;top:34%}.h-sys__toast{width:80%;left:0;bottom:18%}.h-sys__pay{width:70%}.h-sys__tiles span{height:48px}.h-sys__big{font-size:1.9rem}}
+
+.h-flow{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.h-flow path{fill:none;vector-effect:non-scaling-stroke}
+.h-flow__bank{stroke:color-mix(in srgb,var(--b-foam) 14%,transparent);stroke-width:90px}
+.h-flow__line{stroke:var(--b-foam);stroke-width:2px;opacity:.8}
+.h-flow__line--2{opacity:.35;stroke-width:1px}
+
+/* 2. Clients: a marquee that speeds up with the scroll. Without JS it is a plain wrapped list. */
+.h-clients{padding-block:56px;border-bottom:1px solid var(--b-line);overflow:hidden}
+.h-clients .b-eyebrow{color:var(--b-muted)}
+.h-marquee{-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.h-marquee__track{display:flex;flex-wrap:wrap;gap:12px 56px;list-style:none;margin:0;padding:0 max(20px,calc((100vw - var(--b-wrap))/2))}
+.h-marquee.is-running .h-marquee__track{flex-wrap:nowrap;width:max-content;padding:0}
+.h-marquee__track li{display:flex;align-items:center;gap:56px;white-space:nowrap;font:600 clamp(1.4rem,3vw,2.4rem)/1.2 var(--b-head);letter-spacing:-.03em;color:color-mix(in srgb,var(--b-fg) 72%,transparent);transition:color .3s}
+.h-marquee__track li:hover{color:var(--b-fg)}
+.h-marquee.is-running .h-marquee__track li::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--b-current)}
+
+/* 3. The problem: the paragraph lights up word by word as it scrolls through */
+.h-problem{padding-block:clamp(96px,14vw,180px)}
+.h-problem__title{max-width:18ch;margin-bottom:48px}
+.h-problem__text{max-width:30ch;font:600 clamp(1.6rem,3.6vw,3rem)/1.18 var(--b-head);letter-spacing:-.025em;color:var(--b-fg)}
+@media (min-width:900px){.h-problem__text{max-width:none;padding-left:20%}}
+
+/* 4. What we build: a grid without JS, a pinned horizontal run with it */
+.h-build{background:var(--b-hero);color:var(--b-on);padding-block:120px}
+.h-build__head{margin-bottom:56px}
+.h-build__head .b-eyebrow{color:var(--b-foam)}
+.h-build__head h2{max-width:16ch;font-size:clamp(2.2rem,5vw,4.4rem);letter-spacing:-.04em}
+.h-build__track{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;list-style:none;margin:0 auto;padding:0 max(20px,calc((100vw - var(--b-wrap))/2))}
+.h-build.is-horizontal{padding-block:0}
+.h-build.is-horizontal .h-build__pin{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-block:calc(var(--b-header) + 24px) 48px}
+.h-build.is-horizontal .h-build__pin>.b-wrap{width:100%}
+.h-build.is-horizontal .h-build__viewport{overflow:hidden}
+.h-build.is-horizontal .h-build__track{display:flex;width:max-content;gap:24px}
+.h-build.is-horizontal .h-panel{width:clamp(320px,31vw,440px)}
+.h-panel__card{position:relative;display:flex;flex-direction:column;height:100%;min-height:440px;padding:32px;border:1px solid var(--b-on-line);border-radius:24px;background:color-mix(in srgb,var(--b-paper) 3%,transparent);color:var(--b-on);text-decoration:none;overflow:hidden;transition:border-color .4s,background .4s}
+.h-panel__card:hover{border-color:color-mix(in srgb,var(--b-foam) 60%,transparent);background:color-mix(in srgb,var(--b-paper) 6%,transparent)}
+.h-panel__num{font:500 13px/1 var(--b-mono);letter-spacing:.1em;color:var(--b-foam);margin-bottom:auto}
+.h-panel__orb{position:absolute;right:-90px;top:-90px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--b-foam) 45%,transparent),transparent 65%);opacity:.5;transition:scale .9s var(--b-ease-out),opacity .6s}
+.h-panel__card:hover .h-panel__orb{scale:1.35;opacity:.8}
+.h-panel__title{font-size:clamp(1.6rem,2.4vw,2.2rem);letter-spacing:-.03em;margin:120px 0 14px;max-width:12ch}
+.h-panel__text{color:var(--b-on-soft);font-size:16px}
+.h-panel__meta{font:400 12.5px/1.3 var(--b-mono);color:var(--b-foam);margin-bottom:22px}
+.h-panel__go{font-weight:600;font-size:15px;display:inline-flex;gap:8px}
+.h-panel__go span{transition:transform .4s var(--b-ease-out)}
+.h-panel__card:hover .h-panel__go span{transform:translateX(6px)}
+.h-build__bar{height:2px;margin-top:40px;background:var(--b-on-line);border-radius:2px;overflow:hidden;display:none}
+.h-build.is-horizontal .h-build__bar{display:block}
+.h-build__bar span{display:block;height:100%;background:var(--b-foam);transform-origin:left;transform:scaleX(0)}
+@media (max-width:700px){.h-panel__card{min-height:0}.h-panel__title{margin-top:48px}}
+
+/* 5. Numbers */
+.h-numbers{padding-block:96px;border-bottom:1px solid var(--b-line)}
+.h-numbers__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:32px}
+@media (max-width:900px){.h-numbers__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.h-stat{position:relative;display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:4px;padding-top:20px}
+.h-stat__rule{position:absolute;left:0;right:0;top:0;height:2px;background:var(--b-strong);transform-origin:left}
+.h-stat__num{font:700 clamp(3.2rem,6.4vw,5.4rem)/1 var(--b-head);letter-spacing:-.05em;color:var(--b-strong);font-variant-numeric:tabular-nums}
+.h-stat__plus{font:700 clamp(2rem,4vw,3rem)/1 var(--b-head);color:var(--b-current)}
+.h-stat__label{grid-column:1/-1;font:500 12.5px/1.45 var(--b-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--b-muted);margin-top:12px}
+
+/* 6. Process: the rail fills as you read down the steps */
+.h-process{padding-block:clamp(96px,12vw,160px)}
+.h-process__grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px}
+.h-process__head h2{font-size:clamp(2.2rem,5vw,4rem);letter-spacing:-.04em}
+.h-process__head p{color:var(--b-muted);max-width:40ch;margin-bottom:28px}
+@media (min-width:901px){.h-process__head{position:sticky;top:calc(var(--b-header) + 40px);align-self:start}}
+@media (max-width:900px){.h-process__grid{grid-template-columns:minmax(0,1fr);gap:40px}}
+.h-steps{position:relative;padding-left:64px}
+.h-steps__rail{position:absolute;left:17px;top:8px;bottom:8px;width:2px;background:var(--b-line)}
+.h-steps__rail span{position:absolute;inset:0;background:var(--b-strong);transform-origin:top}
+.h-steps__list{list-style:none;margin:0;padding:0}
+.h-step{position:relative;padding-bottom:56px}
+.h-step:last-child{padding-bottom:0}
+.h-step__dot{position:absolute;left:-64px;top:0;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;border:2px solid var(--b-strong);background:var(--b-bg);font:600 14px/1 var(--b-mono);color:var(--b-strong);transition:background .4s,color .4s}
+.h-step.is-on .h-step__dot{background:var(--b-strong);color:var(--b-bg)}
+.h-step h3{font-size:clamp(1.4rem,2.2vw,1.9rem);margin:2px 0 10px}
+.h-step p{color:var(--b-muted);max-width:52ch}
+
+/* 7. Products: a spotlight follows the cursor across each card */
+.h-products{padding-block:0 clamp(96px,12vw,160px)}
+.h-products h2{max-width:18ch;font-size:clamp(2.2rem,5vw,4rem);letter-spacing:-.04em;margin-bottom:48px}
+.h-products__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+@media (max-width:900px){.h-products__grid{grid-template-columns:minmax(0,1fr)}}
+.h-product{position:relative;display:flex;flex-direction:column;min-height:300px;padding:32px;border:1px solid var(--b-line);border-radius:24px;background:radial-gradient(420px circle at var(--mx,-200px) var(--my,-200px),var(--b-glow),transparent 60%),var(--b-surface);color:var(--b-fg);text-decoration:none;box-shadow:var(--b-shadow);transition:translate .5s var(--b-ease-out),border-color .4s}
+a.h-product:hover{translate:0 -6px;border-color:var(--b-link)}
+.h-product h3{font-size:1.6rem;letter-spacing:-.02em;margin-bottom:12px}
+.h-product p{color:var(--b-muted)}
+.h-product__go{margin-top:auto;font-weight:600;color:var(--b-link)}
+
+@media (prefers-reduced-motion:reduce){.h-hero__scroll span{animation:none}.h-panel__orb,.h-panel__go span,.h-product{transition:none}}

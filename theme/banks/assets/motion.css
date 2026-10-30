@@ -1,0 +1,103 @@
+/* Banks motion layer (public site): island header, page curtain, Signal cursor, mobile menu */
+
+/* Header: on scroll the bar gathers into a floating Lagoon island */
+.b-header{transition:background .4s,border-color .4s,color .4s}
+.b-header__inner{transition:max-width .7s var(--b-ease-inout),min-height .6s var(--b-ease-inout),top .6s var(--b-ease-inout),margin .6s var(--b-ease-inout),padding .6s var(--b-ease-inout),border-radius .6s var(--b-ease-inout),background-color .45s,box-shadow .5s}
+.b-header.is-scrolled{background:transparent!important;border-bottom-color:transparent!important;pointer-events:none}
+.b-header__inner{position:relative;top:0;isolation:isolate}
+.b-header.is-scrolled .b-header__inner{pointer-events:auto;max-width:min(1160px,calc(100% - 32px));min-height:60px;top:12px;padding:0 8px 0 20px;border-radius:999px;background-color:rgba(11,59,64,.9);box-shadow:0 22px 50px -22px rgba(14,26,27,.6),0 0 0 1px rgba(127,214,198,.18) inset}
+/* The island's blur sits on a layer behind it: blur on the bar itself would stop the
+   dropdown panels inside it from blurring the page under them. */
+.b-header__inner::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none}
+.b-header.is-scrolled .b-header__inner::before{backdrop-filter:blur(18px) saturate(1.5);-webkit-backdrop-filter:blur(18px) saturate(1.5)}
+.b-header.is-scrolled .b-mark{height:28px}
+.b-header.is-scrolled .b-nav__link,.b-header.is-scrolled .b-nav__portal,.b-header.is-scrolled .b-burger{color:var(--b-paper)}
+.b-header.is-scrolled .b-nav__link:hover{color:var(--b-signal)}
+.b-header.is-scrolled .b-btn{padding:11px 18px}
+/* Only colour and the logo height animate: tweening the button's padding or type size
+   while the bar narrows made its label reflow and wobble. */
+.b-mark{transition:height .5s var(--b-ease-inout),color .35s}
+
+/* Mark entrance (every page, ~1.4s, once): the two banks draw in from the left, the lower one a
+   beat behind, then the Signal dot flows in, settles and sends out one faint ripple.
+   Only under .js-motion, which JS sets and reduced motion never gets. */
+.b-mark__bank,.b-mark__dot,.b-mark__ripple{transform-box:fill-box}
+.b-mark__bank{transform-origin:0 50%}
+.b-mark__dot,.b-mark__ripple{transform-origin:50% 50%}
+.js-motion .b-mark__bank{animation:b-bank .9s var(--b-ease-inout) .45s backwards}
+.js-motion .b-mark__bank--bot{animation-delay:.57s}
+.js-motion .b-mark__dot{animation:b-dot .8s cubic-bezier(.2,.9,.25,1.25) 1.1s backwards}
+.js-motion .b-mark__ripple{animation:b-ripple 1.1s var(--b-ease-out) 1.55s backwards}
+@keyframes b-bank{from{clip-path:inset(0 100% 0 0 round 0);opacity:.2}to{clip-path:inset(0 0 0 0 round 0);opacity:1}}
+@keyframes b-dot{from{transform:translateX(-26px) scale(.2);opacity:0}60%{opacity:1}to{transform:none;opacity:1}}
+@keyframes b-ripple{from{transform:scale(1);opacity:0}10%{opacity:.6}to{transform:scale(3);opacity:0}}
+.b-brand--mark:hover .b-mark__dot{transform:translateX(3px);transition:transform .45s var(--b-ease-out)}
+.b-nav__link,.b-header .b-btn{transition:color .35s}
+.b-island-pulse{animation:b-island .55s var(--b-ease-out)}
+@keyframes b-island{0%{transform:translateY(-8px);opacity:.6}100%{transform:none;opacity:1}}
+@media (max-width:1180px){.b-header.is-scrolled .b-header__inner{max-width:none;margin:0 12px;top:10px;min-height:56px}}
+.b-nav__link{position:relative}
+.b-nav__link::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:var(--b-signal);transform:scaleX(0);transform-origin:right;transition:transform .4s var(--b-ease-inout)}
+.b-nav__link:hover::after,.b-nav__list .is-current>.b-nav__link::after{transform:scaleX(1);transform-origin:left}
+
+/* Transparent header over Lagoon heroes */
+.b-hero-dark .b-header{position:fixed;left:0;right:0;top:0;background:transparent;border-bottom-color:transparent}
+.b-hero-dark .b-header:not(.is-scrolled) .b-nav__link,.b-hero-dark .b-header:not(.is-scrolled) .b-nav__portal,.b-hero-dark .b-header:not(.is-scrolled) .b-burger{color:var(--b-paper)}
+
+/* Page curtain between pages: Lagoon with the mark */
+.b-curtain{position:fixed;inset:0;z-index:300;background:var(--b-lagoon);display:none;place-items:center;pointer-events:none}
+.js-motion .b-curtain{display:grid}
+.b-curtain img{width:72px;height:auto;opacity:.95}
+
+/* Cursor: a Foam ring and the Signal dot from the logo (fine pointers only) */
+.b-cursor,.b-cursor-dot{position:fixed;left:0;top:0;z-index:400;pointer-events:none;border-radius:50%;display:none}
+.b-cursor{width:38px;height:38px;margin:-19px 0 0 -19px;border:1.5px solid rgba(22,117,108,.65);transition:width .3s,height .3s,margin .3s,background .3s,border-color .3s}
+.b-cursor-dot{width:8px;height:8px;margin:-4px 0 0 -4px;background:var(--b-signal)}
+.has-cursor .b-cursor,.has-cursor .b-cursor-dot{display:block}
+.b-cursor.is-link{width:72px;height:72px;margin:-36px 0 0 -36px;background:rgba(245,183,46,.16);border-color:var(--b-signal)}
+.b-cursor.is-dark{border-color:rgba(127,214,198,.75)}
+
+/* Mobile menu: a Lagoon sheet that opens out of the menu button, with numbered links */
+@media (max-width:1180px){
+ .b-nav{position:fixed;inset:0;z-index:-1;display:flex!important;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:0;visibility:hidden;overflow-y:auto;overscroll-behavior:contain;
+  padding:calc(var(--b-header) + 28px) max(20px,env(safe-area-inset-right,0px)) max(28px,env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));
+  background:radial-gradient(120% 60% at 100% 0,rgba(127,214,198,.22),transparent 60%),radial-gradient(90% 50% at 0 100%,rgba(245,183,46,.10),transparent 65%),var(--b-lagoon);
+  border:0;clip-path:circle(0 at calc(100% - 42px) 38px);transition:clip-path .6s var(--b-ease-inout),visibility 0s .6s}
+ .b-nav-open .b-nav{visibility:visible;clip-path:circle(160% at calc(100% - 42px) 38px);transition:clip-path .75s var(--b-ease-inout)}
+ .b-nav-open .b-header{background:transparent;border-color:transparent}
+ .b-nav-open .b-header .b-header__inner{background-color:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;margin:0 auto;top:0;border-radius:0;max-width:var(--b-wrap);min-height:var(--b-header);padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+ .b-nav-open .b-header .b-header__inner::before{backdrop-filter:none;-webkit-backdrop-filter:none}
+ .b-nav-open .b-burger,.b-nav-open .b-nav__portal,.b-nav-open .b-theme{color:var(--b-paper)!important}
+ .b-nav-open .b-theme{border-color:rgba(244,245,241,.28)}
+ .b-nav .b-nav__list{counter-reset:b-nav;border-top:1px solid rgba(244,245,241,.12)}
+ .b-nav .b-nav__list>li{counter-increment:b-nav;overflow:hidden;border-bottom:1px solid rgba(244,245,241,.12)}
+ .b-nav .b-nav__link{display:flex;align-items:baseline;gap:14px;padding:14px 0;border:0;font:600 clamp(1.5rem,6.4vw,2.1rem)/1.15 var(--b-head);letter-spacing:-.02em;color:var(--b-paper)!important;white-space:normal}
+ .b-nav .b-nav__list>li>.b-nav__link::before{content:counter(b-nav,decimal-leading-zero);font:500 11px/1 var(--b-mono);letter-spacing:.08em;color:var(--b-foam);transform:translateY(-.55em)}
+ .b-nav .b-nav__link::after{display:none}
+ .b-nav .b-nav__link:hover,.b-nav .b-nav__list .is-current>.b-nav__link{color:var(--b-signal)!important}
+ .b-nav .b-btn{margin-top:28px;padding:16px 22px;font-size:16px}
+ .b-nav .b-nav__top .b-nav__chev{width:18px;height:18px;color:var(--b-foam);align-self:center}
+ .b-nav .b-panel__glass{margin:0 0 14px;background:rgba(244,245,241,.06);border-color:rgba(244,245,241,.12);-webkit-backdrop-filter:none;backdrop-filter:none}
+ .b-nav .b-panel__glass *{--b-fg:var(--b-paper);--b-muted:rgba(244,245,241,.6);--b-tint:rgba(244,245,241,.08);--b-link:var(--b-signal);--b-current:var(--b-foam);--b-line:rgba(244,245,241,.12)}
+ .b-nav .b-panel__link span{font-size:16px}
+ .b-nav .b-panel__link::after{display:none}
+ .b-nav__meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 18px;margin:20px 0 0;font:400 12.5px/1.4 var(--b-mono);letter-spacing:.02em}
+ .b-nav__meta a{color:rgba(244,245,241,.72);text-decoration:none}
+ .b-nav__meta a:hover{color:var(--b-signal)}
+ .b-nav-open{overflow:hidden}
+}
+
+@media (prefers-reduced-motion:reduce){
+ .b-header,.b-header__inner,.b-nav__link::after,.b-btn::before,.b-nav{transition:none!important}
+ .b-island-pulse,.b-mark__bank,.b-mark__dot,.b-mark__ripple{animation:none!important}
+}
+
+/* Lenis */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:hidden}
+
+/* SplitText masks */
+/* SplitText mask wrappers: room for descenders so g, p and y are never clipped */
+[class$="word-mask"],[class$="line-mask"]{padding-bottom:.14em;margin-bottom:-.14em}

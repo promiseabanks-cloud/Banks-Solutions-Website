@@ -1,0 +1,79 @@
+/* Pricing (/pricing/). Colours come from the tokens in main.css, so both themes work. */
+
+/* 1. Hero: the answer on the left, the split-flap board on the right */
+.pr-hero{background:var(--b-bg)}
+.pr-stage{position:relative;overflow:hidden;min-height:100svh;display:grid;align-items:center;background:var(--b-hero);color:var(--b-on);padding-block:calc(var(--b-header) + 40px) 80px;will-change:clip-path}
+.pr-stage::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(var(--b-on-line) 1px,transparent 1px),linear-gradient(90deg,var(--b-on-line) 1px,transparent 1px);background-size:88px 88px;-webkit-mask-image:radial-gradient(ellipse at 70% 45%,#000 0,transparent 68%);mask-image:radial-gradient(ellipse at 70% 45%,#000 0,transparent 68%);opacity:.4}
+.pr-inner{position:relative;z-index:1;width:100%;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:56px;align-items:center}
+@media (max-width:1080px){.pr-inner{grid-template-columns:minmax(0,1fr);gap:48px}}
+.pr-eyebrow{color:var(--b-foam)}
+.pr-title{font-size:clamp(2.5rem,5.2vw,5rem);line-height:.98;letter-spacing:-.045em;max-width:11ch;margin-bottom:26px}
+.pr-lede{max-width:50ch;font-size:clamp(1.02rem,1.3vw,1.15rem);color:var(--b-on-soft);margin-bottom:36px}
+.pr-actions{display:flex;flex-wrap:wrap;gap:14px}
+
+/* The board: one tile per character, a hinge line across the middle of each */
+.pr-board{--ch:clamp(11px,.9vw,13px);position:relative;padding:18px 18px 14px;border-radius:20px;background:color-mix(in srgb,var(--b-ink) 55%,var(--b-hero));border:1px solid var(--b-on-line);box-shadow:0 60px 120px -60px rgba(0,0,0,.8),inset 0 1px 0 color-mix(in srgb,var(--b-paper) 8%,transparent);overflow:hidden}
+.pr-board__top th{padding:0 2px 6px;text-align:left;font:500 10.5px/1 var(--b-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--b-signal)}
+.pr-board__table{width:100%;border-collapse:separate;border-spacing:0 5px}
+.pr-board__table td{padding:0 calc(var(--ch) * .45) 0 0;white-space:nowrap}
+.pr-board__table td:last-child{padding-right:0}
+.pr-flaps{display:inline-flex;gap:2px;perspective:400px}
+.pr-ch{position:relative;display:inline-grid;place-items:center;width:calc(var(--ch) * .98);height:calc(var(--ch) * 1.7);border-radius:3px;background:linear-gradient(color-mix(in srgb,var(--b-paper) 9%,var(--b-ink)) 50%,color-mix(in srgb,var(--b-paper) 5%,var(--b-ink)) 50%);color:var(--b-paper);font:500 var(--ch)/1 var(--b-mono);text-transform:uppercase;box-shadow:inset 0 -1px 0 rgba(0,0,0,.4);transform-origin:50% 50%;backface-visibility:hidden}
+.pr-ch::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(0,0,0,.55)}
+.pr-row td:nth-child(2) .pr-ch{color:var(--b-foam)}
+.pr-board__foot{display:flex;align-items:center;gap:9px;margin:10px 2px 0;font:400 11px/1.3 var(--b-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--b-on-soft)}
+.pr-board__foot .s-live{width:6px;height:6px}
+@media (max-width:1080px){.pr-board{--ch:clamp(9px,1.75vw,14px)}}
+@media (max-width:640px){.pr-board{--ch:clamp(9px,2.6vw,13px);padding:14px 12px 12px}.pr-board__top th:last-child,.pr-board__table td:last-child{display:none}.pr-flaps{gap:1px}.pr-board__table td{padding-right:8px}}
+
+/* Section heads */
+.pr-head{max-width:640px;margin-bottom:56px}
+.pr-head h2{font-size:clamp(2rem,4.4vw,3.4rem);letter-spacing:-.035em}
+.pr-head p:not(.b-eyebrow){color:var(--b-muted);max-width:52ch}
+.pr-head--dark .b-eyebrow{color:var(--b-foam)}
+
+/* 2. The six cards */
+.pr-cards{padding-block:clamp(96px,12vw,150px)}
+.pr-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media (max-width:1000px){.pr-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.pr-grid{grid-template-columns:minmax(0,1fr)}}
+.pr-card{position:relative;display:flex;flex-direction:column;padding:30px 28px 28px;border:1px solid var(--b-line);border-radius:22px;background:var(--b-surface);color:var(--b-fg);transition:border-color var(--b-dur),box-shadow var(--b-dur)}
+.pr-card:hover{border-color:color-mix(in srgb,var(--b-link) 50%,var(--b-line));box-shadow:var(--b-shadow)}
+.pr-card.is-featured{background:var(--b-hero);color:var(--b-on);border-color:transparent}
+.pr-card__name{font-size:1.2rem;margin-bottom:18px}
+.pr-card__price{display:grid;margin:0 0 6px}
+.pr-card__from{font:500 11.5px/1.2 var(--b-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--b-muted);margin-bottom:2px}
+.pr-card__price strong{font:700 clamp(2rem,3vw,2.6rem)/1.05 var(--b-head);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.pr-card__unit{font-size:14.5px;color:var(--b-muted);margin-top:4px}
+.pr-card__extra{margin:6px 0 0;font-weight:600;font-size:14.5px;color:var(--b-link)}
+.pr-card__when{margin:16px 0 18px;padding:10px 0;border-block:1px solid var(--b-line);font:500 12px/1.3 var(--b-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--b-muted)}
+.pr-card__list{display:grid;gap:9px;list-style:none;margin:0 0 20px;padding:0;font-size:15px}
+.pr-card__list li{position:relative;padding-left:24px}
+.pr-card__list li::before{content:"";position:absolute;left:2px;top:.45em;width:11px;height:6px;border-left:2px solid var(--b-link);border-bottom:2px solid var(--b-link);transform:rotate(-45deg)}
+.pr-card__pay{margin:auto 0 18px;font-size:14px;color:var(--b-muted)}
+.pr-card__link{font-weight:600;font-size:15px;color:var(--b-link);text-decoration:none}
+.pr-card__link:hover{text-decoration:underline}
+.pr-card.is-featured .pr-card__from,.pr-card.is-featured .pr-card__unit,.pr-card.is-featured .pr-card__when,.pr-card.is-featured .pr-card__pay{color:var(--b-on-soft)}
+.pr-card.is-featured .pr-card__when{border-color:var(--b-on-line)}
+.pr-card.is-featured .pr-card__list li::before{border-color:var(--b-foam)}
+.pr-card.is-featured .pr-card__link,.pr-card.is-featured .pr-card__extra{color:var(--b-foam)}
+
+/* 3. How payment works: three stops on a line */
+.pr-pay{position:relative;background:var(--b-hero);color:var(--b-on);padding-block:clamp(96px,12vw,150px)}
+.pr-pay__steps{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px;list-style:none;margin:0;padding:0}
+.pr-pay__steps::before{content:"";position:absolute;left:0;right:0;top:22px;height:1px;background:var(--b-on-line);transform-origin:0 50%;transform:scaleX(var(--line,1))}
+@media (max-width:860px){.pr-pay__steps{grid-template-columns:minmax(0,1fr);gap:32px}.pr-pay__steps::before{display:none}}
+.pr-pay__step{position:relative}
+.pr-pay__n{display:grid;place-items:center;width:44px;height:44px;margin-bottom:22px;border-radius:50%;border:1px solid var(--b-on-line);background:var(--b-hero);font:500 13px/1 var(--b-mono);color:var(--b-foam)}
+.pr-pay__step h3{font-size:1.35rem;margin-bottom:10px}
+.pr-pay__step p{color:var(--b-on-soft);max-width:38ch;margin:0}
+
+/* 4. What changes a price */
+.pr-changes{padding-block:clamp(96px,12vw,150px)}
+.pr-changes__grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px}
+@media (max-width:900px){.pr-changes__grid{grid-template-columns:minmax(0,1fr);gap:8px}}
+.pr-changes__list{list-style:none;margin:0;padding:0;border-top:1px solid var(--b-line)}
+.pr-change{display:grid;grid-template-columns:48px minmax(0,1fr);column-gap:16px;padding:22px 0;border-bottom:1px solid var(--b-line)}
+.pr-change__n{grid-row:1/span 2;font:500 13px/1.6 var(--b-mono);color:var(--b-link)}
+.pr-change strong{font:600 1.15rem/1.3 var(--b-head)}
+.pr-change span:last-child{color:var(--b-muted);font-size:15.5px}

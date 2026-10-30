@@ -1,0 +1,56 @@
+/* Legal pages (/privacy-policy/, /terms/). Built for reading: a short hero, a contents list that
+   stays beside the text on wide screens, generous measure. Colours come from main.css tokens. */
+
+/* 1. Hero */
+.lg-hero{background:var(--b-bg)}
+.lg-stage{position:relative;overflow:hidden;min-height:min(78svh,720px);display:grid;align-items:end;background:var(--b-hero);color:var(--b-on);padding-block:calc(var(--b-header) + 72px) clamp(56px,8vw,96px);will-change:clip-path}
+.lg-inner{position:relative;z-index:1;width:100%}
+.lg-eyebrow{color:var(--b-foam)}
+.lg-title{font-size:clamp(3rem,8vw,7.4rem);line-height:.92;letter-spacing:-.055em;margin-bottom:28px}
+.lg-lede{max-width:60ch;font-size:clamp(1.02rem,1.3vw,1.18rem);color:var(--b-on-soft);margin-bottom:32px}
+.lg-lede a{color:var(--b-on)}
+.lg-meta{margin:0;font:500 12px/1.5 var(--b-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--b-on-soft)}
+
+/* Reading progress, filled by legal.js; hidden without it */
+.lg-progress{position:fixed;left:0;right:0;top:0;z-index:60;height:3px;pointer-events:none;visibility:hidden}
+.lg-progress span{display:block;height:100%;background:var(--b-current);transform-origin:0 50%}
+.lg-progress.is-on{visibility:visible}
+
+/* 2. Body: contents on the left, the document on the right */
+.lg-body{padding-block:clamp(72px,9vw,120px) clamp(100px,12vw,150px)}
+.lg-grid{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,8fr);gap:clamp(40px,6vw,96px);align-items:start}
+@media (max-width:960px){.lg-grid{grid-template-columns:minmax(0,1fr);gap:40px}}
+
+.lg-toc{position:sticky;top:calc(var(--b-header) + 32px)}
+@media (max-width:960px){.lg-toc{position:static;padding:22px 22px 14px;border:1px solid var(--b-line);border-radius:18px;background:var(--b-surface)}}
+.lg-toc__label{margin:0 0 14px;font:500 11px/1.3 var(--b-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--b-muted)}
+.lg-toc ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--b-line)}
+@media (max-width:960px){.lg-toc ol{columns:2;column-gap:24px;border:0}}
+@media (max-width:520px){.lg-toc ol{columns:1}}
+.lg-toc a{position:relative;display:flex;gap:12px;padding:7px 0 7px 18px;font-size:14.5px;line-height:1.35;color:var(--b-muted);text-decoration:none;transition:color var(--b-dur)}
+@media (max-width:960px){.lg-toc a{padding-left:0;break-inside:avoid}}
+.lg-toc a span{flex:none;font:500 11px/1.9 var(--b-mono);color:var(--b-link)}
+.lg-toc a::before{content:"";position:absolute;left:-1px;top:6px;bottom:6px;width:2px;background:var(--b-current);transform:scaleY(0);transition:transform var(--b-dur) var(--b-ease-out)}
+.lg-toc a:hover,.lg-toc a.is-on{color:var(--b-fg)}
+.lg-toc a.is-on::before{transform:scaleY(1)}
+@media (max-width:960px){.lg-toc a::before{display:none}}
+
+.lg-doc{max-width:760px}
+.lg-summary{margin-bottom:clamp(48px,6vw,72px);padding:clamp(24px,3vw,34px);border-radius:22px;background:var(--b-tint);border:1px solid color-mix(in srgb,var(--b-link) 22%,var(--b-line))}
+.lg-summary__label{margin:0 0 16px;font:500 11px/1.3 var(--b-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--b-link)}
+.lg-summary ul{display:grid;gap:12px;list-style:none;margin:0;padding:0}
+.lg-summary li{position:relative;padding-left:26px;font-size:clamp(1rem,1.25vw,1.1rem);line-height:1.55}
+.lg-summary li::before{content:"";position:absolute;left:2px;top:.62em;width:9px;height:9px;border-radius:50%;background:var(--b-current)}
+
+.lg-sec{padding-top:clamp(32px,4vw,44px);margin-top:clamp(32px,4vw,44px);border-top:1px solid var(--b-line);scroll-margin-top:calc(var(--b-header) + 24px)}
+.lg-sec:first-of-type{margin-top:0}
+.lg-sec h2{display:flex;align-items:baseline;gap:16px;font-size:clamp(1.5rem,2.6vw,2.1rem);letter-spacing:-.03em;margin-bottom:18px}
+.lg-sec__n{flex:none;font:500 13px/1 var(--b-mono);color:var(--b-link)}
+.lg-sec p,.lg-sec li{font-size:clamp(1rem,1.15vw,1.06rem);line-height:1.7;color:color-mix(in srgb,var(--b-fg) 86%,var(--b-muted))}
+.lg-sec p{margin:0 0 16px;max-width:68ch}
+.lg-sec ul{display:grid;gap:10px;margin:0 0 18px;padding-left:22px;max-width:68ch}
+.lg-sec li::marker{color:var(--b-link)}
+.lg-sec strong{color:var(--b-fg);font-weight:600}
+.lg-sec a,.lg-summary a{color:var(--b-link)}
+
+@media (prefers-reduced-motion:reduce){.lg-toc a,.lg-toc a::before{transition:none}}
