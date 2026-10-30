@@ -139,7 +139,9 @@
         return;
       }
       if (lenis) lenis.stop();
-      gsap.fromTo('.b-nav .b-nav__list li, .b-nav > a', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.06, delay: 0.05 });
+      // Each link rises out of its own row (the li clips it) while the sheet sweeps open.
+      gsap.fromTo('.b-nav .b-nav__list > li > .b-nav__link', { yPercent: 110, rotate: 3 }, { yPercent: 0, rotate: 0, duration: 0.8, ease: 'expo.out', stagger: 0.055, delay: 0.18 });
+      gsap.fromTo('.b-nav > .b-btn, .b-nav__meta', { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out', stagger: 0.08, delay: 0.45 });
     });
   }
 
