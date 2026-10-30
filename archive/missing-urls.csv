@@ -1,0 +1,15 @@
+url,note,proposed
+/audit/,"every ""Book a Strategy Call"" button links here; page does not exist",/start/ (strategy call booking)
+/glossary/<term>/,all 30 glossary entries 404 on the live site today,keep; fixed by the new theme
+/knowledge-topic/ai-for-business/,topic filter links with no taxonomy behind them,/knowledge/?topic=ai-for-business
+/knowledge-topic/trust-and-compliance/,same,/knowledge/?topic=trust-and-compliance
+/knowledge-topic/websites-and-digital-presence/,same,/knowledge/?topic=websites-and-digital-presence
+/knowledge-topic/cost-and-practical-basics/,same,/knowledge/?topic=cost-and-practical-basics
+/knowledge-topic/crm-and-automation/,same,/knowledge/?topic=crm-and-automation
+/client-portal-login/,visitors looking for a portal,portal login
+/consultation/,,/start/
+/apply-for-a-strategy-call/,,/start/
+/engagement-model/,,/services/
+/services/web-design/,,/services/digital-foundation/ (or new Websites page)
+/portfolio/,,/work/
+/about/,,/about/ (new page)
