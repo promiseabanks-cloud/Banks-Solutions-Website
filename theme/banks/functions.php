@@ -9,6 +9,7 @@ define( 'BANKS_LENIS', '1.3.4' );
 
 require_once __DIR__ . '/inc/industries.php';
 require_once __DIR__ . '/inc/nav.php';
+require_once __DIR__ . '/inc/mobile-type.php';
 
 add_action(
 	'after_setup_theme',

@@ -138,6 +138,11 @@ p{margin:0 0 1em}
 /* Clip here, not only on body: start states that sit off to the side (reveals, marquees) otherwise
    widen the phone's layout viewport on first load and push the fixed header past the screen edge. */
 .b-main{min-height:60vh;overflow-x:clip}
+/* Phones: every section except the hero gets 10px more room on each side (sections already
+   carry their own top and bottom spacing). Backgrounds still run edge to edge. */
+@media (max-width:767px){
+ .b-main>:not([class*="-hero"]):not(:has(>[class*="-hero"])),.b-main>:has(>[class*="-hero"])>:not([class*="-hero"]){padding-inline:10px}
+}
 .b-content{padding-block:64px 96px}
 .b-entry__title{margin-bottom:28px;max-width:20ch}
 .b-entry__body{max-width:70ch}
