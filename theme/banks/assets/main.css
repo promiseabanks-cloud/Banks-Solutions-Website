@@ -2,6 +2,8 @@
 :root{
  --b-lagoon:#0B3B40;--b-paper:#F4F5F1;--b-signal:#F5B72E;--b-ink:#0E1A1B;
  --b-current:#16756C;--b-foam:#7FD6C6;--b-mist:#5E6E6E;--b-rule:#D9DEDA;--b-white:#FFFFFF;
+ /* Not a brand colour: the green of a WhatsApp message, for mock-ups of one only */
+ --b-wa:#25D366;
  --b-bg:var(--b-paper);--b-fg:var(--b-ink);--b-muted:var(--b-mist);--b-line:var(--b-rule);--b-surface:var(--b-white);--b-link:var(--b-current);
  /* Semantic tokens: page CSS uses these so light and dark themes come for free */
  --b-strong:var(--b-lagoon);--b-hero:var(--b-lagoon);--b-hero-soft:#CFE0DB;--b-tint:rgba(11,59,64,.06);--b-glow:rgba(127,214,198,.22);
@@ -154,22 +156,45 @@ p{margin:0 0 1em}
 .b-card__title{font:600 1.25rem/1.2 var(--b-head);letter-spacing:-.01em}
 .b-card__excerpt{color:var(--b-muted);font-size:15.5px}
 
-/* Footer */
-.b-footer{border-top:1px solid color-mix(in srgb,var(--b-paper) 10%,transparent);background:var(--b-lagoon);color:#BFD3CF;padding-block:72px 28px;font-size:15.5px}
+/* Footer: frosted glass over the 3D metal letters. --fw is the width of the word image; the
+   glass keeps a clear band at its foot (the letters, frosted) and the footer a band below it
+   (the letters, bare). */
+.b-footer{--fw:min(96vw,1340px);position:relative;overflow:hidden;isolation:isolate;background:radial-gradient(120% 90% at 50% 100%,var(--b-current) 0,var(--b-lagoon) 46%,var(--b-ink) 100%);color:#C9DAD6;padding-block:clamp(28px,5vw,72px) calc(var(--fw)*.15);font-size:15.5px}
 .b-footer a{color:var(--b-paper);text-decoration:none}
 .b-footer a:hover{color:var(--b-signal)}
-.b-footer__grid{display:grid;grid-template-columns:1.8fr 1fr 1fr 1.2fr;gap:40px}
-.b-footer__brand p{max-width:36ch;margin-top:18px}
+.b-footer .b-btn--signal:hover{color:var(--b-ink)}
+.b-footer__scene{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.b-footer__word{position:absolute;left:50%;bottom:calc(var(--fw)*.012);width:var(--fw);max-width:none;height:auto;margin-left:calc(var(--fw)*-.5);filter:drop-shadow(0 30px 40px rgba(0,0,0,.45))}
+.b-footer__blob{position:absolute;width:52vmax;height:52vmax;border-radius:50%;opacity:.55}
+.b-footer__blob--1{left:-12vmax;top:-18vmax;background:radial-gradient(circle,rgba(127,214,198,.5),transparent 62%)}
+.b-footer__blob--2{right:-16vmax;bottom:-22vmax;background:radial-gradient(circle,rgba(22,117,108,.8),transparent 62%)}
+.js-motion:not(.js-lite) .b-footer__blob{animation:b-liquid 16s ease-in-out infinite alternate}
+.js-motion:not(.js-lite) .b-footer__blob--2{animation-duration:21s;animation-direction:alternate-reverse}
+@keyframes b-liquid{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(9vmax,5vmax,0) scale(1.18)}100%{transform:translate3d(-4vmax,10vmax,0) scale(.92)}}
+.b-footer__glass{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.2);border-radius:clamp(22px,3vw,36px);padding:clamp(22px,4vw,48px) clamp(18px,4vw,48px) calc(var(--fw)*.085);background:linear-gradient(155deg,rgba(244,245,241,.17),rgba(244,245,241,.05) 42%,rgba(127,214,198,.1));-webkit-backdrop-filter:blur(13px) saturate(1.5);backdrop-filter:blur(13px) saturate(1.5);box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 -1px 0 rgba(255,255,255,.08) inset,0 40px 80px -40px rgba(0,0,0,.6)}
+/* The light on the glass: follows the pointer (motion.js sets --fx/--fy), rests top left */
+.b-footer__glass::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(520px circle at var(--fx,18%) var(--fy,0%),rgba(255,255,255,.2),transparent 62%)}
+.b-footer__glass>*{position:relative}
+.b-footer__grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:clamp(24px,4vw,56px);align-items:start}
+.b-footer__line{margin:22px 0 10px;font:700 clamp(1.7rem,3.2vw,2.7rem)/1.02 var(--b-head);letter-spacing:-.035em;color:var(--b-paper)}
+.b-footer__line span{color:var(--b-signal)}
+.b-footer__brand p{max-width:36ch}
+.b-footer__actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.b-footer__links{display:grid;grid-template-columns:1.1fr 1fr 1.2fr;gap:28px;padding:clamp(18px,2.6vw,30px);border:1px solid rgba(255,255,255,.14);border-radius:clamp(16px,2vw,24px);background:rgba(244,245,241,.09);box-shadow:0 1px 0 rgba(255,255,255,.2) inset}
 .b-footer__title{font:500 12px/1.2 var(--b-mono);text-transform:uppercase;letter-spacing:.12em;color:var(--b-foam);margin:0 0 14px}
 .b-footer__list{list-style:none;margin:0;padding:0;display:grid;gap:2px}
 .b-footer__list a{display:inline-block;padding-block:3px}
-.b-footer__base{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;border-top:1px solid rgba(244,245,241,.14);margin-top:56px;padding-top:22px;font:400 13px/1.4 var(--b-mono);color:#8FB0AA}
+.b-footer__base{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;margin-top:clamp(22px,3vw,36px);padding-top:18px;border-top:1px solid rgba(244,245,241,.16);font:400 13px/1.4 var(--b-mono);color:#A9C4BE}
 .b-footer__legal{display:flex;gap:18px}.b-footer__legal a{color:inherit;text-decoration:none}.b-footer__legal a:hover{color:var(--b-paper)}
-@media (max-width:860px){.b-footer__grid{grid-template-columns:1fr 1fr}.b-footer__brand{grid-column:1/-1}}
-/* Phones: the two-column footer, centred */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.b-footer__glass{background:rgba(11,59,64,.82)}}
+@media (max-width:960px){.b-footer__grid{grid-template-columns:minmax(0,1fr)}}
+/* Phones: centred, with the links in two columns */
 @media (max-width:767px){
  .b-footer{text-align:center}
  .b-footer__brand p{margin-inline:auto}
+ .b-footer__actions{justify-content:center}
+ .b-footer__links{grid-template-columns:1fr 1fr}
+ .b-footer__links>:last-child{grid-column:1/-1}
  .b-footer__base{flex-direction:column;align-items:center}
  .b-footer__legal{justify-content:center}
 }

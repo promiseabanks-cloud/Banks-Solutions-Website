@@ -1,64 +1,194 @@
 /* Homepage scenes. Colours come from the tokens in main.css, so both themes work. */
 
-/* 1. Hero: full screen, a drifting light that follows the cursor, the flow lines drawn on load.
-   On scroll the stage pulls in at the edges and rounds off, like a frame leaving the screen. */
-.h-hero{background:var(--b-bg)}
+/* 1. Hero: one order followed through everything we build. With motion on, the stage pins and
+   each scroll beat swaps the headline and moves the scene (home.js). Without it (no JS, reduced
+   motion, weak phones) the same story reads as a numbered list under the actions.
+   "Story" below means html.js-motion without .js-lite; both classes are set in the head. */
+.h-hero{background:var(--b-bg);--h-title:clamp(2.6rem,min(6vw,10.5svh),5.9rem)}
 .h-hero__stage{position:relative;overflow:hidden;min-height:100svh;display:grid;align-items:center;background:var(--b-hero);color:var(--b-on);padding-block:calc(var(--b-header) + 40px) 88px;will-change:clip-path}
-.h-hero__stage::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(var(--b-on-line) 1px,transparent 1px),linear-gradient(90deg,var(--b-on-line) 1px,transparent 1px);background-size:88px 88px;-webkit-mask-image:radial-gradient(ellipse at 70% 30%,#000 0,transparent 70%);mask-image:radial-gradient(ellipse at 70% 30%,#000 0,transparent 70%);opacity:.45}
-.h-hero__inner{position:relative;z-index:1;width:100%;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);align-items:center;gap:56px}
-@media (max-width:1080px){.h-hero__inner{grid-template-columns:minmax(0,1fr);gap:48px}}
+.h-hero__stage::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(var(--b-on-line) 1px,transparent 1px),linear-gradient(90deg,var(--b-on-line) 1px,transparent 1px);background-size:88px 88px;-webkit-mask-image:radial-gradient(ellipse at 70% 40%,#000 0,transparent 70%);mask-image:radial-gradient(ellipse at 70% 40%,#000 0,transparent 70%);opacity:.4}
+.h-hero__inner{position:relative;z-index:1;width:100%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:40px}
+.h-hero__copy{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
 .h-hero__eyebrow{color:var(--b-foam)}
-.h-hero__title{font-size:clamp(2.7rem,6vw,5.9rem);line-height:.98;letter-spacing:-.045em;margin-bottom:28px}
-.h-hero__say{display:block}
-/* Rotating word: one line tall, sized to the current word; without JS it shows the first */
-.h-rot{position:relative;display:block;height:1.08em;overflow:hidden;color:var(--b-foam)}
-.h-rot__word{position:absolute;left:0;top:0;white-space:nowrap;visibility:hidden}
-.h-rot__word.is-on{visibility:visible}
-.h-rot::after{content:"";position:absolute;left:0;bottom:.02em;width:var(--rw,3.4em);height:.06em;border-radius:1em;background:currentColor;opacity:.5;transition:width .7s var(--b-ease-inout)}
-.h-hero__lede{max-width:50ch;font-size:clamp(1.05rem,1.5vw,1.25rem);color:var(--b-on-soft);margin-bottom:40px}
-.h-hero__actions{display:flex;flex-wrap:wrap;gap:14px}
-.h-hero__proof{display:flex;flex-wrap:wrap;gap:12px 36px;list-style:none;margin:40px 0 0;padding:22px 0 0;border-top:1px solid var(--b-on-line);font:400 13px/1.3 var(--b-mono);letter-spacing:.04em;color:var(--b-on-soft)}
+.h-beats{display:contents}
+.h-hero__title{font-size:var(--h-title);line-height:.98;letter-spacing:-.045em;margin:0 0 .32em}
+.h-hero__lede,.h-beat__text{max-width:48ch;margin:0;font-size:clamp(1.05rem,1.5vw,1.25rem);color:var(--b-on-soft)}
+/* Later headlines rise as one block from behind their own edge (the padding keeps descenders) */
+.h-beat__rise{display:block}
+.js-motion:not(.js-lite) .h-beats__list .h-beat__title{overflow:hidden;padding-bottom:.12em;margin-bottom:.2em}
+.h-beat__tag{display:flex;align-items:center;gap:10px;margin:0 0 18px;font:500 12.5px/1.3 var(--b-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--b-foam)}
+.h-beat__tag span{padding:4px 9px;border:1px solid var(--b-on-line);border-radius:999px;color:var(--b-on)}
+.h-hero__actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px}
+.h-hero__proof{align-self:stretch;display:flex;flex-wrap:wrap;gap:12px 36px;list-style:none;margin:36px 0 0;padding:20px 0 0;border-top:1px solid var(--b-on-line);font:400 13px/1.3 var(--b-mono);letter-spacing:.04em;color:var(--b-on-soft)}
 .h-hero__proof strong{display:block;font:700 clamp(1.5rem,2.4vw,2rem)/1.1 var(--b-head);letter-spacing:-.03em;color:var(--b-on);margin-bottom:4px}
-.h-hero__scroll{position:absolute;z-index:1;left:50%;bottom:28px;width:26px;height:42px;margin-left:-13px;border:1.5px solid var(--b-on-line);border-radius:999px}
-.h-hero__scroll span{position:absolute;left:50%;top:8px;width:4px;height:8px;margin-left:-2px;border-radius:4px;background:var(--b-foam);animation:h-scroll 1.8s var(--b-ease-inout) infinite}
-@keyframes h-scroll{0%{transform:translateY(0);opacity:1}70%{transform:translateY(14px);opacity:0}100%{opacity:0}}
-@media (max-width:700px){.h-hero__scroll{display:none}.h-hero__proof{gap:16px 28px}}
+/* The story as a list (flat mode) */
+.h-beats__list{order:5;align-self:stretch;display:grid;gap:22px;list-style:none;margin:36px 0 0;padding:28px 0 0;border-top:1px solid var(--b-on-line)}
+.h-beats__list .h-hero__title{font-size:1.5rem;line-height:1.1;letter-spacing:-.02em;margin-bottom:6px}
+.h-beats__list .h-beat__tag{margin-bottom:8px}
+.h-beats__list .h-beat__text{font-size:1rem}
+@media (max-width:1080px){.h-hero__inner{grid-template-columns:minmax(0,1fr);gap:40px}}
 
-/* The system on the right: what we build, shown working. Plain HTML, no images. */
-.h-sys{position:relative;height:min(560px,62vh);min-height:420px;perspective:1200px}
-.h-sys__card{position:absolute;border:1px solid var(--b-on-line);border-radius:18px;background:color-mix(in srgb,var(--b-hero) 70%,var(--b-paper) 6%);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 40px 80px -40px rgba(0,0,0,.6);color:var(--b-on);will-change:transform}
-.h-sys__label{margin:0;font:400 11.5px/1.3 var(--b-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--b-on-soft)}
-.h-sys__msg{margin:4px 0 0;font:600 15px/1.3 var(--b-body)}
-.h-sys__site{left:0;top:4%;width:78%;overflow:hidden}
-.h-sys__chrome{display:flex;align-items:center;gap:6px;padding:12px 14px;border-bottom:1px solid var(--b-on-line);font:400 11.5px/1 var(--b-mono);color:var(--b-on-soft)}
-.h-sys__chrome i{width:9px;height:9px;border-radius:50%;background:var(--b-on-line)}
-.h-sys__chrome span{margin-left:10px;padding:5px 10px;border-radius:999px;background:color-mix(in srgb,var(--b-paper) 6%,transparent)}
-.h-sys__page{display:grid;gap:10px;padding:26px 24px 24px}
-.h-sys__bar{display:block;height:10px;width:56%;border-radius:6px;background:color-mix(in srgb,var(--b-paper) 14%,transparent)}
-.h-sys__bar--lg{height:22px;width:82%;background:color-mix(in srgb,var(--b-paper) 70%,transparent)}
-.h-sys__bar--md{height:22px;width:64%;background:color-mix(in srgb,var(--b-paper) 70%,transparent)}
-.h-sys__pill{justify-self:start;margin:8px 0 6px;padding:9px 16px;border-radius:999px;background:var(--b-signal);color:var(--b-ink);font:600 13px/1 var(--b-body)}
-.h-sys__tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.h-sys__tiles span{height:74px;border-radius:10px;background:linear-gradient(140deg,color-mix(in srgb,var(--b-foam) 30%,transparent),color-mix(in srgb,var(--b-paper) 4%,transparent))}
-.h-sys__stats{right:0;top:30%;width:52%;padding:18px 20px 14px}
-.h-sys__big{margin:6px 0 8px;font:700 2.4rem/1 var(--b-head);letter-spacing:-.04em}
-.h-sys__big em{font:500 13px/1 var(--b-mono);font-style:normal;color:var(--b-foam);vertical-align:middle}
-.h-sys__spark{display:block;width:100%;height:56px}
-.h-sys__spark path{fill:none;stroke:var(--b-foam);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.h-sys__toast,.h-sys__pay{display:flex;align-items:center;gap:14px;padding:14px 18px 14px 14px}
-.h-sys__toast{left:8%;bottom:16%;width:64%}
-.h-sys__pay{right:4%;bottom:0;width:56%}
-.h-sys__icon,.h-sys__check{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:12px;font:700 16px/1 var(--b-body)}
-.h-sys__icon{background:color-mix(in srgb,var(--b-foam) 22%,transparent);color:var(--b-foam)}
-.h-sys__check{background:color-mix(in srgb,var(--b-current) 45%,transparent);color:var(--b-paper)}
-@media (max-width:1080px){.h-sys{height:440px;min-height:0;max-width:560px}}
-@media (max-width:560px){.h-sys{height:360px}.h-sys__site{width:88%}.h-sys__stats{width:62%;top:34%}.h-sys__toast{width:80%;left:0;bottom:18%}.h-sys__pay{width:70%}.h-sys__tiles span{height:48px}.h-sys__big{font-size:1.9rem}}
+/* Story layout: a fixed full-screen stage, every beat in the same cell */
+/* The hero is several screens tall and the stage sticks inside it: the room to scroll is there
+   from the first paint, so nothing below moves when the script arrives. */
+.js-motion:not(.js-lite) .h-hero{height:550vh;height:550svh}
+.js-motion:not(.js-lite) .h-hero__stage{position:sticky;top:0;height:100vh;height:100svh;min-height:540px;padding-block:calc(var(--b-header) + 12px) 72px}
+.js-motion:not(.js-lite) .h-beats{display:grid;align-items:start}
+.js-motion:not(.js-lite) .h-beats__list{display:contents}
+.js-motion:not(.js-lite) .h-beat{grid-area:1/1}
+.js-motion:not(.js-lite) .h-beats__list .h-hero__title{font-size:var(--h-title);line-height:.98;letter-spacing:-.045em;margin-bottom:.32em}
+.js-motion:not(.js-lite) .h-beats__list .h-beat__tag{margin-bottom:18px}
+.js-motion:not(.js-lite) .h-beats__list .h-beat__text{font-size:clamp(1.05rem,1.5vw,1.25rem)}
+/* Until home.js takes over, only the first beat and the store screen show */
+.js-motion:not(.js-lite) .h-beats__list .h-beat,.js-motion:not(.js-lite) .h-prop,.js-motion:not(.js-lite) .h-scr--lock,.js-motion:not(.js-lite) .h-scr--chat,.js-motion:not(.js-lite) .h-scr__pay-b,.js-motion:not(.js-lite) .h-scr__sheet,.js-motion:not(.js-lite) .h-scr__tap{visibility:hidden}
+:root:not(.js-motion) .h-prop,:root:not(.js-motion) .h-scr--lock,:root:not(.js-motion) .h-scr--chat,:root:not(.js-motion) .h-scr__pay-b,:root:not(.js-motion) .h-scr__sheet,:root:not(.js-motion) .h-scr__tap,:root:not(.js-motion) .h-rail,.js-lite .h-prop,.js-lite .h-scr--lock,.js-lite .h-scr--chat,.js-lite .h-scr__pay-b,.js-lite .h-scr__sheet,.js-lite .h-scr__tap,.js-lite .h-rail{display:none}
+@media (max-height:800px){.js-motion:not(.js-lite) .h-hero__proof{display:none}}
+@media (max-width:1080px){
+ .js-motion:not(.js-lite) .h-hero{--h-title:clamp(2.1rem,min(9.6vw,6.4svh),3.8rem);height:450vh;height:450svh}
+ .js-motion:not(.js-lite) .h-hero__stage{align-items:stretch;padding-bottom:0}
+ .js-motion:not(.js-lite) .h-hero__inner{grid-template-rows:auto minmax(0,1fr);align-items:start;gap:20px}
+ .js-motion:not(.js-lite) .h-hero__eyebrow,.js-motion:not(.js-lite) .h-hero__proof{display:none}
+ .js-motion:not(.js-lite) .h-beat__tag{margin-bottom:12px!important}
+ .js-motion:not(.js-lite) .h-hero__lede,.js-motion:not(.js-lite) .h-beats__list .h-beat__text{font-size:1rem;line-height:1.45}
+ .js-motion:not(.js-lite) .h-hero__actions{margin-top:18px;gap:10px}
+ .js-motion:not(.js-lite) .h-hero__actions .b-btn{padding:13px 20px;font-size:15px}
+}
 
-.h-flow{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.h-flow path{fill:none;vector-effect:non-scaling-stroke}
-.h-flow__bank{stroke:color-mix(in srgb,var(--b-foam) 14%,transparent);stroke-width:90px}
-.h-flow__line{stroke:var(--b-foam);stroke-width:2px;opacity:.8}
-.h-flow__line--2{opacity:.35;stroke-width:1px}
+/* The scene. Everything is sized in em from one font-size, so it scales as a single object. */
+.h-scene{position:relative;justify-self:center;width:36em;height:40em;font:400 min(1.12vw,1.95svh,16.5px)/1.3 var(--b-body);color:var(--b-ink)}
+@media (max-width:1080px){.h-scene{font-size:min(2.7vw,1.3svh,13px)}}
+.h-scene p{margin:0}
+.h-scene__tilt{position:absolute;inset:0;perspective:80em}
+.h-scene__halo{position:absolute;left:50%;top:50%;width:44em;height:44em;margin:-22em 0 0 -22em;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--b-foam) 34%,transparent),transparent 64%)}
+
+/* Phone: metal frame, black bezel, glass glare */
+.h-phone{position:absolute;left:9.25em;top:2em;width:17.5em;height:36em;z-index:2;will-change:transform}
+.h-phone__float,.h-phone__body{height:100%}
+.h-phone__body{position:relative;padding:.55em;border-radius:3.1em;background:linear-gradient(140deg,color-mix(in srgb,var(--b-paper) 70%,var(--b-mist)),color-mix(in srgb,var(--b-ink) 70%,var(--b-mist)) 34%,color-mix(in srgb,var(--b-paper) 46%,var(--b-ink)) 68%,var(--b-ink));box-shadow:inset 0 0 0 .07em color-mix(in srgb,var(--b-paper) 60%,transparent),inset 0 0 .5em rgba(0,0,0,.55),0 3em 4.5em -1.8em rgba(0,0,0,.75),0 .8em 1.6em -.6em rgba(0,0,0,.5)}
+.h-phone__body::before,.h-phone__body::after{content:"";position:absolute;width:.2em;border-radius:.1em;background:linear-gradient(180deg,color-mix(in srgb,var(--b-paper) 50%,var(--b-ink)),var(--b-ink))}
+.h-phone__body::before{left:-.15em;top:7em;height:4.6em}
+.h-phone__body::after{right:-.15em;top:9em;height:3em}
+.h-phone__screen{position:relative;height:100%;font-size:1.15em;border-radius:2.2em;overflow:hidden;background:var(--b-white);box-shadow:0 0 0 .26em var(--b-ink)}
+.h-phone__island{position:absolute;z-index:5;left:50%;top:.7em;width:4.4em;height:1.25em;margin-left:-2.2em;border-radius:1em;background:var(--b-ink)}
+.h-phone__screen::after{content:"";position:absolute;z-index:5;left:50%;bottom:.45em;width:5.4em;height:.22em;margin-left:-2.7em;border-radius:1em;background:var(--b-ink);opacity:.55;mix-blend-mode:difference}
+.h-phone__glare{position:absolute;inset:0;z-index:6;pointer-events:none;background:linear-gradient(118deg,rgba(255,255,255,.2) 0,rgba(255,255,255,.03) 26%,transparent 40%,transparent 74%,rgba(255,255,255,.07))}
+.h-scr{position:absolute;inset:0;display:flex;flex-direction:column;isolation:isolate}
+.h-scr__status{display:flex;justify-content:space-between;align-items:center;padding:1em 1.6em 0}
+.h-scr__status span{font-weight:600;font-size:.72em}
+.h-scr__status i{width:1.5em;height:.7em;border-radius:.22em;border:.08em solid currentColor;background:linear-gradient(90deg,currentColor 72%,transparent 0);opacity:.75}
+/* Store */
+.h-scr--store{background:var(--b-white)}
+.h-scr__url{margin:1.2em 1.6em 1.1em;padding:.85em;border-radius:1.3em;background:var(--b-paper);text-align:center;font:400 .62em/1 var(--b-mono);color:var(--b-mist)}
+.h-scr__img{display:block;width:calc(100% - 2em);height:auto;aspect-ratio:1/.9;object-fit:cover;margin:0 1em;border-radius:1.1em;background:var(--b-paper)}
+.h-scr__info{padding:.9em 1.2em 0}
+.h-scr__name{font:700 1.05em/1.2 var(--b-head);letter-spacing:-.02em}
+.h-scr__meta{margin-top:.3em!important;font-size:.62em;color:var(--b-mist)}
+.h-scr__price{margin-top:.4em!important;font:700 1.3em/1 var(--b-head);letter-spacing:-.02em;color:var(--b-lagoon)}
+.h-scr__pay{position:relative;display:grid;place-items:center;height:2.9em;margin:auto 1em 1.5em;border-radius:999px;overflow:hidden;background:var(--b-lagoon);color:var(--b-paper)}
+.h-scr__pay span{grid-area:1/1;font-weight:600;font-size:.82em}
+.h-scr__tap{position:absolute;left:50%;top:50%;width:6em;height:6em;margin:-3em;border-radius:50%;background:color-mix(in srgb,var(--b-paper) 55%,transparent)}
+.h-scr__sheet{position:absolute;z-index:3;left:0;right:0;bottom:0;padding:1.5em 1em 2.2em;border-radius:1.6em 1.6em 0 0;background:var(--b-white);box-shadow:0 -1em 3em rgba(0,0,0,.28);text-align:center}
+.h-scr__tick{display:inline-grid;place-items:center;width:2.4em;height:2.4em;border-radius:50%;background:var(--b-current);color:var(--b-white);font-weight:700;font-size:1.15em}
+.h-scr__sheet p{margin:.55em 0 .15em;font:700 1.05em/1.2 var(--b-head);letter-spacing:-.02em}
+.h-scr__sheet small{font-size:.66em;color:var(--b-mist)}
+/* Lock screen with the two notifications */
+.h-scr--lock{padding:0 .7em;background:linear-gradient(165deg,var(--b-current),var(--b-lagoon) 46%,var(--b-ink));color:var(--b-paper)}
+.h-lock__day{margin-top:3.6em!important;text-align:center;font-size:.78em;opacity:.8}
+.h-lock__time{margin-bottom:.25em!important;text-align:center;font:600 4.3em/1.05 var(--b-head);letter-spacing:-.04em}
+.h-note{display:flex;align-items:flex-start;gap:.6em;margin-top:.55em;padding:.7em;border-radius:1.15em;background:color-mix(in srgb,var(--b-paper) 94%,transparent);color:var(--b-ink);box-shadow:0 .7em 1.4em -.7em rgba(0,0,0,.55)}
+.h-note>div{flex:1;min-width:0}
+.h-note__app{display:flex;justify-content:space-between;font-size:.58em;letter-spacing:.06em;text-transform:uppercase;color:var(--b-mist)}
+.h-note__app em,.h-wa__head em,.h-mail__head em{font-style:normal;text-transform:none;letter-spacing:0}
+.h-note__title{font-weight:700;font-size:.78em;line-height:1.3}
+.h-note__text{font-size:.66em;line-height:1.35;color:color-mix(in srgb,var(--b-ink) 76%,transparent)}
+.h-ico{flex:none;display:grid;place-items:center;width:2em;height:2em;border-radius:.55em}
+.h-ico svg{width:1.3em;height:1.3em}
+.h-ico--wa{background:var(--b-wa)}
+.h-ico--wa svg{fill:var(--b-white)}
+.h-ico--mail{background:var(--b-lagoon)}
+.h-ico--mail svg{fill:none;stroke:var(--b-paper);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+/* Chat: the customer's question and the assistant's reply */
+.h-scr--chat{background:color-mix(in srgb,var(--b-rule) 60%,var(--b-paper))}
+.h-chat__bar{display:flex;align-items:center;gap:.6em;padding:2.6em .9em .7em;background:var(--b-lagoon);color:var(--b-paper)}
+.h-chat__bar p{font-weight:600;font-size:.8em;line-height:1.2}
+.h-chat__bar small{display:block;font-size:.6em;opacity:.75}
+.h-chat__av,.h-mail__av{flex:none;display:grid;place-items:center;width:2.1em;height:2.1em;border-radius:50%;background:var(--b-foam);color:var(--b-lagoon);font:700 1em/1 var(--b-head)}
+.h-chat__body{position:relative;display:flex;flex-direction:column;gap:.6em;padding:1em .8em}
+.h-chat__input{display:flex;align-items:center;gap:.5em;margin:auto .7em 1.5em;padding:.5em .5em .5em 1em;border-radius:999px;background:var(--b-white);font-size:.72em;color:var(--b-mist)}
+.h-chat__input i{margin-left:auto;width:2.2em;height:2.2em;border-radius:50%;background:var(--b-lagoon)}
+.h-msg{max-width:88%;padding:.75em .95em;border-radius:1.3em;font-size:.72em;line-height:1.38;box-shadow:0 .1em .25em rgba(0,0,0,.14)}
+.h-msg--in{align-self:flex-start;background:var(--b-white);border-bottom-left-radius:.35em}
+.h-msg--out,.h-msg--typing{align-self:flex-end;background:color-mix(in srgb,var(--b-wa) 24%,var(--b-white));border-bottom-right-radius:.35em}
+.h-msg small{display:block;margin-top:.5em;font-size:.82em;text-align:right;color:var(--b-mist)}
+.h-msg--typing{position:absolute;right:1.1em;top:6.6em;display:flex;gap:.35em;padding:.9em 1em}
+.h-msg--typing i{width:.5em;height:.5em;border-radius:50%;background:var(--b-mist);animation:h-typing 1s var(--b-ease-inout) infinite}
+.h-msg--typing i:nth-child(2){animation-delay:.15s}.h-msg--typing i:nth-child(3){animation-delay:.3s}
+@keyframes h-typing{0%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-.25em)}}
+
+/* Props that leave the phone: paid chip, WhatsApp message, receipt email, dashboard, AI chip */
+.h-prop{position:absolute;z-index:3;background:var(--b-white);color:var(--b-ink);box-shadow:0 2.4em 4em -1.6em rgba(0,0,0,.7),0 .5em 1.2em -.5em rgba(0,0,0,.35);will-change:transform}
+.h-chip{display:flex;align-items:center;gap:.7em;padding:.65em 1.2em .65em .65em;border-radius:999px;white-space:nowrap}
+.h-chip i{flex:none;display:grid;place-items:center;width:2.2em;height:2.2em;border-radius:50%;background:var(--b-current);color:var(--b-white);font-style:normal;font-weight:700}
+.h-chip b{display:block;font-size:.9em;line-height:1.2}
+.h-chip small{display:block;font-size:.66em;color:var(--b-mist)}
+.h-chip--paid{left:23em;top:25em}
+.h-chip--ai{left:21.5em;top:8em}
+.h-chip--ai i{background:var(--b-lagoon);color:var(--b-foam)}
+.h-wa{left:-1em;top:10em;width:18em;padding:1.1em 1.2em 1.2em;border-radius:1.5em 1.5em 1.5em .4em}
+.h-wa__head{display:flex;align-items:center;gap:.6em;margin-bottom:.8em}
+.h-wa__head b{font-weight:600;font-size:.78em}
+.h-wa__head em{margin-left:auto;font-size:.66em;color:var(--b-mist)}
+.h-wa__title{font:700 1.35em/1.15 var(--b-head);letter-spacing:-.02em}
+.h-wa__text{margin-top:.45em!important;font-size:.78em;line-height:1.45;color:color-mix(in srgb,var(--b-ink) 78%,transparent)}
+.h-wa__paid{display:flex;justify-content:space-between;align-items:center;margin-top:1em!important;padding:.75em .9em;border-radius:.8em;background:color-mix(in srgb,var(--b-wa) 16%,var(--b-white));font-weight:700;font-size:.88em}
+.h-wa__paid span{color:var(--b-current);letter-spacing:-.12em}
+.h-mail{left:18em;top:10.5em;width:18.5em;padding:1.2em;border-radius:1.1em}
+.h-mail__head{display:flex;align-items:center;gap:.6em;padding-bottom:.9em;border-bottom:1px solid var(--b-rule)}
+.h-mail__av{background:var(--b-lagoon);color:var(--b-paper)}
+.h-mail__head b{display:block;font-weight:600;font-size:.8em;line-height:1.2}
+.h-mail__head small{display:block;font:400 .6em/1.3 var(--b-mono);color:var(--b-mist)}
+.h-mail__head em{margin-left:auto;align-self:flex-start;font-size:.62em;color:var(--b-mist)}
+.h-mail__subj{margin:.8em 0 .6em!important;font:700 1.1em/1.2 var(--b-head);letter-spacing:-.02em}
+.h-mail__rows{list-style:none;margin:0;padding:0;font-size:.74em}
+.h-mail__rows li{display:flex;justify-content:space-between;gap:1em;padding:.55em 0;border-bottom:1px dashed var(--b-rule)}
+.h-mail__rows b{font-weight:600}
+.h-mail__rows .h-mail__total{border-bottom:0;font-weight:700}
+.h-mail__rows .h-mail__total b{font-weight:700;color:var(--b-lagoon)}
+.h-mail__foot{display:flex;align-items:center;gap:.5em;margin-top:.5em!important;padding:.7em .9em;border-radius:.7em;background:color-mix(in srgb,var(--b-foam) 30%,var(--b-white));font-weight:600;font-size:.68em;color:var(--b-lagoon)}
+.h-mail__foot i{font-style:normal}
+.h-dash{z-index:1;left:3.5em;top:6em;width:33em;border-radius:1.1em;overflow:hidden;background:var(--b-paper)}
+.h-dash__chrome{display:flex;align-items:center;gap:.4em;padding:.7em .9em;background:var(--b-white);border-bottom:1px solid var(--b-rule)}
+.h-dash__chrome i{width:.6em;height:.6em;border-radius:50%;background:var(--b-rule)}
+.h-dash__chrome span{margin-left:.8em;padding:.5em 1.2em;border-radius:999px;background:var(--b-paper);font:400 .58em/1 var(--b-mono);color:var(--b-mist)}
+.h-dash__body{padding:.9em}
+.h-dash__kpis{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:.7em}
+.h-kpi{position:relative;padding:1em 1em 1.1em;border:1px solid var(--b-rule);border-radius:.8em;background:var(--b-white)}
+.h-kpi small{display:block;font:400 .54em/1.2 var(--b-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--b-mist)}
+.h-kpi b{display:block;margin-top:.2em;font:700 1.5em/1.1 var(--b-head);letter-spacing:-.03em;color:var(--b-lagoon);font-variant-numeric:tabular-nums}
+.h-kpi em{position:absolute;right:.9em;top:.9em;font:500 .58em/1 var(--b-mono);color:var(--b-current)}
+.h-dash__main{display:grid;grid-template-columns:1fr 1.55fr;gap:.7em;margin-top:.7em}
+.h-dash__chart{display:flex;align-items:flex-end;gap:.4em;min-height:13.5em;padding:.9em;border-radius:.8em;background:var(--b-lagoon)}
+.h-dash__chart span{flex:1;height:var(--h);border-radius:.25em .25em 0 0;background:var(--b-foam);opacity:.5;transform-origin:50% 100%}
+.h-dash__chart span:last-child{opacity:1}
+.h-dash__rows{list-style:none;margin:0;padding:.2em .8em;border:1px solid var(--b-rule);border-radius:.8em;background:var(--b-white);font-size:.68em}
+.h-dash__rows li{display:grid;grid-template-columns:3.4em 1fr auto 4.8em;align-items:center;gap:.6em;padding:1.05em 0;border-bottom:1px solid var(--b-rule)}
+.h-dash__rows li:last-child{border-bottom:0}
+.h-dash__rows em{justify-self:end;padding:.25em .65em;border-radius:999px;background:color-mix(in srgb,var(--b-foam) 36%,var(--b-white));font-style:normal;font-weight:600;font-size:.86em;color:var(--b-lagoon)}
+.h-dash__rows .is-new b{color:var(--b-current)}
+
+/* The rail: where you are in the story */
+.h-rail{position:absolute;z-index:2;left:0;right:0;bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding-top:14px;font:500 11.5px/1 var(--b-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--b-on-soft)}
+.h-rail__line{position:absolute;left:max(20px,env(safe-area-inset-left,0px));right:max(20px,env(safe-area-inset-right,0px));top:0;height:1px;background:var(--b-on-line)}
+.h-rail__line span{position:absolute;inset:0;background:var(--b-foam);transform-origin:0 50%;transform:scaleX(0)}
+.h-rail__steps{display:flex;gap:clamp(14px,2.2vw,30px);list-style:none;margin:0;padding:0}
+.h-rail button{padding:6px 0;border:0;background:none;font:inherit;letter-spacing:inherit;text-transform:inherit;color:inherit;opacity:.5;cursor:pointer;transition:opacity .3s,color .3s}
+.h-rail button:hover{opacity:.9}
+.h-rail button.is-on{opacity:1;color:var(--b-foam)}
+.h-rail__hint{display:flex;align-items:center;gap:10px;white-space:nowrap}
+.h-rail__hint::after{content:"";width:6px;height:6px;border-right:1.5px solid var(--b-foam);border-bottom:1.5px solid var(--b-foam);rotate:45deg;animation:h-scroll 1.8s var(--b-ease-inout) infinite}
+@keyframes h-scroll{0%{translate:0 -3px;opacity:0}40%{opacity:1}100%{translate:0 4px;opacity:0}}
+@media (max-width:1080px){.h-rail{bottom:10px;padding-top:10px;font-size:10.5px}.h-rail__steps{gap:12px}.h-rail__hint{display:none}.h-rail__steps{flex:1;justify-content:space-between}}
+@media (max-width:560px){.h-rail button{font-size:0;padding:8px 0}.h-rail button.is-on{font-size:10.5px}.h-rail button::before{content:"";display:inline-block;width:5px;height:5px;margin-right:6px;border-radius:50%;background:currentColor;vertical-align:1px}}
 
 /* 2. Clients: a marquee that speeds up with the scroll. Without JS it is a plain wrapped list. */
 .h-clients{padding-block:56px;border-bottom:1px solid var(--b-line);overflow:hidden}
@@ -143,4 +273,4 @@ a.h-product:hover{translate:0 -6px;border-color:var(--b-link)}
 .h-product p{color:var(--b-muted)}
 .h-product__go{margin-top:auto;font-weight:600;color:var(--b-link)}
 
-@media (prefers-reduced-motion:reduce){.h-hero__scroll span{animation:none}.h-panel__orb,.h-panel__go span,.h-product{transition:none}}
+@media (prefers-reduced-motion:reduce){.h-msg--typing i,.h-rail__hint::after{animation:none}.h-panel__orb,.h-panel__go span,.h-product{transition:none}}

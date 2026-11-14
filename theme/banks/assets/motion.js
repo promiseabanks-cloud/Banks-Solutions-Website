@@ -1,7 +1,7 @@
 /*
  * Banks motion layer: smooth scroll, island header, page curtain, Signal cursor,
- * magnetic buttons, 3D tilt, split headings, scroll reveals, counters, reading progress
- * and the speed receipt. Pages opt in with data attributes:
+ * magnetic buttons, 3D tilt, split headings, scroll reveals, counters, reading progress,
+ * the glass footer and the speed receipt. Pages opt in with data attributes:
  *   data-reveal  data-split  data-magnetic="0.3"  data-tilt  data-count="9.0" data-decimals="1"
  */
 (function () {
@@ -267,7 +267,27 @@
       gsap.to(bar, { scaleX: 1, ease: 'none', scrollTrigger: { trigger: '.b-article', start: 'top top', end: 'bottom bottom', scrub: 0.3 } });
     }
 
-    window.addEventListener('load', function () { ST.refresh(); });
+    // Sorted first: a page script may pin a section above triggers that were made here earlier.
+    window.addEventListener('load', function () { ST.sort(); ST.refresh(); });
+  }
+
+  /* Footer: the light on the glass follows the pointer; the metal letters rise as the footer arrives */
+  var glass = document.querySelector('.b-footer__glass');
+  if (glass && !reduce) {
+    var word = document.querySelector('.b-footer__word');
+    if (fine) {
+      var wordX = word && gsap.quickTo(word, 'x', { duration: 1.2 });
+      document.querySelector('.b-footer').addEventListener('mousemove', function (e) {
+        var r = glass.getBoundingClientRect();
+        glass.style.setProperty('--fx', Math.round(e.clientX - r.left) + 'px');
+        glass.style.setProperty('--fy', Math.round(e.clientY - r.top) + 'px');
+        if (wordX) wordX((e.clientX / window.innerWidth - 0.5) * -28);
+      }, { passive: true });
+    }
+    if (ST && !lite) {
+      if (word) gsap.fromTo(word, { yPercent: 45 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: '.b-footer', start: 'top bottom', end: 'bottom bottom', scrub: 0.6 } });
+      gsap.from(glass, { y: 80, opacity: 0, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: '.b-footer', start: 'top 90%', once: true } });
+    }
   }
 
   /* Speed receipt: what this page actually cost the visitor to load */
