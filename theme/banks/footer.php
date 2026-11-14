@@ -1,19 +1,19 @@
 </main>
 <?php
 /*
- * Footer: a frosted glass panel, edge to edge with a little room around it, over slow liquid
- * light. Styles are in main.css and the pointer light and rise-in are in motion.js; without
- * either it is a plain dark footer.
+ * Footer: a glass panel, edge to edge with a little room around it, with slow liquid light
+ * inside. Around it the footer takes the colour of the section above, so the page flows into
+ * it. Styles are in main.css; the pointer light and rise-in are in motion.js.
  */
 $b_foot_start = banks_route( '/start/', '/contact/' );
 ?>
 <footer class="b-footer">
-	<div class="b-footer__scene" aria-hidden="true">
-		<span class="b-footer__blob b-footer__blob--1"></span>
-		<span class="b-footer__blob b-footer__blob--2"></span>
-	</div>
 	<div class="b-footer__shell">
 		<div class="b-footer__glass">
+			<div class="b-footer__scene" aria-hidden="true">
+				<span class="b-footer__blob b-footer__blob--1"></span>
+				<span class="b-footer__blob b-footer__blob--2"></span>
+			</div>
 			<div class="b-footer__grid">
 				<div class="b-footer__brand">
 					<?php banks_brand( 'reverse' ); ?>

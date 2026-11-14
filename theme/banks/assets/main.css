@@ -156,23 +156,25 @@ p{margin:0 0 1em}
 .b-card__title{font:600 1.25rem/1.2 var(--b-head);letter-spacing:-.01em}
 .b-card__excerpt{color:var(--b-muted);font-size:15.5px}
 
-/* Footer: a frosted glass panel across the full width (with a little room around it), over two
-   slow pools of light. */
-.b-footer{position:relative;overflow:hidden;isolation:isolate;background:radial-gradient(120% 90% at 50% 100%,var(--b-current) 0,var(--b-lagoon) 46%,var(--b-ink) 100%);color:#C9DAD6;padding:clamp(12px,1.6vw,24px);font-size:15.5px}
+/* Footer: a glass panel across the full width (with a little room around it). Around it the
+   footer takes the colour of the section above it, so the page flows straight into the panel. */
+.b-footer{position:relative;background:var(--b-bg);color:#C9DAD6;padding:clamp(12px,1.6vw,24px);font-size:15.5px}
+/* After a dark closing section the footer continues it instead of switching back to paper */
+.b-main:has(>section:last-of-type[data-dark])+.b-footer{background:var(--b-hero)}
 .b-footer a{color:var(--b-paper);text-decoration:none}
 .b-footer a:hover{color:var(--b-signal)}
 .b-footer .b-btn--signal:hover{color:var(--b-ink)}
-.b-footer__scene{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.b-footer__glass>.b-footer__scene{position:absolute;inset:0;z-index:-1;pointer-events:none}
 .b-footer__blob{position:absolute;width:52vmax;height:52vmax;border-radius:50%;opacity:.6}
 .b-footer__blob--1{left:-12vmax;top:-18vmax;background:radial-gradient(circle,rgba(127,214,198,.5),transparent 62%)}
 .b-footer__blob--2{right:-16vmax;bottom:-22vmax;background:radial-gradient(circle,rgba(22,117,108,.8),transparent 62%)}
 .js-motion:not(.js-lite) .b-footer__blob{animation:b-liquid 16s ease-in-out infinite alternate}
 .js-motion:not(.js-lite) .b-footer__blob--2{animation-duration:21s;animation-direction:alternate-reverse}
 @keyframes b-liquid{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(9vmax,5vmax,0) scale(1.18)}100%{transform:translate3d(-4vmax,10vmax,0) scale(.92)}}
-.b-footer__glass{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.2);border-radius:clamp(20px,2.4vw,36px);padding:clamp(24px,4vw,64px) clamp(20px,4vw,64px) clamp(20px,2.6vw,32px);background:linear-gradient(155deg,rgba(244,245,241,.17),rgba(244,245,241,.05) 42%,rgba(127,214,198,.1));-webkit-backdrop-filter:blur(13px) saturate(1.5);backdrop-filter:blur(13px) saturate(1.5);box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 -1px 0 rgba(255,255,255,.08) inset,0 40px 80px -40px rgba(0,0,0,.6)}
-/* The light on the glass: follows the pointer (motion.js sets --fx/--fy), rests top left */
-.b-footer__glass::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(560px circle at var(--fx,18%) var(--fy,0%),rgba(255,255,255,.2),transparent 62%)}
-.b-footer__glass>*{position:relative}
+.b-footer__glass{position:relative;overflow:hidden;isolation:isolate;border:1px solid rgba(255,255,255,.2);border-radius:clamp(20px,2.4vw,36px);padding:clamp(24px,4vw,64px) clamp(20px,4vw,64px) clamp(20px,2.6vw,32px);background:linear-gradient(155deg,rgba(244,245,241,.14),rgba(244,245,241,.03) 42%,rgba(127,214,198,.08)),radial-gradient(120% 90% at 50% 100%,var(--b-current) 0,var(--b-lagoon) 48%,var(--b-ink) 100%);box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 -1px 0 rgba(255,255,255,.08) inset,0 40px 80px -40px rgba(0,0,0,.6)}
+/* A small light on the glass follows the pointer (motion.js sets --fx/--fy); it rests top left */
+.b-footer__glass::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(200px circle at var(--fx,18%) var(--fy,0%),rgba(255,255,255,.13),transparent 70%)}
+.b-footer__glass>:not(.b-footer__scene){position:relative}
 .b-footer__grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:clamp(24px,4vw,56px);align-items:start}
 .b-footer__line{margin:22px 0 10px;font:700 clamp(1.7rem,3.2vw,2.7rem)/1.02 var(--b-head);letter-spacing:-.035em;color:var(--b-paper)}
 .b-footer__line span{color:var(--b-signal)}
@@ -184,7 +186,6 @@ p{margin:0 0 1em}
 .b-footer__list a{display:inline-block;padding-block:3px}
 .b-footer__base{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;margin-top:clamp(22px,3vw,36px);padding-top:18px;border-top:1px solid rgba(244,245,241,.16);font:400 13px/1.4 var(--b-mono);color:#A9C4BE}
 .b-footer__legal{display:flex;gap:18px}.b-footer__legal a{color:inherit;text-decoration:none}.b-footer__legal a:hover{color:var(--b-paper)}
-@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.b-footer__glass{background:rgba(11,59,64,.82)}}
 @media (max-width:960px){.b-footer__grid{grid-template-columns:minmax(0,1fr)}}
 /* Phones: centred, with the links in two columns */
 @media (max-width:767px){
