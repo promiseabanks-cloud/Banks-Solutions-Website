@@ -3,99 +3,95 @@
   var gsap = window.gsap;
   var ST = window.ScrollTrigger;
   var B = window.Banks || {};
-  var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   if (!gsap || B.reduce) return;
 
-  /* 1. Hero entrance: the headline rises line by line, the system assembles beside it */
-  var tl = gsap.timeline({ delay: 0.15 });
-  var says = document.querySelectorAll('[data-split-hero]');
-  var rot = document.querySelector('.h-rot');
-  var words = rot ? Array.prototype.slice.call(rot.querySelectorAll('.h-rot__word')) : [];
-  if (says.length) tl.from([].concat(B.split(says[0], 'lines'), words[0] || [], says[1] ? B.split(says[1], 'lines') : []), { yPercent: 110, rotate: 2, duration: 1.25, ease: 'expo.out', stagger: 0.1 });
-  tl.from('.h-hero__eyebrow, .h-hero__lede, .h-hero__actions > *', { y: 28, opacity: 0, duration: 1, stagger: 0.08 }, '-=0.95')
-    .from('.h-hero__proof li', { y: 20, opacity: 0, duration: 0.8, stagger: 0.07 }, '-=0.6')
-    .from('.h-sys__card', { y: 70, rotateX: -22, opacity: 0, duration: 1.3, ease: 'expo.out', stagger: 0.12, transformOrigin: '50% 100%' }, 0.45)
-    .from('.h-hero__scroll', { opacity: 0, duration: 0.6 }, '-=0.3');
-  var spark = document.querySelector('.h-sys__spark path');
-  if (spark && spark.getTotalLength) {
-    var sl = spark.getTotalLength();
-    gsap.set(spark, { strokeDasharray: sl, strokeDashoffset: sl });
-    tl.to(spark, { strokeDashoffset: 0, duration: 1.8, ease: 'power2.inOut' }, 1.1);
-  }
+  /* 1. Hero. The copy rises in on load. The system on the right builds with the scroll, one step
+     at a time: the website form, then the CRM record, then the automation, then AI.
+     - Large screens: the stage sticks (CSS, see home.css) and the scroll scrubs the four steps.
+     - Phones and tablets (the visual sits under the copy) and weak phones: each step comes in
+       as it scrolls into view.
+     Start states are set here, so without JS (or with reduced motion) every step shows finished. */
+  var hero = document.querySelector('.h-hero');
+  var sys = hero && hero.querySelector('.h-sys');
+  var tl = gsap.timeline({ delay: 0.1 });
+  var say = hero && hero.querySelector('[data-split-hero]');
+  if (say) tl.from(B.split(say, 'lines'), { yPercent: 110, rotate: 2, duration: 1.15, ease: 'expo.out', stagger: 0.08 });
+  tl.from('.h-hero__eyebrow, .h-hero__lede, .h-hero__actions > *, .h-hero__assure', { y: 24, opacity: 0, duration: 0.9, stagger: 0.07 }, '-=0.95')
+    .from('.h-hero__proof li', { y: 16, opacity: 0, duration: 0.7, stagger: 0.06 }, '-=0.6');
 
-  /* The rotating word: each one slides up and out as the next rises in; the underline resizes to fit */
-  if (words.length > 1) {
-    var cur = 0;
-    var fit = function (w) { rot.style.setProperty('--rw', w.offsetWidth + 'px'); };
-    words.forEach(function (w, i) { w.style.visibility = 'visible'; if (i) gsap.set(w, { yPercent: 110 }); });
-    fit(words[0]);
-    gsap.delayedCall(3, function next() {
-      var a = words[cur];
-      cur = (cur + 1) % words.length;
-      var b = words[cur];
-      gsap.to(a, { yPercent: -110, duration: 0.8, ease: 'expo.inOut' });
-      gsap.fromTo(b, { yPercent: 110 }, { yPercent: 0, duration: 0.8, ease: 'expo.inOut' });
-      fit(b);
-      gsap.delayedCall(2.6, next);
-    });
-  }
+  var heroStage = hero && hero.querySelector('.h-hero__stage');
+  var sticky = document.documentElement.classList.contains('js-lite') ? false : null;
+  if (sys && ST) {
+    var nodes = Array.prototype.slice.call(sys.querySelectorAll('[data-node]'));
+    var cards = nodes.map(function (n) { return n.querySelector('.h-card'); });
+    var tags = nodes.map(function (n) { return n.querySelector('.h-node__tag'); });
+    var stages = Array.prototype.slice.call(sys.querySelectorAll('.h-crm__stages li'));
+    var rows = sys.querySelectorAll('.h-auto__row');
+    var ai = sys.querySelectorAll('.h-ai__text, .h-ai__btns');
+    var fill = sys.querySelector('.h-sys__rail span');
+    var sendA = sys.querySelector('.h-web__send-a');
+    var sendB = sys.querySelector('.h-web__send-b');
+    var reached = function (n) {
+      nodes.forEach(function (el, i) { el.classList.toggle('is-on', i < n); });
+      stages.forEach(function (s, i) { s.classList.toggle('is-on', i === (n >= 2 ? 1 : 0)); });
+    };
+    // What a step does once its card is in: the form sends, the lead is qualified, the messages
+    // go out one by one, AI's summary and draft appear.
+    var inner = function (t, i, at) {
+      if (i === 0) t.to(sendA, { opacity: 0, duration: 0.15 }, at).to(sendB, { opacity: 1, duration: 0.15 }, at + 0.05);
+      if (i === 2) t.fromTo(rows, { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.25, stagger: 0.12, immediateRender: false }, at);
+      if (i === 3) t.fromTo(ai, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25, stagger: 0.1, immediateRender: false }, at);
+    };
+    var start = function () {
+      reached(0);
+      gsap.set(cards, { opacity: 0, y: 46, scale: 0.97 });
+      gsap.set(tags, { opacity: 0.4 });
+      gsap.set(fill, { scaleY: 0 });
+      gsap.set(sendB, { opacity: 0 });
+      gsap.set(rows, { opacity: 0 });
+      gsap.set(ai, { opacity: 0 });
+    };
+    var mm = gsap.matchMedia();
 
-  /* The system keeps working: new leads arrive, the count ticks up */
-  var msg = document.querySelector('[data-sys-msg]');
-  var toast = document.querySelector('.h-sys__toast');
-  var count = document.querySelector('[data-sys-count]');
-  if (msg && toast && !B.lite) {
-    var leads = ['Ada wants a quote for a new website', 'Tunde booked a call for Friday, 10am', 'Grace asked about paying in two parts', 'Kemi wants a client portal for her firm'];
-    var li = 0;
-    gsap.delayedCall(4.5, function lead() {
-      li = (li + 1) % leads.length;
-      gsap.timeline()
-        .to(toast, { x: 40, opacity: 0, duration: 0.45, ease: 'power2.in' })
-        .add(function () { msg.textContent = leads[li]; if (count) count.textContent = String(parseInt(count.textContent, 10) + 1); })
-        .fromTo(toast, { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, ease: 'expo.out' });
-      gsap.delayedCall(3.6, lead);
-    });
-  }
-
-  /* Depth: the cards drift with the cursor and float gently on their own */
-  var sys = document.querySelector('.h-sys');
-  if (sys && !B.lite) {
-    var cards = Array.prototype.slice.call(sys.querySelectorAll('.h-sys__card'));
-    cards.forEach(function (c, i) {
-      gsap.to(c, { yPercent: i % 2 ? -4 : 4, duration: 3 + i * 0.7, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 1.6 });
-    });
-    if (fine) {
-      var movers = cards.map(function (c) {
-        var d = parseFloat(c.getAttribute('data-depth')) || 1;
-        return { d: d, x: gsap.quickTo(c, 'x', { duration: 1 }), y: gsap.quickTo(c, 'y', { duration: 1 }), rx: gsap.quickTo(c, 'rotationY', { duration: 1 }) };
+    mm.add('(min-width: 1081px)', function () {
+      if (sticky === false) return;
+      sticky = true;
+      start();
+      // Each step owns a quarter of the scroll: its card rises in, then its inside plays.
+      var steps = gsap.timeline({
+        defaults: { ease: 'power2.out' },
+        scrollTrigger: {
+          trigger: hero, start: 'top top', end: 'bottom bottom', scrub: 0.6, invalidateOnRefresh: true,
+          onUpdate: function (self) { reached(Math.min(4, Math.floor(self.progress * 4 + 0.75))); }
+        }
       });
-      document.querySelector('.h-hero__stage').addEventListener('mousemove', function (e) {
-        var nx = e.clientX / window.innerWidth - 0.5;
-        var ny = e.clientY / window.innerHeight - 0.5;
-        movers.forEach(function (m) { m.x(nx * 30 * m.d); m.y(ny * 22 * m.d); m.rx(nx * 8); });
+      cards.forEach(function (c, i) {
+        steps.to(tags[i], { opacity: 1, duration: 0.2 }, i)
+          .to(c, { opacity: 1, y: 0, scale: 1, duration: 0.5 }, i + 0.05);
+        inner(steps, i, i + 0.5);
       });
-    }
-  }
+      steps.to(fill, { scaleY: 1, ease: 'none', duration: 3.6 }, 0.2).to({}, { duration: 0.3 }, 3.7);
+      return function () { reached(4); };
+    });
 
-  document.querySelectorAll('.h-flow__line').forEach(function (line, i) {
-    if (!line.getTotalLength) return;
-    var len = line.getTotalLength();
-    gsap.set(line, { strokeDasharray: len, strokeDashoffset: len });
-    tl.to(line, { strokeDashoffset: 0, duration: 2.4, ease: 'power2.inOut' }, 0.1 + i * 0.35);
-  });
-  tl.from('.h-flow__bank', { opacity: 0, duration: 1.6 }, 0.5);
+    mm.add('(max-width: 1080px)', function () {
+      if (sticky === null) sticky = false;
+      start();
+      nodes.forEach(function (n, i) {
+        var t = gsap.timeline({ scrollTrigger: { trigger: n, start: 'top 85%', once: true, onEnter: function () { reached(i + 1); } } });
+        t.to(tags[i], { opacity: 1, duration: 0.3 }).to(cards[i], { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'expo.out' }, 0);
+        inner(t, i, 0.35);
+      });
+      gsap.to(fill, { scaleY: 1, ease: 'none', scrollTrigger: { trigger: sys, start: 'top 80%', end: 'bottom 70%', scrub: true } });
+    });
+  }
 
   if (!ST) return;
 
-  /* Hero exit: the frame pulls in and rounds off, the content drifts up and fades */
-  if (!B.lite) {
-    var stage = document.querySelector('.h-hero__stage');
-    if (stage) {
-      gsap.fromTo(stage, { clipPath: 'inset(0% 0% 0% 0% round 0px)' }, { clipPath: 'inset(0% 2.5% 6% 2.5% round 32px)', ease: 'none', scrollTrigger: { trigger: '.h-hero', start: 'top top', end: 'bottom top', scrub: true } });
-      gsap.to('.h-hero__inner', { yPercent: -18, opacity: 0.15, ease: 'none', scrollTrigger: { trigger: '.h-hero', start: 'top top', end: 'bottom top', scrub: true } });
-      gsap.to('.h-flow', { yPercent: 16, ease: 'none', scrollTrigger: { trigger: '.h-hero', start: 'top top', end: 'bottom top', scrub: true } });
-    }
+  /* Hero exit: once the steps are done the frame pulls in and rounds off as it leaves */
+  if (!B.lite && heroStage) {
+    gsap.fromTo(heroStage, { clipPath: 'inset(0% 0% 0% 0% round 0px)' }, { clipPath: 'inset(0% 2.5% 6% 2.5% round 32px)', ease: 'none', immediateRender: false, scrollTrigger: { trigger: hero, start: function () { return sticky ? 'bottom bottom' : 'top top'; }, end: 'bottom top', scrub: true } });
   }
 
   /* 2. Marquee: drifts on its own, runs faster (and backwards) with the scroll */

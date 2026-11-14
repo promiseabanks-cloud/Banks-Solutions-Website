@@ -1,6 +1,6 @@
 <?php
 /*
- * Homepage, built as scenes: hero, clients, the problem, what we build (pinned
+ * Homepage, built as scenes: hero (one enquiry through a connected system), clients, the problem, what we build (pinned
  * horizontal run), numbers, how a project runs, products, questions, closing call.
  * Copy: "Banks Solutions website: sitemap and copy" doc. Motion lives in home.js;
  * everything here reads in full with JavaScript off.
@@ -63,6 +63,7 @@ $b_products = array(
 	array( 'Labs', 'Free tools: a website cost calculator in naira, a speed check for Nigerian networks and an AI-search check.', 'Try a tool', banks_route( '/labs/' ) ),
 );
 
+
 $b_faqs = array(
 	array( 'What does Banks Solutions do?', 'Banks Solutions is a Nigerian technology company based in Lagos and Ilorin that designs and builds websites, web apps and custom solutions, automation and AI systems. We work with businesses in any industry, in Nigeria and abroad, and also sell our own software, starting with the Banks Business Engine AI assistant.' ),
 	array( 'How much does a website cost in Nigeria?', 'A business website from Banks Solutions starts at ₦499,000 and an online store at ₦750,000. Web apps and custom solutions are priced from a written spec, because the cost depends on what the system has to do. Every price includes structure, copy guidance, mobile performance and launch support.' ),
@@ -74,59 +75,66 @@ $b_faqs = array(
 <section class="h-hero" data-dark data-hero>
 	<div class="h-hero__stage">
 		<div class="s-glow" aria-hidden="true"></div>
-		<svg class="h-flow" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
-			<path class="h-flow__bank" d="M-20 140 C 320 120, 420 380, 720 420 S 1180 520, 1460 760"/>
-			<path class="h-flow__line" d="M-20 140 C 320 120, 420 380, 720 420 S 1180 520, 1460 760"/>
-			<path class="h-flow__line h-flow__line--2" d="M-20 300 C 300 280, 480 520, 760 560 S 1200 640, 1460 900"/>
-		</svg>
 		<div class="b-wrap h-hero__inner">
 			<div class="h-hero__copy">
-				<p class="b-eyebrow h-hero__eyebrow"><span class="s-live" aria-hidden="true"></span>Technology company · Lagos &amp; Ilorin · Clients in 6 countries</p>
-				<h1 class="h-hero__title">
-					<span class="b-sr">We build the websites, web apps, automation and AI your business runs on.</span>
-					<span class="h-hero__say" aria-hidden="true" data-split-hero>We build the</span>
-					<span class="h-rot" aria-hidden="true"><?php foreach ( array( 'websites', 'web apps', 'online stores', 'automations', 'AI tools' ) as $b_i => $b_w ) : ?><span class="h-rot__word<?php echo 0 === $b_i ? ' is-on' : ''; ?>"><?php echo esc_html( $b_w ); ?></span><?php endforeach; ?></span>
-					<span class="h-hero__say" aria-hidden="true" data-split-hero>your business runs on<span class="s-dot">.</span></span>
-				</h1>
-				<p class="h-hero__lede">Banks Solutions designs, builds and looks after the technology behind growing businesses in any industry. Websites from ₦499,000, live in about 5 weeks. Web apps and custom solutions priced from a written spec.</p>
+				<p class="b-eyebrow h-hero__eyebrow"><span class="s-live" aria-hidden="true"></span>Digital systems for businesses ready to work better</p>
+				<h1 class="h-hero__title" data-split-hero>Make every customer enquiry count<span class="s-dot">.</span></h1>
+				<p class="h-hero__lede">We build the websites and connected business systems that help your business attract the right customers, respond faster, keep follow-ups moving, and manage work without relying on scattered tools or someone’s memory.</p>
 				<div class="h-hero__actions">
-					<a class="b-btn b-btn--signal b-btn--lg" href="<?php echo esc_url( $b_start ); ?>" data-magnetic>Start a project</a>
-					<a class="b-btn b-btn--line b-btn--lg" href="#h-build">See what we build</a>
+					<a class="b-btn b-btn--signal b-btn--lg" href="<?php echo esc_url( $b_start ); ?>" data-magnetic>Start with a Digital Systems Audit</a>
+					<a class="b-btn b-btn--line b-btn--lg" href="<?php echo esc_url( banks_route( '/solutions/', '/services/' ) ); ?>">See what we build</a>
 				</div>
+				<p class="h-hero__assure">A clear diagnosis first. The right solution next. No pressure to buy everything.</p>
 				<ul class="h-hero__proof">
 					<li><strong>9.0</strong> client rating</li>
 					<li><strong>7+</strong> brands built</li>
-					<li><strong>6</strong> countries</li>
+					<li><strong>6</strong> countries served</li>
 				</ul>
 			</div>
 
-			<div class="h-sys" aria-hidden="true">
-				<div class="h-sys__card h-sys__site" data-depth="0.6">
-					<div class="h-sys__chrome"><i></i><i></i><i></i><span>yourbusiness.ng</span></div>
-					<div class="h-sys__page">
-						<span class="h-sys__bar h-sys__bar--lg"></span>
-						<span class="h-sys__bar h-sys__bar--md"></span>
-						<span class="h-sys__bar"></span>
-						<span class="h-sys__pill">Book a call</span>
-						<div class="h-sys__tiles"><span></span><span></span><span></span></div>
-					</div>
-				</div>
-				<div class="h-sys__card h-sys__stats" data-depth="1.1">
-					<p class="h-sys__label">Enquiries this month</p>
-					<p class="h-sys__big"><span data-sys-count="128">128</span> <em>+34%</em></p>
-					<svg class="h-sys__spark" viewBox="0 0 200 56" preserveAspectRatio="none"><path d="M0 48 L22 44 L44 46 L66 36 L88 38 L110 26 L132 30 L154 16 L176 18 L200 6"/></svg>
-				</div>
-				<div class="h-sys__card h-sys__toast" data-depth="1.6">
-					<span class="h-sys__icon">↗</span>
-					<div><p class="h-sys__label">New lead · WhatsApp</p><p class="h-sys__msg" data-sys-msg>Ada wants a quote for a new website</p></div>
-				</div>
-				<div class="h-sys__card h-sys__pay" data-depth="0.9">
-					<span class="h-sys__check">✓</span>
-					<div><p class="h-sys__label">Invoice #0042 paid · Paystack</p><p class="h-sys__msg">₦375,000 · half on start</p></div>
-				</div>
-			</div>
+			<?php // One enquiry moving through a connected system. Sample data only, no real customers. ?>
+			<figure class="h-sys">
+				<figcaption class="b-sr">Example: an enquiry from your website becomes a lead in your CRM, automation tells your team and the customer, and AI prepares the next step for a person to approve.</figcaption>
+				<span class="h-sys__rail" aria-hidden="true"><span></span></span>
+				<ol class="h-sys__list" aria-hidden="true">
+					<li class="h-node h-node--web" data-node>
+						<p class="h-node__tag"><i>01</i>Website</p>
+						<div class="h-card">
+							<div class="h-web__bar"><b></b><b></b><b></b><span>yourbusiness.com/quote</span></div>
+							<div class="h-web__form">
+								<p class="h-field"><small>Name</small><span>Daniel Okafor</span></p>
+								<p class="h-field"><small>Location</small><span>Toronto, Canada</span></p>
+								<p class="h-field h-field--wide"><small>What do you need?</small><span>Fit-out for a 3-floor office, start in March</span></p>
+								<p class="h-web__send"><span class="h-web__send-a">Send enquiry</span><span class="h-web__send-b">Sent ✓</span></p>
+							</div>
+						</div>
+					</li>
+					<li class="h-node h-node--crm" data-node>
+						<p class="h-node__tag"><i>02</i>CRM</p>
+						<div class="h-card">
+							<div class="h-crm__head"><span class="h-crm__av">DO</span><div><b>Daniel Okafor</b><small>New lead · from website · Toronto</small></div><em>Owner: Sade</em></div>
+							<ol class="h-crm__stages"><li>New</li><li class="is-on">Qualified</li><li>Proposal</li><li>Won</li></ol>
+						</div>
+					</li>
+					<li class="h-node h-node--auto" data-node>
+						<p class="h-node__tag"><i>03</i>Automation</p>
+						<div class="h-card">
+							<p class="h-auto__row"><span class="h-ico h-ico--wa"><svg viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.3-1.1A8.5 8.5 0 1 0 12 3.5Z"/></svg></span><span><b>WhatsApp to Sade</b>New lead assigned: Daniel Okafor</span></p>
+							<p class="h-auto__row"><span class="h-ico h-ico--mail"><svg viewBox="0 0 24 24"><path d="M4 7.5 12 13l8-5.5M5 6h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Z"/></svg></span><span><b>Email to Daniel</b>Enquiry received, with a link to book a call</span></p>
+							<p class="h-auto__row"><span class="h-ico h-ico--time"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2"/></svg></span><span><b>Follow-up set</b>Reminder for Sade if no reply in 2 days</span></p>
+						</div>
+					</li>
+					<li class="h-node h-node--ai" data-node>
+						<p class="h-node__tag"><i>04</i>AI</p>
+						<div class="h-card">
+							<p class="h-ai__label"><span>✦</span>Summary for Sade</p>
+							<p class="h-ai__text">Daniel needs a 3-floor office fit-out from March and prefers a call. A reply with three times for this week is drafted.</p>
+							<p class="h-ai__btns"><span class="is-primary">Approve and send</span><span>Edit</span></p>
+						</div>
+					</li>
+				</ol>
+			</figure>
 		</div>
-		<a class="h-hero__scroll" href="#h-clients" aria-label="Scroll to the next section"><span></span></a>
 	</div>
 </section>
 

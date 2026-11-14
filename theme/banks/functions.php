@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.12.12' );
+define( 'BANKS_VERSION', '0.13.4' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
@@ -89,14 +89,18 @@ add_action(
 	0
 );
 
-/** Mark the page as animated before paint; fall back to static if the scripts never arrive. */
+/**
+ * Mark the page as animated before paint; fall back to static if the scripts never arrive.
+ * js-lite marks weak phones and data saver (the same test as Banks.lite in motion.js), so a
+ * style that depends on it, such as the footer's moving light, is right from the first paint.
+ */
 add_action(
 	'wp_head',
 	function () {
 		if ( 'main' !== banks_site() ) {
 			return;
 		}
-		echo "<script>(function(d){if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;d.classList.add('js-motion');setTimeout(function(){if(!window.__banksReady)d.classList.remove('js-motion')},4000)})(document.documentElement);</script>\n";
+		echo "<script>(function(d){if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;d.classList.add('js-motion');var n=navigator;if((n.deviceMemory&&n.deviceMemory<=2)||(n.hardwareConcurrency||8)<=2||(n.connection&&n.connection.saveData))d.classList.add('js-lite');setTimeout(function(){if(!window.__banksReady)d.classList.remove('js-motion')},4000)})(document.documentElement);</script>\n";
 	},
 	1
 );
