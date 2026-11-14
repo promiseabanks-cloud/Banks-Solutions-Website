@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.12.11' );
+define( 'BANKS_VERSION', '0.12.12' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
@@ -33,7 +33,6 @@ add_action(
 	'wp_enqueue_scripts',
 	function () {
 		$uri = get_template_directory_uri() . '/assets/';
-		wp_enqueue_style( 'banks-fonts', 'https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap', array(), null );
 		wp_enqueue_style( 'banks', $uri . 'main.css', array(), BANKS_VERSION );
 		wp_enqueue_script( 'banks-nav', $uri . 'nav.js', array(), BANKS_VERSION, true );
 		$scene = banks_scene();
@@ -128,16 +127,27 @@ add_action(
 	2
 );
 
-add_filter(
-	'wp_resource_hints',
-	function ( $urls, $type ) {
-		if ( 'preconnect' === $type ) {
-			$urls[] = array( 'href' => 'https://fonts.gstatic.com', 'crossorigin' );
+/**
+ * Fonts are self-hosted (assets/fonts/), so nothing is fetched from Google. The @font-face
+ * rules are inlined in the head — no render-blocking stylesheet and no third-party round-trip
+ * before first paint — and the two weights the hero paints with are preloaded. Only the Latin
+ * and Latin-ext subsets are shipped; Latin-ext carries the ₦ glyph. Keeps the brand fonts
+ * exactly (Familjen Grotesk, Public Sans, IBM Plex Mono) and matches the "no CDN" rule.
+ */
+add_action(
+	'wp_head',
+	function () {
+		$uri = get_template_directory_uri() . '/assets/';
+		foreach ( array( 'familjen-grotesk-700-latin.woff2', 'public-sans-400-latin.woff2' ) as $f ) {
+			echo '<link rel="preload" as="font" type="font/woff2" href="' . esc_url( $uri . 'fonts/' . $f ) . '" crossorigin>' . "\n";
 		}
-		return $urls;
+		$css = @file_get_contents( get_template_directory() . '/assets/fonts.css' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		if ( $css ) {
+			$css = str_replace( 'url(fonts/', 'url(' . $uri . 'fonts/', $css );
+			echo '<style id="banks-fonts">' . $css . '</style>' . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- theme-generated @font-face CSS.
+		}
 	},
-	10,
-	2
+	1
 );
 
 /** Body classes: pages that open on a Lagoon hero get the transparent light-on-dark header. */
@@ -428,6 +438,25 @@ add_filter(
 	999
 );
 
+/**
+ * Scene pages are built entirely from theme markup, so WordPress's default block-editor
+ * stylesheets (block-library, the classic-theme shim, global styles) are dead weight there.
+ * Dropping them removes render-blocking CSS the page never uses. Non-scene pages (legacy
+ * Elementor content, article bodies) keep them.
+ */
+add_action(
+	'wp_enqueue_scripts',
+	function () {
+		if ( ! banks_scene() || 'main' !== banks_site() ) {
+			return;
+		}
+		foreach ( array( 'wp-block-library', 'wp-block-library-theme', 'classic-theme-styles', 'global-styles' ) as $handle ) {
+			wp_dequeue_style( $handle );
+		}
+	},
+	100
+);
+
 /** Elementor's styles and scripts are not used on scene pages; its kit CSS would restyle the headings. */
 add_action(
 	'wp_enqueue_scripts',
@@ -568,4 +597,39 @@ add_action(
 			remove_action( 'wp_head', 'bs_output_faq_service_schema', 20 );
 		}
 	}
+);
+
+/**
+ * Analytics, deferred. Rank Math prints the Google Analytics snippet in the head, where gtag.js
+ * runs about 350ms on the main thread while the page loads — the single biggest drag on the
+ * mobile PageSpeed score. We switch its on-site snippet off at read time (no database change;
+ * undo by removing this filter) and load the exact same GA property ourselves after the visitor
+ * first interacts, or after a short fallback, so the page becomes interactive first and the
+ * pageview still fires. The measurement ID and the data collected are unchanged.
+ */
+add_filter(
+	'option_rank_math_google_analytic_options',
+	function ( $value ) {
+		if ( is_array( $value ) ) {
+			$value['install_code'] = '';
+		}
+		return $value;
+	}
+);
+
+add_action(
+	'wp_footer',
+	function () {
+		if ( 'main' !== banks_site() || is_admin() ) {
+			return;
+		}
+		$opts = get_option( 'rank_math_google_analytic_options' );
+		$id   = is_array( $opts ) && ! empty( $opts['measurement_id'] ) ? $opts['measurement_id'] : '';
+		if ( ! $id ) {
+			return;
+		}
+		$id = esc_js( $id );
+		echo "<script>(function(){var id='" . $id . "',done=false;function load(){if(done){return}done=true;window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config',id);var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+id;document.head.appendChild(s)}var evts=['scroll','pointerdown','keydown','touchstart'];function go(){evts.forEach(function(n){window.removeEventListener(n,go)});load()}evts.forEach(function(n){window.addEventListener(n,go,{passive:true,once:true})});setTimeout(load,5000)})();</script>\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- id escaped with esc_js above.
+	},
+	99
 );
