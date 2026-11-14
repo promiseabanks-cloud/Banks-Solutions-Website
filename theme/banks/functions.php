@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.13.0' );
+define( 'BANKS_VERSION', '0.13.1' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
@@ -92,7 +92,7 @@ add_action(
 /**
  * Mark the page as animated before paint; fall back to static if the scripts never arrive.
  * js-lite marks weak phones and data saver (the same test as Banks.lite in motion.js), so a
- * layout that depends on it, such as the pinned homepage hero, is right from the first paint.
+ * style that depends on it, such as the footer's moving light, is right from the first paint.
  */
 add_action(
 	'wp_head',

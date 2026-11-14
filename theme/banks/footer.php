@@ -1,9 +1,9 @@
 </main>
 <?php
 /*
- * Footer: a frosted glass panel floating over the 3D metal BANKS letters (a pre-rendered image,
- * lazy-loaded), which show through the glass and stand clear below it. Styles are in main.css
- * and the pointer light and rise-in are in motion.js; without either it is a plain dark footer.
+ * Footer: a frosted glass panel, edge to edge with a little room around it, over slow liquid
+ * light. Styles are in main.css and the pointer light and rise-in are in motion.js; without
+ * either it is a plain dark footer.
  */
 $b_foot_start = banks_route( '/start/', '/contact/' );
 ?>
@@ -11,9 +11,8 @@ $b_foot_start = banks_route( '/start/', '/contact/' );
 	<div class="b-footer__scene" aria-hidden="true">
 		<span class="b-footer__blob b-footer__blob--1"></span>
 		<span class="b-footer__blob b-footer__blob--2"></span>
-		<img class="b-footer__word" src="<?php echo esc_url( banks_img( 'banks-3d-1000.webp' ) ); ?>" srcset="<?php echo esc_url( banks_img( 'banks-3d-1000.webp' ) ); ?> 1000w, <?php echo esc_url( banks_img( 'banks-3d-2000.webp' ) ); ?> 2000w" sizes="(max-width: 1400px) 96vw, 1340px" width="2000" height="468" alt="" loading="lazy" decoding="async">
 	</div>
-	<div class="b-wrap">
+	<div class="b-footer__shell">
 		<div class="b-footer__glass">
 			<div class="b-footer__grid">
 				<div class="b-footer__brand">

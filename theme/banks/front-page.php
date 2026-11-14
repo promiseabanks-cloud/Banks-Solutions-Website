@@ -1,6 +1,6 @@
 <?php
 /*
- * Homepage, built as scenes: hero (a pinned scroll story), clients, the problem, what we build (pinned
+ * Homepage, built as scenes: hero (one enquiry through a connected system), clients, the problem, what we build (pinned
  * horizontal run), numbers, how a project runs, products, questions, closing call.
  * Copy: "Banks Solutions website: sitemap and copy" doc. Motion lives in home.js;
  * everything here reads in full with JavaScript off.
@@ -63,14 +63,6 @@ $b_products = array(
 	array( 'Labs', 'Free tools: a website cost calculator in naira, a speed check for Nigerian networks and an AI-search check.', 'Try a tool', banks_route( '/labs/' ) ),
 );
 
-// The hero story: one order followed through everything we build. Tag, headline, line.
-$b_beats = array(
-	array( 'Your website', 'An order lands', "It's 9:41 on a Friday night. Ada finds what she wants on your website and pays by card. You are nowhere near your phone." ),
-	array( 'Automation', 'WhatsApp tells you', 'Seconds later the order is on your WhatsApp, and Ada has her confirmation. Nobody typed either message.' ),
-	array( 'Automation & CRM', 'The receipt sends itself', 'A branded email goes out with her invoice and delivery details, and her record is saved for next time.' ),
-	array( 'Web apps', 'The dashboard keeps count', "The order is logged, stock drops by one and today's revenue adds up, on a dashboard built around your business." ),
-	array( 'AI', 'AI answers the follow-up', 'Ada asks when it will arrive. Your assistant replies in seconds with the answer and a tracking link.' ),
-);
 
 $b_faqs = array(
 	array( 'What does Banks Solutions do?', 'Banks Solutions is a Nigerian technology company based in Lagos and Ilorin that designs and builds websites, web apps and custom solutions, automation and AI systems. We work with businesses in any industry, in Nigeria and abroad, and also sell our own software, starting with the Banks Business Engine AI assistant.' ),
@@ -85,138 +77,63 @@ $b_faqs = array(
 		<div class="s-glow" aria-hidden="true"></div>
 		<div class="b-wrap h-hero__inner">
 			<div class="h-hero__copy">
-				<p class="b-eyebrow h-hero__eyebrow"><span class="s-live" aria-hidden="true"></span>Technology company · Lagos &amp; Ilorin · Clients in 6 countries</p>
-				<div class="h-beats">
-					<div class="h-beat h-beat--intro" data-beat>
-						<h1 class="h-hero__title h-beat__title">
-							<span class="b-sr">We build the websites, web apps, automation and AI your business runs on.</span>
-							<span aria-hidden="true" data-split-hero>We build what your business runs on<span class="s-dot">.</span></span>
-						</h1>
-						<p class="h-hero__lede">Banks Solutions designs, builds and looks after the technology behind growing businesses in any industry. Websites from ₦499,000, live in about 5 weeks. Web apps and custom solutions priced from a written spec.</p>
-					</div>
-					<ol class="h-beats__list" aria-label="One order, start to finish">
-						<?php foreach ( $b_beats as $b_i => $b_b ) : ?>
-							<li class="h-beat" data-beat>
-								<p class="h-beat__tag"><span><?php echo esc_html( sprintf( '%02d', $b_i + 1 ) ); ?></span><?php echo esc_html( $b_b[0] ); ?></p>
-								<h2 class="h-hero__title h-beat__title"><span class="h-beat__rise"><?php echo esc_html( $b_b[1] ); ?><span class="s-dot">.</span></span></h2>
-								<p class="h-beat__text"><?php echo esc_html( $b_b[2] ); ?></p>
-							</li>
-						<?php endforeach; ?>
-					</ol>
-				</div>
+				<p class="b-eyebrow h-hero__eyebrow"><span class="s-live" aria-hidden="true"></span>Digital systems for businesses ready to work better</p>
+				<h1 class="h-hero__title" data-split-hero>Make every customer enquiry count<span class="s-dot">.</span></h1>
+				<p class="h-hero__lede">We build the websites and connected business systems that help your business attract the right customers, respond faster, keep follow-ups moving, and manage work without relying on scattered tools or someone’s memory.</p>
 				<div class="h-hero__actions">
-					<a class="b-btn b-btn--signal b-btn--lg" href="<?php echo esc_url( $b_start ); ?>" data-magnetic>Start a project</a>
-					<a class="b-btn b-btn--line b-btn--lg" href="#h-build">See what we build</a>
+					<a class="b-btn b-btn--signal b-btn--lg" href="<?php echo esc_url( $b_start ); ?>" data-magnetic>Start with a Digital Systems Audit</a>
+					<a class="b-btn b-btn--line b-btn--lg" href="<?php echo esc_url( banks_route( '/solutions/', '/services/' ) ); ?>">See what we build</a>
 				</div>
+				<p class="h-hero__assure">A clear diagnosis first. The right solution next. No pressure to buy everything.</p>
 				<ul class="h-hero__proof">
 					<li><strong>9.0</strong> client rating</li>
 					<li><strong>7+</strong> brands built</li>
-					<li><strong>6</strong> countries</li>
+					<li><strong>6</strong> countries served</li>
 				</ul>
 			</div>
 
-			<?php // The scene: one order followed from checkout to follow-up. Decorative; the beats above carry the words. ?>
-			<div class="h-scene" aria-hidden="true">
-				<div class="h-scene__tilt">
-					<span class="h-scene__halo"></span>
-
-					<div class="h-prop h-dash">
-						<div class="h-dash__chrome"><i></i><i></i><i></i><span>dashboard.yourbusiness.ng</span></div>
-						<div class="h-dash__body">
-							<div class="h-dash__kpis">
-								<div class="h-kpi"><small>Revenue today</small><b>₦<span data-dash-rev>1,284,500</span></b><em>+18%</em></div>
-								<div class="h-kpi"><small>Orders</small><b data-dash-ord>37</b></div>
-								<div class="h-kpi"><small>Candles in stock</small><b data-dash-stk>11</b></div>
-							</div>
-							<div class="h-dash__main">
-								<div class="h-dash__chart"><span style="--h:34%"></span><span style="--h:52%"></span><span style="--h:41%"></span><span style="--h:66%"></span><span style="--h:58%"></span><span style="--h:79%"></span><span style="--h:96%"></span></div>
-								<ul class="h-dash__rows">
-									<li class="is-new"><b>#1042</b><span>Ada O.</span><span>₦24,500</span><em>Paid</em></li>
-									<li><b>#1041</b><span>Tunde B.</span><span>₦61,000</span><em>Paid</em></li>
-									<li><b>#1040</b><span>Grace E.</span><span>₦18,000</span><em>Shipped</em></li>
-									<li><b>#1039</b><span>Kemi A.</span><span>₦37,500</span><em>Shipped</em></li>
-								</ul>
+			<?php // One enquiry moving through a connected system. Sample data only, no real customers. ?>
+			<figure class="h-sys">
+				<figcaption class="b-sr">Example: an enquiry from your website becomes a lead in your CRM, automation tells your team and the customer, and AI prepares the next step for a person to approve.</figcaption>
+				<span class="h-sys__rail" aria-hidden="true"><span></span></span>
+				<ol class="h-sys__list" aria-hidden="true">
+					<li class="h-node h-node--web" data-node>
+						<p class="h-node__tag"><i>01</i>Website</p>
+						<div class="h-card">
+							<div class="h-web__bar"><b></b><b></b><b></b><span>yourbusiness.com/quote</span></div>
+							<div class="h-web__form">
+								<p class="h-field"><small>Name</small><span>Daniel Okafor</span></p>
+								<p class="h-field"><small>Location</small><span>Toronto, Canada</span></p>
+								<p class="h-field h-field--wide"><small>What do you need?</small><span>Fit-out for a 3-floor office, start in March</span></p>
+								<p class="h-web__send"><span class="h-web__send-a">Send enquiry</span><span class="h-web__send-b">Sent ✓</span></p>
 							</div>
 						</div>
-					</div>
-
-					<div class="h-phone">
-						<div class="h-phone__float">
-							<div class="h-phone__body">
-								<div class="h-phone__screen">
-									<div class="h-scr h-scr--store">
-										<div class="h-scr__status"><span>9:41</span><i></i></div>
-										<div class="h-scr__url">yourbusiness.ng</div>
-										<img class="h-scr__img" src="<?php echo esc_url( banks_img( 'hero-product.webp' ) ); ?>" width="640" height="640" alt="" decoding="async">
-										<div class="h-scr__info">
-											<p class="h-scr__name">Amber &amp; Oud candle</p>
-											<p class="h-scr__meta">Hand poured · 220 g · Delivery nationwide</p>
-											<p class="h-scr__price">₦24,500</p>
-										</div>
-										<div class="h-scr__pay"><span class="h-scr__pay-a">Pay ₦24,500</span><span class="h-scr__pay-b">Paying…</span><i class="h-scr__tap"></i></div>
-										<div class="h-scr__sheet"><span class="h-scr__tick">✓</span><p>Payment received</p><small>Order #1042 · ₦24,500</small></div>
-									</div>
-									<div class="h-scr h-scr--lock">
-										<p class="h-lock__day">Friday night</p>
-										<p class="h-lock__time">9:41</p>
-										<div class="h-note h-note--wa">
-											<span class="h-ico h-ico--wa"><svg viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.3-1.1A8.5 8.5 0 1 0 12 3.5Z"/></svg></span>
-											<div><p class="h-note__app">WhatsApp<em>now</em></p><p class="h-note__title">New order #1042</p><p class="h-note__text">Ada O. paid ₦24,500 for 1 × Amber &amp; Oud candle.</p></div>
-										</div>
-										<div class="h-note h-note--mail">
-											<span class="h-ico h-ico--mail"><svg viewBox="0 0 24 24"><path d="M4 7.5 12 13l8-5.5M5 6h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Z"/></svg></span>
-											<div><p class="h-note__app">Mail<em>now</em></p><p class="h-note__title">Receipt sent to Ada</p><p class="h-note__text">Invoice #1042 delivered. Customer record saved.</p></div>
-										</div>
-									</div>
-									<div class="h-scr h-scr--chat">
-										<div class="h-chat__bar"><span class="h-chat__av">A</span><div><p>Ada O.</p><small>Order #1042</small></div></div>
-										<div class="h-chat__body">
-											<p class="h-msg h-msg--in">Hi, when will my candle get to Abuja?</p>
-											<p class="h-msg h-msg--typing"><i></i><i></i><i></i></p>
-											<p class="h-msg h-msg--out">Hello Ada. Order #1042 leaves Lagos tomorrow morning and reaches Abuja on Saturday. Your tracking link is on its way.<small>AI assistant · 9:43 pm ✓✓</small></p>
-										</div>
-										<div class="h-chat__input"><span>Message</span><i></i></div>
-									</div>
-									<span class="h-phone__island"></span>
-									<span class="h-phone__glare"></span>
-								</div>
-							</div>
+					</li>
+					<li class="h-node h-node--crm" data-node>
+						<p class="h-node__tag"><i>02</i>CRM</p>
+						<div class="h-card">
+							<div class="h-crm__head"><span class="h-crm__av">DO</span><div><b>Daniel Okafor</b><small>New lead · from website · Toronto</small></div><em>Owner: Sade</em></div>
+							<ol class="h-crm__stages"><li>New</li><li class="is-on">Qualified</li><li>Proposal</li><li>Won</li></ol>
 						</div>
-					</div>
-
-					<div class="h-prop h-chip h-chip--paid"><i>✓</i><div><b>₦24,500 paid</b><small>Card · Paystack</small></div></div>
-
-					<div class="h-prop h-wa">
-						<div class="h-wa__head"><span class="h-ico h-ico--wa"><svg viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.3-1.1A8.5 8.5 0 1 0 12 3.5Z"/></svg></span><b>WhatsApp</b><em>now</em></div>
-						<p class="h-wa__title">New order #1042</p>
-						<p class="h-wa__text">Ada O. · 1 × Amber &amp; Oud candle<br>Deliver to Wuse 2, Abuja</p>
-						<p class="h-wa__paid">₦24,500 paid<span>✓✓</span></p>
-					</div>
-
-					<div class="h-prop h-mail">
-						<div class="h-mail__head"><span class="h-mail__av">Y</span><div><b>Your Store</b><small>orders@yourbusiness.ng</small></div><em>9:41 pm</em></div>
-						<p class="h-mail__subj">Thank you, Ada. Your order is confirmed.</p>
-						<ul class="h-mail__rows">
-							<li><span>Amber &amp; Oud candle × 1</span><b>₦22,000</b></li>
-							<li><span>Delivery to Abuja</span><b>₦2,500</b></li>
-							<li class="h-mail__total"><span>Total paid</span><b>₦24,500</b></li>
-						</ul>
-						<p class="h-mail__foot"><i>✓</i>Paid by card · Invoice #1042 attached</p>
-					</div>
-
-					<div class="h-prop h-chip h-chip--ai"><i>✦</i><div><b>Answered in 4 seconds</b><small>AI assistant · no one on shift</small></div></div>
-				</div>
-			</div>
-		</div>
-
-		<div class="b-wrap h-rail" aria-hidden="true">
-			<span class="h-rail__line"><span></span></span>
-			<ol class="h-rail__steps">
-				<?php foreach ( array( 'Start', 'Order', 'WhatsApp', 'Email', 'Dashboard', 'AI reply' ) as $b_i => $b_r ) : ?>
-					<li><button type="button" tabindex="-1" data-rail="<?php echo esc_attr( $b_i ); ?>"<?php echo 0 === $b_i ? ' class="is-on"' : ''; ?>><?php echo esc_html( $b_r ); ?></button></li>
-				<?php endforeach; ?>
-			</ol>
-			<span class="h-rail__hint">Scroll to follow one order</span>
+					</li>
+					<li class="h-node h-node--auto" data-node>
+						<p class="h-node__tag"><i>03</i>Automation</p>
+						<div class="h-card">
+							<p class="h-auto__row"><span class="h-ico h-ico--wa"><svg viewBox="0 0 24 24"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.3-1.1A8.5 8.5 0 1 0 12 3.5Z"/></svg></span><span><b>WhatsApp to Sade</b>New lead assigned: Daniel Okafor</span></p>
+							<p class="h-auto__row"><span class="h-ico h-ico--mail"><svg viewBox="0 0 24 24"><path d="M4 7.5 12 13l8-5.5M5 6h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Z"/></svg></span><span><b>Email to Daniel</b>Enquiry received, with a link to book a call</span></p>
+							<p class="h-auto__row"><span class="h-ico h-ico--time"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l2.5 2"/></svg></span><span><b>Follow-up set</b>Reminder for Sade if no reply in 2 days</span></p>
+						</div>
+					</li>
+					<li class="h-node h-node--ai" data-node>
+						<p class="h-node__tag"><i>04</i>AI</p>
+						<div class="h-card">
+							<p class="h-ai__label"><span>✦</span>Summary for Sade</p>
+							<p class="h-ai__text">Daniel needs a 3-floor office fit-out from March and prefers a call. A reply with three times for this week is drafted.</p>
+							<p class="h-ai__btns"><span class="is-primary">Approve and send</span><span>Edit</span></p>
+						</div>
+					</li>
+				</ol>
+			</figure>
 		</div>
 	</div>
 </section>

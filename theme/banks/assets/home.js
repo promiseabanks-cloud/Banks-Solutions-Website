@@ -3,165 +3,55 @@
   var gsap = window.gsap;
   var ST = window.ScrollTrigger;
   var B = window.Banks || {};
-  var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   if (!gsap || B.reduce) return;
 
-  /* 1. Hero. The entrance plays on load; the story (one order, six beats) is scrubbed by the scroll
-     while the stage sticks (CSS sticky, so no pin spacer and no relayout). Weak phones keep the flat layout from home.css and only get the entrance. */
+  /* 1. Hero. The copy rises in, then one enquiry walks down the rail once: the form sends, the
+     lead is qualified in the CRM, the messages go out, and AI drafts the next step. Then it rests.
+     Start states are set here, so without JS (or with reduced motion) every step shows finished. */
   var hero = document.querySelector('.h-hero');
-  var stage = hero && hero.querySelector('.h-hero__stage');
-  var scene = hero && hero.querySelector('.h-scene');
-  var q = function (sel) { return hero.querySelector(sel); };
-  var qa = function (sel) { return Array.prototype.slice.call(hero.querySelectorAll(sel)); };
-  var story = !!(hero && scene && ST && !B.lite && !document.documentElement.classList.contains('js-lite'));
-  var phone = hero && q('.h-phone');
+  var sys = hero && hero.querySelector('.h-sys');
+  var tl = gsap.timeline({ delay: 0.1 });
+  var say = hero && hero.querySelector('[data-split-hero]');
+  if (say) tl.from(B.split(say, 'lines'), { yPercent: 110, rotate: 2, duration: 1.15, ease: 'expo.out', stagger: 0.08 });
+  tl.from('.h-hero__eyebrow, .h-hero__lede, .h-hero__actions > *, .h-hero__assure', { y: 24, opacity: 0, duration: 0.9, stagger: 0.07 }, '-=0.95')
+    .from('.h-hero__proof li', { y: 16, opacity: 0, duration: 0.7, stagger: 0.06 }, '-=0.6');
 
-  var tl = gsap.timeline({ delay: 0.15 });
-  var say = hero && q('[data-split-hero]');
-  if (say) tl.from(B.split(say, 'lines'), { yPercent: 110, rotate: 2, duration: 1.25, ease: 'expo.out', stagger: 0.1 });
-  tl.from('.h-hero__eyebrow, .h-hero__lede, .h-hero__actions > *', { y: 28, opacity: 0, duration: 1, stagger: 0.08 }, '-=0.95')
-    .from('.h-hero__proof li', { y: 20, opacity: 0, duration: 0.8, stagger: 0.07 }, '-=0.6')
-    .from('.h-phone__float', { y: 90, rotation: 5, opacity: 0, duration: 1.4, ease: 'expo.out' }, 0.35)
-    .from('.h-scene__halo', { scale: 0.6, opacity: 0, duration: 1.6 }, 0.35)
-    .from('.h-rail', { opacity: 0, duration: 0.8 }, '-=0.6');
+  if (sys) {
+    var nodes = Array.prototype.slice.call(sys.querySelectorAll('[data-node]'));
+    var cards = nodes.map(function (n) { return n.querySelector('.h-card'); });
+    var stages = sys.querySelectorAll('.h-crm__stages li');
+    var rows = sys.querySelectorAll('.h-auto__row');
+    var sendA = sys.querySelector('.h-web__send-a');
+    var sendB = sys.querySelector('.h-web__send-b');
+    var on = function (i) { return function () { nodes[i].classList.add('is-on'); }; };
+    var stage = function (i) { return function () { stages.forEach(function (s, n) { s.classList.toggle('is-on', n === i); }); }; };
+    stage(0)();
+    gsap.set(sys.querySelector('.h-sys__rail span'), { scaleY: 0 });
+    gsap.set(rows, { opacity: 0.2 });
+    gsap.set(sys.querySelectorAll('.h-ai__text, .h-ai__btns'), { opacity: 0.2 });
 
-  var buildStory = function () {
-    var beats = qa('[data-beat]');
-    var last = beats.length - 1;
-    // One scene unit in px. Read once and again after a resize, never between writes.
-    var unit = 0;
-    var u = function () { return unit || (unit = parseFloat(getComputedStyle(scene).fontSize) || 16); };
-    ST.addEventListener('refreshInit', function () { unit = 0; });
-    var em = function (v) { return function () { return v * u(); }; };
-    var parts = beats.map(function (b, i) {
-      return { lines: i ? [b.querySelector('.h-beat__rise')] : [], rest: Array.prototype.slice.call(b.querySelectorAll('.h-beat__tag, .h-beat__text')) };
-    });
-    // Start states: later beats wait below their masks, the props wait inside the phone.
-    parts.forEach(function (p, i) {
-      if (!i) return;
-      gsap.set(p.lines, { yPercent: 104 });
-      gsap.set(p.rest, { autoAlpha: 0, y: 24 });
-      gsap.set(beats[i], { visibility: 'visible' });
-    });
-    gsap.set(qa('.h-prop, .h-scr--lock, .h-scr--chat, .h-scr__pay-b, .h-note, .h-msg'), { autoAlpha: 0 });
-    gsap.set(q('.h-scr__sheet'), { autoAlpha: 1, yPercent: 105 });
-    gsap.set(q('.h-scr__tap'), { autoAlpha: 1, scale: 0 });
-    gsap.set(phone, { rotationY: -16, rotationX: 4 });
-
-    // The timeline is built in a task of its own, to keep each one short on slow phones.
-    setTimeout(function () {
-
-    var dots = qa('[data-rail]');
-    var step = 0;
-    var setStep = function (i) {
-      if (i === step) return;
-      step = i;
-      dots.forEach(function (b, n) { b.classList.toggle('is-on', n === i); });
-    };
-    var st = gsap.timeline({
-      defaults: { ease: 'power2.inOut' },
-      scrollTrigger: {
-        trigger: hero, start: 'top top', end: 'bottom bottom', scrub: 0.7, invalidateOnRefresh: true,
-        onUpdate: function (self) { setStep(Math.min(last, Math.floor(self.progress * st.duration() + 0.45))); }
-      }
-    });
-    var swap = function (i) {
-      var at = i - 1;
-      if (i === 1) st.to(beats[0], { yPercent: -10, autoAlpha: 0, duration: 0.28, ease: 'power2.in' }, at);
-      else st.to(parts[at].lines, { yPercent: -104, duration: 0.28, ease: 'power2.in' }, at).to(parts[at].rest, { autoAlpha: 0, y: -16, duration: 0.22, ease: 'power2.in' }, at);
-      st.fromTo(parts[i].lines, { yPercent: 104 }, { yPercent: 0, duration: 0.42, ease: 'power3.out', immediateRender: false }, at + 0.26)
-        .fromTo(parts[i].rest, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.36, ease: 'power2.out', stagger: 0.06, immediateRender: false }, at + 0.34);
-    };
-    var pop = function (el, from, at, dur, rot) {
-      st.fromTo(el, Object.assign({ autoAlpha: 0 }, from), { autoAlpha: 1, scale: 1, x: 0, y: 0, rotation: rot || 0, duration: dur || 0.45, ease: 'back.out(1.3)', immediateRender: false }, at);
-    };
-    for (var i = 1; i <= last; i++) swap(i);
-    st.fromTo(q('.h-rail__line span'), { scaleX: 0 }, { scaleX: 1, ease: 'none', duration: last }, 0);
-
-    // Beat 1, the order: a tap on Pay, the button answers, the confirmation sheet slides up.
-    st.to(phone, { rotationY: -6, rotationX: 2, x: em(-1.5), duration: 0.6 }, 0)
-      .fromTo(q('.h-scr__tap'), { scale: 0, opacity: 0.9 }, { scale: 1, opacity: 0, duration: 0.22, ease: 'power1.out', immediateRender: false }, 0.1)
-      .to(q('.h-scr__pay-a'), { autoAlpha: 0, duration: 0.06 }, 0.2)
-      .to(q('.h-scr__pay-b'), { autoAlpha: 1, duration: 0.06 }, 0.22)
-      .to(q('.h-scr__sheet'), { yPercent: 0, duration: 0.3, ease: 'power3.out' }, 0.36)
-      .fromTo(q('.h-scr__tick'), { scale: 0 }, { scale: 1, duration: 0.22, ease: 'back.out(2.6)', immediateRender: false }, 0.5);
-    pop(q('.h-chip--paid'), { scale: 0.5, x: em(-4) }, 0.5, 0.3);
-
-    // Beat 2, WhatsApp: the phone locks, the notification drops in and the message lifts out of it.
-    st.to(q('.h-chip--paid'), { autoAlpha: 0, y: em(-2), duration: 0.2 }, 1)
-      .to(phone, { rotationY: 14, x: em(5.5), duration: 0.6 }, 1)
-      .to(q('.h-scr--lock'), { autoAlpha: 1, duration: 0.22 }, 1.08)
-      .fromTo(q('.h-note--wa'), { autoAlpha: 0, y: em(-3), scale: 0.9 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.3, ease: 'back.out(1.5)', immediateRender: false }, 1.3);
-    pop(q('.h-wa'), { scale: 0.3, x: em(11), y: em(3), rotation: 10 }, 1.36, 0.45, -4);
-
-    // Beat 3, the email: a second notification, and the receipt flies out the other side.
-    st.to(q('.h-wa'), { autoAlpha: 0, y: em(-4), scale: 0.86, duration: 0.24 }, 2)
-      .to(phone, { rotationY: -14, x: em(-6.5), duration: 0.6 }, 2)
-      .fromTo(q('.h-note--mail'), { autoAlpha: 0, y: em(-3), scale: 0.9 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.3, ease: 'back.out(1.5)', immediateRender: false }, 2.22);
-    pop(q('.h-mail'), { scale: 0.3, x: em(-11), y: em(2), rotation: -10 }, 2.3, 0.45, 3);
-    st.fromTo(qa('.h-mail__rows li, .h-mail__foot'), { opacity: 0, x: em(-1) }, { opacity: 1, x: 0, duration: 0.18, stagger: 0.05, ease: 'power2.out', immediateRender: false }, 2.5);
-
-    // Beat 4, the dashboard: the phone steps aside, the window rises, the numbers move.
-    var rev = q('[data-dash-rev]');
-    var ord = q('[data-dash-ord]');
-    var stk = q('[data-dash-stk]');
-    var num = { v: 1 };
-    var count = function () {
-      rev.textContent = Math.round(1260000 + 24500 * num.v).toLocaleString('en-NG');
-      ord.textContent = num.v > 0.5 ? '37' : '36';
-      stk.textContent = num.v > 0.5 ? '11' : '12';
-    };
-    st.to(q('.h-mail'), { autoAlpha: 0, y: em(-5), rotation: 8, duration: 0.24 }, 3)
-      .to(phone, { x: em(-12.5), y: em(9.5), scale: 0.52, rotationY: 20, duration: 0.6 }, 3)
-      .fromTo(q('.h-dash'), { autoAlpha: 0, y: em(14), rotationX: 26, scale: 0.9 }, { autoAlpha: 1, y: 0, rotationX: 0, scale: 1, duration: 0.55, ease: 'power3.out', immediateRender: false }, 3.08)
-      .fromTo(qa('.h-dash__chart span'), { scaleY: 0 }, { scaleY: 1, duration: 0.3, stagger: 0.03, ease: 'power3.out', immediateRender: false }, 3.3)
-      .fromTo(q('.h-dash__rows .is-new'), { opacity: 0, x: em(-2) }, { opacity: 1, x: 0, duration: 0.2, ease: 'power2.out', immediateRender: false }, 3.55)
-      .fromTo(num, { v: 0 }, { v: 1, duration: 0.3, ease: 'power1.out', onUpdate: count, immediateRender: false }, 3.55);
-
-    // Beat 5, AI: the dashboard falls back, the phone returns with the customer's question answered.
-    st.to(q('.h-dash'), { scale: 0.8, x: em(5), y: em(-6), autoAlpha: 0.32, duration: 0.5 }, 4)
-      .to(phone, { x: em(-2.5), y: 0, scale: 1, rotationY: -8, duration: 0.6 }, 4)
-      .to(q('.h-scr--chat'), { autoAlpha: 1, duration: 0.18 }, 4.12)
-      .fromTo(q('.h-msg--in'), { autoAlpha: 0, y: em(1.5) }, { autoAlpha: 1, y: 0, duration: 0.16, ease: 'power2.out', immediateRender: false }, 4.34)
-      .to(q('.h-msg--typing'), { autoAlpha: 1, duration: 0.08 }, 4.5)
-      .to(q('.h-msg--typing'), { autoAlpha: 0, duration: 0.06 }, 4.68)
-      .fromTo(q('.h-msg--out'), { autoAlpha: 0, y: em(1.5), scale: 0.9 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.2, ease: 'back.out(1.4)', transformOrigin: '100% 100%', immediateRender: false }, 4.7);
-    pop(q('.h-chip--ai'), { scale: 0.5, x: em(-5), y: em(3) }, 4.8, 0.3);
-    st.to({}, { duration: 0.3 }, last);
-
-    // The rail jumps to a beat.
-    dots.forEach(function (b, n) {
-      b.addEventListener('click', function () {
-        var t = st.scrollTrigger;
-        var y = t.start + (t.end - t.start) * Math.min(1, (n + (n ? 0.02 : 0)) / st.duration());
-        if (B.lenis) B.lenis.scrollTo(y, { duration: 1.2 });
-        else window.scrollTo({ top: y, behavior: 'smooth' });
-      });
-    });
-
-    // The phone floats while the hero is on screen, and the scene leans a little with the cursor.
-    var bob = gsap.to('.h-phone__float', { y: em(-0.7), duration: 3.2, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 2.2 });
-    ST.create({ trigger: hero, start: 'top bottom', end: 'bottom top', onToggle: function (self) { bob.paused(!self.isActive); } });
-    if (fine) {
-      var tilt = q('.h-scene__tilt');
-      var tx = gsap.quickTo(tilt, 'x', { duration: 1.1 });
-      var ty = gsap.quickTo(tilt, 'y', { duration: 1.1 });
-      stage.addEventListener('mousemove', function (e) {
-        tx((e.clientX / window.innerWidth - 0.5) * -22);
-        ty((e.clientY / window.innerHeight - 0.5) * -16);
-      });
-    }
-    }, 0);
-  };
-  // Built one frame after the entrance starts, so the first paint never waits for it.
-  if (story) requestAnimationFrame(function () { setTimeout(buildStory, 0); });
+    // Steps not reached yet sit dimmed, never empty. The cards arrive with the copy and the walk
+    // starts once they have settled.
+    tl.from(nodes, { y: 40, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.09 }, 0.3);
+    var walk = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
+    walk.add(on(0))
+      .to(sendA, { opacity: 0, duration: 0.2 }, 0.5)
+      .to(sendB, { opacity: 1, duration: 0.2 }, 0.55)
+      .fromTo(cards[0], { scale: 1 }, { scale: 1.02, duration: 0.18, yoyo: true, repeat: 1 }, 0.5)
+      .to(sys.querySelector('.h-sys__rail span'), { scaleY: 1, duration: 2.6, ease: 'power1.inOut' }, 0.7)
+      .add(on(1), 1.3).add(stage(1), 1.5)
+      .add(on(2), 2.1).to(rows, { opacity: 1, duration: 0.4, stagger: 0.18 }, 2.15)
+      .add(on(3), 2.9).to(sys.querySelectorAll('.h-ai__text, .h-ai__btns'), { opacity: 1, duration: 0.45, stagger: 0.12 }, 3);
+    tl.add(function () { walk.play(); }, '>-0.2');
+  }
 
   if (!ST) return;
 
-  /* Hero exit: once the story is done the frame pulls in and rounds off as it leaves */
-  if (!B.lite && stage) {
-    gsap.fromTo(stage, { clipPath: 'inset(0% 0% 0% 0% round 0px)' }, { clipPath: 'inset(0% 2.5% 6% 2.5% round 32px)', ease: 'none', immediateRender: false, scrollTrigger: { trigger: hero, start: story ? 'bottom bottom' : 'top top', end: 'bottom top', scrub: true } });
+  /* Hero exit: the frame pulls in and rounds off as it leaves */
+  var heroStage = hero && hero.querySelector('.h-hero__stage');
+  if (!B.lite && heroStage) {
+    gsap.fromTo(heroStage, { clipPath: 'inset(0% 0% 0% 0% round 0px)' }, { clipPath: 'inset(0% 2.5% 6% 2.5% round 32px)', ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
   }
 
   /* 2. Marquee: drifts on its own, runs faster (and backwards) with the scroll */
