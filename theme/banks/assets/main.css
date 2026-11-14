@@ -179,7 +179,10 @@ p{margin:0 0 1em}
 .b-footer__line{margin:22px 0 10px;font:700 clamp(1.7rem,3.2vw,2.7rem)/1.02 var(--b-head);letter-spacing:-.035em;color:var(--b-paper)}
 .b-footer__line span{color:var(--b-signal)}
 .b-footer__brand p{max-width:36ch}
+/* Wide screens: the tagline on one line, the brand column as wide as it needs */
+@media (min-width:1200px){.b-footer__grid{grid-template-columns:auto minmax(0,1fr)}.b-footer__brand p{max-width:none;white-space:nowrap}}
 .b-footer__actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.b-footer__actions .b-btn{min-width:min(240px,100%)}
 .b-footer__links{display:grid;grid-template-columns:1.1fr 1fr 1.2fr;gap:28px;padding:clamp(18px,2.6vw,30px);border:1px solid rgba(255,255,255,.14);border-radius:clamp(16px,2vw,24px);background:rgba(244,245,241,.09);box-shadow:0 1px 0 rgba(255,255,255,.2) inset}
 .b-footer__title{font:500 12px/1.2 var(--b-mono);text-transform:uppercase;letter-spacing:.12em;color:var(--b-foam);margin:0 0 14px}
 .b-footer__list{list-style:none;margin:0;padding:0;display:grid;gap:2px}

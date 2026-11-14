@@ -21,7 +21,6 @@ $b_foot_start = banks_route( '/start/', '/contact/' );
 					<p><?php echo esc_html( banks_detail( 'tagline' ) ); ?></p>
 					<div class="b-footer__actions">
 						<?php if ( $b_foot_start ) : ?><a class="b-btn b-btn--signal" href="<?php echo esc_url( $b_foot_start ); ?>" data-magnetic>Start a project</a><?php endif; ?>
-						<?php if ( banks_detail( 'whatsapp' ) ) : ?><a class="b-btn b-btn--line" href="https://wa.me/<?php echo esc_attr( preg_replace( '/\D/', '', banks_detail( 'whatsapp' ) ) ); ?>">WhatsApp us</a><?php endif; ?>
 					</div>
 				</div>
 				<div class="b-footer__links">
@@ -51,7 +50,6 @@ $b_foot_start = banks_route( '/start/', '/contact/' );
 						<ul class="b-footer__list">
 							<?php banks_nav_item( '/contact/', 'Contact us' ); ?>
 							<li><a href="mailto:<?php echo esc_attr( banks_detail( 'email' ) ); ?>"><?php echo esc_html( banks_detail( 'email' ) ); ?></a></li>
-							<?php if ( banks_detail( 'whatsapp' ) ) : ?><li><a href="https://wa.me/<?php echo esc_attr( preg_replace( '/\D/', '', banks_detail( 'whatsapp' ) ) ); ?>">WhatsApp us</a></li><?php endif; ?>
 							<?php if ( banks_detail( 'instagram' ) ) : ?><li><a href="<?php echo esc_url( banks_detail( 'instagram' ) ); ?>" rel="noopener" target="_blank">Instagram</a></li><?php endif; ?>
 							<?php if ( banks_detail( 'linkedin' ) ) : ?><li><a href="<?php echo esc_url( banks_detail( 'linkedin' ) ); ?>" rel="noopener" target="_blank">LinkedIn</a></li><?php endif; ?>
 							<?php if ( banks_has_portal() ) : ?><li><a href="<?php echo esc_url( banks_portal_url( '/' ) ); ?>">Client portal</a></li><?php endif; ?>
