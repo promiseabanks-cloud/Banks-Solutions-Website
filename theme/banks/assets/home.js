@@ -6,8 +6,11 @@
 
   if (!gsap || B.reduce) return;
 
-  /* 1. Hero. The copy rises in, then one enquiry walks down the rail once: the form sends, the
-     lead is qualified in the CRM, the messages go out, and AI drafts the next step. Then it rests.
+  /* 1. Hero. The copy rises in on load. The system on the right builds with the scroll, one step
+     at a time: the website form, then the CRM record, then the automation, then AI.
+     - Large screens: the stage sticks (CSS, see home.css) and the scroll scrubs the four steps.
+     - Phones and tablets (the visual sits under the copy) and weak phones: each step comes in
+       as it scrolls into view.
      Start states are set here, so without JS (or with reduced motion) every step shows finished. */
   var hero = document.querySelector('.h-hero');
   var sys = hero && hero.querySelector('.h-sys');
@@ -17,41 +20,78 @@
   tl.from('.h-hero__eyebrow, .h-hero__lede, .h-hero__actions > *, .h-hero__assure', { y: 24, opacity: 0, duration: 0.9, stagger: 0.07 }, '-=0.95')
     .from('.h-hero__proof li', { y: 16, opacity: 0, duration: 0.7, stagger: 0.06 }, '-=0.6');
 
-  if (sys) {
+  var heroStage = hero && hero.querySelector('.h-hero__stage');
+  var sticky = document.documentElement.classList.contains('js-lite') ? false : null;
+  if (sys && ST) {
     var nodes = Array.prototype.slice.call(sys.querySelectorAll('[data-node]'));
     var cards = nodes.map(function (n) { return n.querySelector('.h-card'); });
-    var stages = sys.querySelectorAll('.h-crm__stages li');
+    var tags = nodes.map(function (n) { return n.querySelector('.h-node__tag'); });
+    var stages = Array.prototype.slice.call(sys.querySelectorAll('.h-crm__stages li'));
     var rows = sys.querySelectorAll('.h-auto__row');
+    var ai = sys.querySelectorAll('.h-ai__text, .h-ai__btns');
+    var fill = sys.querySelector('.h-sys__rail span');
     var sendA = sys.querySelector('.h-web__send-a');
     var sendB = sys.querySelector('.h-web__send-b');
-    var on = function (i) { return function () { nodes[i].classList.add('is-on'); }; };
-    var stage = function (i) { return function () { stages.forEach(function (s, n) { s.classList.toggle('is-on', n === i); }); }; };
-    stage(0)();
-    gsap.set(sys.querySelector('.h-sys__rail span'), { scaleY: 0 });
-    gsap.set(rows, { opacity: 0.2 });
-    gsap.set(sys.querySelectorAll('.h-ai__text, .h-ai__btns'), { opacity: 0.2 });
+    var reached = function (n) {
+      nodes.forEach(function (el, i) { el.classList.toggle('is-on', i < n); });
+      stages.forEach(function (s, i) { s.classList.toggle('is-on', i === (n >= 2 ? 1 : 0)); });
+    };
+    // What a step does once its card is in: the form sends, the lead is qualified, the messages
+    // go out one by one, AI's summary and draft appear.
+    var inner = function (t, i, at) {
+      if (i === 0) t.to(sendA, { opacity: 0, duration: 0.15 }, at).to(sendB, { opacity: 1, duration: 0.15 }, at + 0.05);
+      if (i === 2) t.fromTo(rows, { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.25, stagger: 0.12, immediateRender: false }, at);
+      if (i === 3) t.fromTo(ai, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25, stagger: 0.1, immediateRender: false }, at);
+    };
+    var start = function () {
+      reached(0);
+      gsap.set(cards, { opacity: 0, y: 46, scale: 0.97 });
+      gsap.set(tags, { opacity: 0.4 });
+      gsap.set(fill, { scaleY: 0 });
+      gsap.set(sendB, { opacity: 0 });
+      gsap.set(rows, { opacity: 0 });
+      gsap.set(ai, { opacity: 0 });
+    };
+    var mm = gsap.matchMedia();
 
-    // Steps not reached yet sit dimmed, never empty. The cards arrive with the copy and the walk
-    // starts once they have settled.
-    tl.from(nodes, { y: 40, opacity: 0, duration: 1, ease: 'expo.out', stagger: 0.09 }, 0.3);
-    var walk = gsap.timeline({ paused: true, defaults: { ease: 'power2.out' } });
-    walk.add(on(0))
-      .to(sendA, { opacity: 0, duration: 0.2 }, 0.5)
-      .to(sendB, { opacity: 1, duration: 0.2 }, 0.55)
-      .fromTo(cards[0], { scale: 1 }, { scale: 1.02, duration: 0.18, yoyo: true, repeat: 1 }, 0.5)
-      .to(sys.querySelector('.h-sys__rail span'), { scaleY: 1, duration: 2.6, ease: 'power1.inOut' }, 0.7)
-      .add(on(1), 1.3).add(stage(1), 1.5)
-      .add(on(2), 2.1).to(rows, { opacity: 1, duration: 0.4, stagger: 0.18 }, 2.15)
-      .add(on(3), 2.9).to(sys.querySelectorAll('.h-ai__text, .h-ai__btns'), { opacity: 1, duration: 0.45, stagger: 0.12 }, 3);
-    tl.add(function () { walk.play(); }, '>-0.2');
+    mm.add('(min-width: 1081px)', function () {
+      if (sticky === false) return;
+      sticky = true;
+      start();
+      // Each step owns a quarter of the scroll: its card rises in, then its inside plays.
+      var steps = gsap.timeline({
+        defaults: { ease: 'power2.out' },
+        scrollTrigger: {
+          trigger: hero, start: 'top top', end: 'bottom bottom', scrub: 0.6, invalidateOnRefresh: true,
+          onUpdate: function (self) { reached(Math.min(4, Math.floor(self.progress * 4 + 0.75))); }
+        }
+      });
+      cards.forEach(function (c, i) {
+        steps.to(tags[i], { opacity: 1, duration: 0.2 }, i)
+          .to(c, { opacity: 1, y: 0, scale: 1, duration: 0.5 }, i + 0.05);
+        inner(steps, i, i + 0.5);
+      });
+      steps.to(fill, { scaleY: 1, ease: 'none', duration: 3.6 }, 0.2).to({}, { duration: 0.3 }, 3.7);
+      return function () { reached(4); };
+    });
+
+    mm.add('(max-width: 1080px)', function () {
+      if (sticky === null) sticky = false;
+      start();
+      nodes.forEach(function (n, i) {
+        var t = gsap.timeline({ scrollTrigger: { trigger: n, start: 'top 85%', once: true, onEnter: function () { reached(i + 1); } } });
+        t.to(tags[i], { opacity: 1, duration: 0.3 }).to(cards[i], { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'expo.out' }, 0);
+        inner(t, i, 0.35);
+      });
+      gsap.to(fill, { scaleY: 1, ease: 'none', scrollTrigger: { trigger: sys, start: 'top 80%', end: 'bottom 70%', scrub: true } });
+    });
   }
 
   if (!ST) return;
 
-  /* Hero exit: the frame pulls in and rounds off as it leaves */
-  var heroStage = hero && hero.querySelector('.h-hero__stage');
+  /* Hero exit: once the steps are done the frame pulls in and rounds off as it leaves */
   if (!B.lite && heroStage) {
-    gsap.fromTo(heroStage, { clipPath: 'inset(0% 0% 0% 0% round 0px)' }, { clipPath: 'inset(0% 2.5% 6% 2.5% round 32px)', ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true } });
+    gsap.fromTo(heroStage, { clipPath: 'inset(0% 0% 0% 0% round 0px)' }, { clipPath: 'inset(0% 2.5% 6% 2.5% round 32px)', ease: 'none', immediateRender: false, scrollTrigger: { trigger: hero, start: function () { return sticky ? 'bottom bottom' : 'top top'; }, end: 'bottom top', scrub: true } });
   }
 
   /* 2. Marquee: drifts on its own, runs faster (and backwards) with the scroll */
