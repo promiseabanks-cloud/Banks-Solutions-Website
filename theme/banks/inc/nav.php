@@ -75,6 +75,8 @@ function banks_nav_default_tree() {
 			'',
 			array(
 				array( 'Banks Business Engine', '/banks-business-engine/', 'Answers, qualifies and follows up every enquiry' ),
+				array( 'Project Desk', '/labs/project-desk/', 'Client portal and studio desk in one app' ),
+				array( 'InvoiceNaija', '/labs/invoicenaija/', 'Naira invoices and receipts that send themselves' ),
 				array( 'Shop', '/shop/', 'Ready-made tools for your website' ),
 				array( 'Banks Labs', '/labs/', 'Where we build and document our software' ),
 			),
