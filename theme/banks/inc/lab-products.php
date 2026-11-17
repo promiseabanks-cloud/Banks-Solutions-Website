@@ -48,7 +48,7 @@ function banks_lab_products() {
 				array( 'Client sign-in', 'https://clients.bankssolution.ng/', 'line' ),
 			),
 			'facts'   => array(
-				array( 'Live', 'at clients.bankssolution.ng' ),
+				array( 'Live', 'running our own client projects' ),
 				array( 'v0.3', 'current release' ),
 				array( '3', 'roles: owner, project manager, client' ),
 				array( '2 GB', 'per file, uploaded in pieces' ),

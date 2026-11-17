@@ -53,12 +53,12 @@
     var lines = lv.querySelectorAll('.lv-line, .lv-totals div, .lv-words, .lv-bank');
     if (lines.length) inner.from(lines, { y: 8, opacity: 0, duration: 0.45, stagger: 0.08, ease: 'power2.out' }, 0.1);
     var stamp = lv.querySelector('.lv-stamp');
-    if (stamp) inner.from(stamp, { scale: 2.4, opacity: 0, rotate: -30, duration: 0.55, ease: 'back.out(2.2)' }, '+=0.15');
+    if (stamp) inner.fromTo(stamp, { scale: 2.4, opacity: 0, rotate: -30 }, { scale: 1, opacity: 0.9, rotate: -12, duration: 0.55, ease: 'back.out(2.2)' }, '+=0.15');
     // Car wash: the wallet, the menu choice and the booking tick
     var menu = lv.querySelectorAll('.lv-menu li');
     if (menu.length) inner.from(menu, { y: 10, opacity: 0, duration: 0.45, stagger: 0.08 }, 0.1);
     var booked = lv.querySelector('.lv-card--booked');
-    if (booked) inner.from(booked, { scale: 0.9, opacity: 0, duration: 0.6, ease: 'back.out(2)' }, '+=0.1').from(booked.querySelector('.lv-check'), { scale: 0, rotate: -90, duration: 0.5, ease: 'back.out(3)' }, '-=0.3');
+    if (booked) inner.from(booked, { scale: 0.9, opacity: 0, duration: 0.6, ease: 'back.out(2)' }, '+=0.1').fromTo(booked.querySelector('.lv-check'), { scale: 0, rotate: -90 }, { scale: 1, rotate: 0, duration: 0.5, ease: 'back.out(3)' }, '-=0.3');
     var wallet = lv.querySelector('.lv-wallet');
     if (wallet) {
       var end = parseInt(wallet.textContent.replace(/\D/g, ''), 10) || 0;
@@ -127,7 +127,7 @@
   document.querySelectorAll('.lp-group').forEach(function (g) {
     gsap.from(g.querySelectorAll('.lp-group__head > *'), { y: 24, opacity: 0, duration: 0.9, ease: 'expo.out', stagger: 0.06, scrollTrigger: { trigger: g, start: 'top 85%', once: true } });
     gsap.from(g.querySelectorAll('.lp-feat'), { y: 34, opacity: 0, duration: 0.9, ease: 'expo.out', stagger: { each: 0.06, grid: 'auto' }, scrollTrigger: { trigger: g.querySelector('.lp-feats'), start: 'top 88%', once: true } });
-    gsap.from(g.querySelectorAll('.lp-feat__tick'), { scale: 0, duration: 0.6, ease: 'back.out(3)', stagger: 0.06, delay: 0.3, scrollTrigger: { trigger: g.querySelector('.lp-feats'), start: 'top 88%', once: true } });
+    gsap.fromTo(g.querySelectorAll('.lp-feat__tick'), { scale: 0 }, { scale: 1, duration: 0.6, ease: 'back.out(3)', stagger: 0.06, delay: 0.3, scrollTrigger: { trigger: g.querySelector('.lp-feats'), start: 'top 88%', once: true } });
   });
 
   /* 6. How it is built: the orbit turns */
