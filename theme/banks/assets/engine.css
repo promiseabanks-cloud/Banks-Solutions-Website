@@ -85,17 +85,7 @@
 .en-bars{display:flex;align-items:flex-end;gap:8px;height:150px}
 .en-bars span{flex:1;height:var(--h);border-radius:6px 6px 2px 2px;background:linear-gradient(var(--b-foam),color-mix(in srgb,var(--b-foam) 35%,var(--b-hero)));transform-origin:50% 100%}
 
-/* 4. What's inside */
-.en-inside{padding-block:clamp(96px,12vw,150px)}
-.en-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0;list-style:none;margin:0;padding:0;border-top:1px solid var(--b-line);border-left:1px solid var(--b-line)}
-@media (max-width:1100px){.en-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media (max-width:760px){.en-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:480px){.en-grid{grid-template-columns:minmax(0,1fr)}}
-.en-feat{padding:26px 22px 30px;border-right:1px solid var(--b-line);border-bottom:1px solid var(--b-line);transition:background-color var(--b-dur)}
-.en-feat:hover{background:var(--b-tint)}
-.en-feat__n{font:500 12px/1 var(--b-mono);color:var(--b-link)}
-.en-feat h3{margin:18px 0 8px;font-size:1.12rem;letter-spacing:-.01em}
-.en-feat p{margin:0;color:var(--b-muted);font-size:14.5px}
+/* 4. Every capability: the shared map in product.css (template-parts/lab-capabilities.php) */
 
 /* 5. Data protection */
 .en-safe{background:var(--b-hero);color:var(--b-on);padding-block:clamp(96px,12vw,150px);overflow:hidden}

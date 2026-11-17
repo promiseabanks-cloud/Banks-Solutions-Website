@@ -3,7 +3,7 @@
  * Banks Business Engine (/banks-business-engine/), the product page, built as scenes: a console
  * where an enquiry becomes a qualified lead and a booking, the 9pm problem, the three things it
  * does (pinned on wide screens), everything inside, data protection, how to get it, questions,
- * closing call. Copy: "Banks Solutions website: sitemap and copy" doc, the old homepage copy and
+ * closing call. Every capability uses the shared map (template-parts/lab-capabilities.php). Copy: "Banks Solutions website: sitemap and copy" doc, the old homepage copy and
  * the plugin's own changelog. Motion lives in engine.js; every state is in the HTML.
  */
 get_header();
@@ -41,17 +41,121 @@ $b_does = array(
 	),
 );
 
-$b_inside = array(
-	array( 'Bookings', 'Slots from your own working hours, booked inside the conversation, synced to Google Calendar.' ),
-	array( 'Lead and customer CRM', 'Every lead, customer, booking and note in one place, with a status you can move along.' ),
-	array( 'WhatsApp alerts', 'You get each new lead on WhatsApp with the service, budget and timeline. The customer gets their confirmation.' ),
-	array( 'Paystack links', 'Send a payment link from any lead. Money goes straight to your own Paystack account.' ),
-	array( 'Automations', 'Six ready recipes, follow-ups, reminders and notifications, plus a builder for your own.' ),
-	array( 'Insights', 'Win rates, source performance, revenue collected and a 30-day trend, in one tab.' ),
-	array( 'Your choice of AI', 'Runs on OpenAI or Groq with your own key, so you see and pay the real model cost.' ),
-	array( 'Five-minute setup', 'A guided wizard for your business, services, knowledge, hours and AI, then you’re live.' ),
-	array( 'Slack and SMS', 'Lead alerts to a Slack channel, or by SMS and WhatsApp through Twilio.' ),
-	array( 'Updates built in', 'New versions arrive on their own. We keep your assistant current without you lifting a finger.' ),
+// Every capability, by area, from the plugin itself (v0.12). Shown with the shared capability map.
+$b_caps = array(
+	'eyebrow' => 'Every capability',
+	'title'   => 'Everything after the first hello.',
+	'lede'    => 'One tool on your website, doing the work that usually needs a receptionist, a CRM, a booking app, a payment link and a few automations stitched together.',
+	'items'   => array(
+		array(
+			'key'   => 'assistant',
+			'title' => 'The AI assistant',
+			'blurb' => 'A chat on your website that answers in your voice, from what you have told it.',
+			'feats' => array(
+				array( 'Answers in real time', 'Every question answered the moment it is asked, at 9pm and at 3am.' ),
+				array( 'Only from approved knowledge', 'It answers from the business information you approve, never invented, and offers only real, available times.' ),
+				array( 'Its own name and playbook', 'Name the assistant and tell it in plain words who to send where, what to ask and what the next step is.' ),
+				array( 'Your choice of AI', 'Runs on OpenAI or Groq with your own key, so you see and pay the real model cost. Demo mode works with no setup.' ),
+				array( 'Knowledge that keeps itself current', 'Your blog posts and glossary sync into its knowledge on their own, with a link back to the full article.' ),
+				array( 'Voice typing', 'Visitors can speak their message instead of typing it, tuned for Nigerian English. They still check it before sending.' ),
+				array( 'Welcome and suggested questions', 'A welcome message and up to four suggested questions, so visitors know what to ask.' ),
+				array( 'Enquiry form inside the chat', 'One tap and the chat asks for name, service, contact and message, one question at a time, and files a proper enquiry.' ),
+				array( 'Your look and sound', 'Brand colours, launcher position and three message tones. Visitors can mute them.' ),
+				array( 'Test before you go live', 'Try real customer conversations, qualification and booking in the dashboard before switching the public assistant on.' ),
+			),
+		),
+		array(
+			'key'   => 'inbox',
+			'title' => 'Inbox',
+			'blurb' => 'Every conversation and enquiry, in one place you can step into.',
+			'feats' => array(
+				array( 'Every chat, live', 'Read along with every conversation your assistant has had.' ),
+				array( 'Reply or take over', 'Answer a visitor yourself, or take the conversation over from the assistant.' ),
+				array( 'Form enquiries', 'Enquiries from the chat form arrive as their own entries, with unread ones marked.' ),
+			),
+		),
+		array(
+			'key'   => 'crm',
+			'title' => 'Leads and CRM',
+			'blurb' => 'Every visitor who asks becomes a lead you can act on.',
+			'feats' => array(
+				array( 'Qualifies while it talks', 'Picks up the service, budget and timeline as the conversation goes, and hands you a lead that is ready.' ),
+				array( 'Intent score', 'Each lead is scored out of 100 and labelled high, medium or low, with the next step suggested.' ),
+				array( 'Pipeline, as a list or a board', 'Move leads through your stages and see each lead’s full journey and next action.' ),
+				array( 'Customers', 'Customer history, connected leads and recent activity in one place.' ),
+				array( 'Your services', 'The services you sell power the qualification and what the assistant recommends.' ),
+			),
+		),
+		array(
+			'key'   => 'bookings',
+			'title' => 'Bookings',
+			'blurb' => 'Appointments booked inside the conversation, from your real hours.',
+			'feats' => array(
+				array( 'Booked in the chat', 'The assistant offers slots from your own working hours and books the visitor in.' ),
+				array( 'Google Calendar sync', 'Confirmed bookings appear in your calendar, and cancelled ones are removed again.' ),
+				array( 'Reminder emails', 'Customers get a reminder before their booking, with a private link to reschedule or cancel. You are told when they do.' ),
+				array( 'Reschedule from the dashboard', 'Move a booking yourself, or send the customer their manage-my-booking link.' ),
+				array( 'Availability controls', 'Set your hours and check any slot before you promise it.' ),
+			),
+		),
+		array(
+			'key'   => 'payments',
+			'title' => 'Payments',
+			'blurb' => 'Get paid from the same place the lead came in.',
+			'feats' => array(
+				array( 'Paystack links', 'Send a payment link from any lead. Money goes straight to your own Paystack account.' ),
+				array( 'Payments that trigger the next step', 'A payment received can start an automation, such as a thank-you or a task for the team.' ),
+			),
+		),
+		array(
+			'key'   => 'automations',
+			'title' => 'Automations',
+			'blurb' => 'Turn business events into notifications and follow-ups, without another manual step.',
+			'feats' => array(
+				array( 'Eight ready recipes', 'New lead alert, qualified lead follow-up, booking confirmation, post-booking and completed consultation follow-ups, inactive lead reminder and two WhatsApp confirmations.' ),
+				array( 'A builder for your own', 'Start from a lead created, qualified, gone quiet, a booking made or completed, or a payment received. Add conditions, then actions.' ),
+				array( 'Actions', 'Email you or the customer, WhatsApp the customer, post to Slack, move the lead’s status, call a webhook or create a task.' ),
+				array( 'Tasks', 'Follow-ups land as tasks for the team, so nothing depends on memory.' ),
+				array( 'A record of every run', 'Email activity and every automation run are logged, so you can see what went out and when.' ),
+			),
+		),
+		array(
+			'key'   => 'alerts',
+			'title' => 'WhatsApp, SMS and Slack',
+			'blurb' => 'You hear about every lead where you already are.',
+			'feats' => array(
+				array( 'WhatsApp through Meta', 'Notifications through Meta’s own WhatsApp Cloud API, free for up to five verified numbers.' ),
+				array( 'SMS and WhatsApp through Twilio', 'A second route for alerts and customer confirmations.' ),
+				array( 'Slack', 'New leads posted to a Slack channel for the team.' ),
+				array( 'Test every channel', 'Send a test message from the dashboard before you rely on it.' ),
+			),
+		),
+		array(
+			'key'   => 'insights',
+			'title' => 'Command center and insights',
+			'blurb' => 'What is happening today, and what is working over time.',
+			'feats' => array(
+				array( 'Today at a glance', 'What needs attention, the lead journey and the latest movement, the moment you open the dashboard.' ),
+				array( 'Conversion funnel', 'How many leads reached each stage and how long they stayed, over 30 days, 90 days or 12 months.' ),
+				array( 'Sources that pay', 'Which sources bring leads, and which bring paying customers.' ),
+				array( 'Pipeline and bookings trends', 'Where your pipeline stands, and leads and bookings over the last 30 days.' ),
+				array( 'Automation reliability', 'How each automation is performing, so a broken follow-up never goes unnoticed.' ),
+				array( 'Website analytics', 'Visitors, page views and Google searches from Google Analytics and Search Console, in the same dashboard.' ),
+			),
+		),
+		array(
+			'key'   => 'setup',
+			'title' => 'Setup, updates and safety',
+			'blurb' => 'Quick to start, kept current, and your data stays yours.',
+			'feats' => array(
+				array( 'Five-minute setup', 'A guided wizard: your business, one service, what the assistant should know, your booking hours and going live.' ),
+				array( 'Updates built in', 'New versions arrive on your website’s own Plugins page, ready to install like any other update.' ),
+				array( 'Encrypted keys', 'Every API key and credential is encrypted with AES-256-GCM before it is stored.' ),
+				array( 'Your data stays on your site', 'Leads and customers live with your own website. Setups follow Nigeria’s Data Protection Act 2023.' ),
+				array( 'Nothing is lost if you stop', 'If the licence lapses, the public assistant pauses but your dashboard, leads and bookings stay.' ),
+			),
+		),
+	),
 );
 
 $b_faqs = array(
@@ -69,12 +173,14 @@ $b_faqs = array(
 		<div class="s-glow" aria-hidden="true"></div>
 		<div class="b-wrap en-inner">
 			<div class="en-copy">
+				<?php if ( banks_route( '/labs/' ) ) : ?><a class="lp-back" href="<?php echo esc_url( banks_route( '/labs/' ) ); ?>"><span aria-hidden="true">←</span> Banks Labs</a><?php endif; ?>
 				<p class="b-eyebrow en-eyebrow">Banks Business Engine · AI assistant and lead CRM</p>
 				<h1 class="en-title">Every enquiry answered, qualified and followed up<span class="s-dot">.</span></h1>
 				<p class="en-lede">Banks Business Engine is an AI assistant from Banks Solutions that answers your website visitors in real time, qualifies them and sends ready leads to a built-in dashboard with bookings and automations. It works on your website, in your voice.</p>
 				<div class="en-actions">
 					<button type="button" class="b-btn b-btn--signal b-btn--lg en-try" data-magnetic hidden>Try it live</button>
 					<a class="b-btn b-btn--signal b-btn--lg en-setup" href="<?php echo esc_url( $b_setup ); ?>" data-magnetic>Book a setup</a>
+					<a class="b-btn b-btn--line b-btn--lg" href="#capabilities">See every capability</a>
 				</div>
 			</div>
 
@@ -171,24 +277,7 @@ $b_faqs = array(
 	</div>
 </section>
 
-<section class="en-inside">
-	<div class="b-wrap">
-		<div class="en-head">
-			<p class="b-eyebrow">What’s inside</p>
-			<h2 data-split>Everything after the first hello.</h2>
-			<p>One tool on your website, doing the work that usually needs a receptionist, a CRM and a few apps stitched together.</p>
-		</div>
-		<ul class="en-grid">
-			<?php foreach ( $b_inside as $b_i => $b_f ) : ?>
-				<li class="en-feat">
-					<span class="en-feat__n"><?php echo esc_html( sprintf( '%02d', $b_i + 1 ) ); ?></span>
-					<h3><?php echo esc_html( $b_f[0] ); ?></h3>
-					<p><?php echo esc_html( $b_f[1] ); ?></p>
-				</li>
-			<?php endforeach; ?>
-		</ul>
-	</div>
-</section>
+<?php get_template_part( 'template-parts/lab-capabilities', null, array( 'name' => 'Banks Business Engine', 'groups' => $b_caps ) ); ?>
 
 <section class="en-safe" data-dark>
 	<div class="b-wrap en-safe__grid">
@@ -250,6 +339,12 @@ $b_faqs = array(
 
 <script type="application/ld+json">
 <?php
+$b_feature_list = array();
+foreach ( $b_caps['items'] as $b_g ) {
+	foreach ( $b_g['feats'] as $b_f ) {
+		$b_feature_list[] = $b_f[0];
+	}
+}
 echo wp_json_encode(
 	array(
 		'@context' => 'https://schema.org',
@@ -262,12 +357,7 @@ echo wp_json_encode(
 				'applicationSubCategory' => 'AI assistant and lead CRM',
 				'operatingSystem'     => 'Web',
 				'description'         => 'An AI assistant and lead CRM that answers website visitors in real time, qualifies them, books appointments and sends ready leads to a dashboard with a CRM, automations, WhatsApp alerts, Paystack payment links and insights.',
-				'featureList'         => array_map(
-					function ( $f ) {
-						return $f[0];
-					},
-					$b_inside
-				),
+				'featureList'         => $b_feature_list,
 				'publisher'           => array(
 					'@type' => 'Organization',
 					'@id'   => banks_main_url( '/' ) . '#organization',

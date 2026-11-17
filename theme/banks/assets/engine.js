@@ -144,9 +144,6 @@
     });
   }
 
-  /* 4. What's inside: the grid fills in */
-  gsap.from('.en-feat', { y: 30, opacity: 0, duration: 0.9, ease: 'expo.out', stagger: { each: 0.05, grid: 'auto', from: 'start' }, scrollTrigger: { trigger: '.en-grid', start: 'top 85%', once: true } });
-
   /* 5. The vault turns while it is on screen */
   var rings = document.querySelectorAll('.en-vault__ring');
   if (rings.length && !B.lite) {

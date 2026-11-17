@@ -13,7 +13,7 @@ $b_email    = banks_detail( 'email' );
 $b_brief    = add_query_arg( 'need', 'web-app', banks_route( '/start/', '/contact/' ) );
 $b_agency   = banks_route( '/wordpress-development/' );
 $b_webapps  = banks_route( '/solutions/web-apps/', '/solutions/' );
-$b_1904     = banks_route( '/work/1904-solutions/', '/work/' );
+$b_1904     = banks_route( '/labs/1904-car-wash/', banks_route( '/work/1904-solutions/', '/work/' ) );
 
 // The release log in the hero: what every release goes through before it reaches a site.
 $b_log = array(
@@ -81,14 +81,15 @@ $b_faqs = array(
 			<li class="lb-row lb-row--head" aria-hidden="true"><span>Product</span><span>What it is</span><span>Release</span><span>Status</span><span></span></li>
 			<?php foreach ( $b_products as $b_p ) : ?>
 				<?php
-				$b_live = 'available' === $b_p['status'];
-				$b_page = $b_p['url'] ? banks_route( $b_p['url'] ) : '';
+				$b_live   = 'available' === $b_p['status'];
+				$b_client = 'client' === $b_p['status'];
+				$b_page   = $b_p['url'] ? banks_route( $b_p['url'] ) : '';
 				?>
 				<li class="lb-row" data-reveal>
 					<span class="lb-row__name"><?php echo esc_html( $b_p['name'] ); ?></span>
 					<span class="lb-row__kind"><?php echo esc_html( $b_p['kind'] ); ?></span>
-					<span class="lb-row__ver"><span class="b-sr">Release </span><?php echo esc_html( ! empty( $b_p['version'] ) ? 'v' . $b_p['version'] : 'Not yet' ); ?></span>
-					<span class="lb-row__status lb-row__status--<?php echo esc_attr( $b_live ? 'live' : 'soon' ); ?>"><?php echo $b_live ? '<span class="s-live"></span>Available' : 'In development'; ?></span>
+					<span class="lb-row__ver"><span class="b-sr">Release </span><?php echo esc_html( ! empty( $b_p['version'] ) ? 'v' . $b_p['version'] : ( $b_client ? 'Client build' : 'Not yet' ) ); ?></span>
+					<span class="lb-row__status lb-row__status--<?php echo esc_attr( $b_live || $b_client ? 'live' : 'soon' ); ?>"><?php echo $b_live ? '<span class="s-live"></span>Available' : ( $b_client ? '<span class="s-live"></span>In use' : 'In development' ); ?></span>
 					<span class="lb-row__go">
 						<?php if ( $b_page ) : ?>
 							<a href="<?php echo esc_url( $b_page ); ?>">Product page <span aria-hidden="true">→</span></a>
@@ -171,7 +172,7 @@ $b_faqs = array(
 					<span class="lb-case__tag">Built for one client</span>
 					<span class="lb-case__title">1904 Solutions</span>
 					<span class="lb-case__text">A custom system and web app built around how a car wash and hospitality business actually runs.</span>
-					<span class="lb-case__go">See the project <span aria-hidden="true">→</span></span>
+					<span class="lb-case__go">See the system <span aria-hidden="true">→</span></span>
 				</a>
 			</li>
 			<li data-reveal>

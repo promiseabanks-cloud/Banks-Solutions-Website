@@ -6,7 +6,7 @@
  */
 get_header();
 
-$b_products = banks_products();
+$b_products = array_values( array_filter( banks_products(), function ( $p ) { return ! isset( $p['shop'] ) || false !== $p['shop']; } ) );
 $b_phone    = banks_detail( 'whatsapp' );
 $b_wa       = $b_phone ? 'https://wa.me/' . preg_replace( '/\D/', '', $b_phone ) : '';
 $b_custom   = banks_route( '/solutions/web-apps/', '/start/' );
