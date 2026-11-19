@@ -7,8 +7,6 @@
 get_header();
 
 $b_products = array_values( array_filter( banks_products(), function ( $p ) { return ! isset( $p['shop'] ) || false !== $p['shop']; } ) );
-$b_phone    = banks_detail( 'whatsapp' );
-$b_wa       = $b_phone ? 'https://wa.me/' . preg_replace( '/\D/', '', $b_phone ) : '';
 $b_custom   = banks_route( '/solutions/web-apps/', '/start/' );
 $b_key      = array( 'BBE', '7Q4M', 'K2XD', '9F8A' );
 
@@ -46,9 +44,6 @@ $b_faqs = array(
 				<p class="sh-lede">The Banks Solutions shop sells software we built for our own clients, ready to add to your website. Every tool comes with a licence key, updates and a person who sets it up for you.</p>
 				<div class="sh-actions">
 					<a class="b-btn b-btn--signal b-btn--lg" href="#shelf" data-magnetic>See what’s on the shelf</a>
-					<?php if ( $b_wa ) : ?>
-						<a class="b-btn b-btn--line b-btn--lg" href="<?php echo esc_url( $b_wa . '?text=' . rawurlencode( 'Hi Banks Solutions, I have a question about the shop.' ) ); ?>">Ask on WhatsApp</a>
-					<?php endif; ?>
 				</div>
 			</div>
 
@@ -120,8 +115,8 @@ $b_faqs = array(
 									<a class="b-btn b-btn--line" href="<?php echo esc_url( $b_page ); ?>">See how it works</a>
 								<?php endif; ?>
 								<a class="b-btn b-btn--signal" href="<?php echo esc_url( add_query_arg( 'need', $b_p['need'], banks_route( '/start/', '/contact/' ) ) ); ?>" data-magnetic>Book a setup</a>
-							<?php elseif ( $b_wa ) : ?>
-								<a class="b-btn b-btn--line" href="<?php echo esc_url( $b_wa . '?text=' . rawurlencode( 'Hi Banks Solutions, please tell me when the ' . strtolower( $b_p['name'] ) . ' is ready.' ) ); ?>">Tell me when it’s ready</a>
+							<?php else : ?>
+								<a class="b-btn b-btn--line" href="<?php echo esc_url( add_query_arg( 'need', $b_p['need'], banks_route( '/start/', '/contact/' ) ) ); ?>">Tell me when it’s ready</a>
 							<?php endif; ?>
 						</div>
 					</div>

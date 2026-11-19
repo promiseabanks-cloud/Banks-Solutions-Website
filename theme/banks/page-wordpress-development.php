@@ -9,8 +9,6 @@
 get_header();
 
 $b_brief = add_query_arg( 'need', 'web-app', banks_route( '/start/', '/contact/' ) );
-$b_phone = banks_detail( 'whatsapp' );
-$b_wa    = $b_phone ? 'https://wa.me/' . preg_replace( '/\D/', '', $b_phone ) : '';
 
 // The file in the hero editor, as [ token class, text ] pairs per line. '' is plain text.
 $b_code = array(
@@ -72,9 +70,6 @@ $b_faqs = array(
 				<p class="dv-lede">Banks Solutions builds custom WordPress plugins and themes for agencies, developers and the businesses they serve. Clean, documented code to WordPress Coding Standards, delivered on your timeline.</p>
 				<div class="dv-actions">
 					<a class="b-btn b-btn--signal b-btn--lg" href="<?php echo esc_url( $b_brief ); ?>" data-magnetic>Send a spec</a>
-					<?php if ( $b_wa ) : ?>
-						<a class="b-btn b-btn--line b-btn--lg" href="<?php echo esc_url( $b_wa . '?text=' . rawurlencode( 'Hi Banks Solutions, I have a WordPress development project.' ) ); ?>">Talk on WhatsApp</a>
-					<?php endif; ?>
 				</div>
 			</div>
 

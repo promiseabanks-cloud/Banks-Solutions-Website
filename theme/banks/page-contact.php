@@ -8,10 +8,7 @@
 get_header();
 
 $b_start = banks_route( '/start/', '/contact/' );
-$b_phone = banks_detail( 'whatsapp' );
-$b_wa    = 'https://wa.me/' . preg_replace( '/\D/', '', $b_phone );
 $b_mail  = banks_detail( 'email' );
-$b_nice  = preg_replace( '/^\+234(\d{3})(\d{3})(\d{4})$/', '+234 $1 $2 $3', $b_phone );
 
 $b_chat = array(
 	array( 'in', 'Hi, we run a hotel in Ilorin. Can you help us take bookings on our website?' ),
@@ -21,14 +18,6 @@ $b_chat = array(
 );
 
 $b_ways = array(
-	array(
-		'key'   => 'whatsapp',
-		'label' => 'WhatsApp',
-		'value' => $b_nice,
-		'note'  => 'Quickest for a short question.',
-		'url'   => $b_wa,
-		'go'    => 'Message us',
-	),
 	array(
 		'key'   => 'email',
 		'label' => 'Email',
@@ -48,10 +37,9 @@ $b_ways = array(
 );
 
 $b_faqs = array(
-	array( 'How quickly does Banks Solutions reply?', 'Within one working day, Monday to Friday, by email or WhatsApp. Briefs sent through the form at /start/ get a full reply within two working days, with what we would build, how long it takes and what it costs.' ),
+	array( 'How quickly does Banks Solutions reply?', 'Within one working day, Monday to Friday, by email. Briefs sent through the form at /start/ get a full reply within two working days, with what we would build, how long it takes and what it costs.' ),
 	array( 'What is the fastest way to get a quote?', 'Fill in the brief at /start/. It takes about 10 minutes and asks the questions we would ask on a call, so the reply can include a fixed price rather than a range.' ),
 	array( 'Where is Banks Solutions based?', 'In Nigeria, with offices in Lagos and Ilorin. We work with businesses across Nigeria and in the United States, the United Kingdom, Canada, Kenya and Australia.' ),
-	array( 'What is Banks Solutions’ WhatsApp number?', 'You can message us on WhatsApp at ' . $b_nice . '.' ),
 );
 ?>
 <section class="ct-hero" data-dark data-hero>
@@ -61,9 +49,9 @@ $b_faqs = array(
 			<div class="ct-copy">
 				<p class="b-eyebrow ct-eyebrow">Contact</p>
 				<h1 class="ct-title">Talk to a person<span class="s-dot">.</span></h1>
-				<p class="ct-lede">Email <a href="mailto:<?php echo esc_attr( $b_mail ); ?>"><?php echo esc_html( $b_mail ); ?></a> or message us on WhatsApp. We reply within one working day, Monday to Friday. Starting a project? The brief at <a href="<?php echo esc_url( $b_start ); ?>">/start/</a> gets you a proposal faster.</p>
+				<p class="ct-lede">Email <a href="mailto:<?php echo esc_attr( $b_mail ); ?>"><?php echo esc_html( $b_mail ); ?></a> and we reply within one working day, Monday to Friday. Starting a project? The brief at <a href="<?php echo esc_url( $b_start ); ?>">/start/</a> gets you a proposal faster.</p>
 				<div class="ct-actions">
-					<a class="b-btn b-btn--signal b-btn--lg" href="<?php echo esc_url( $b_wa ); ?>" data-magnetic>Message us on WhatsApp</a>
+					<a class="b-btn b-btn--signal b-btn--lg" href="<?php echo esc_url( $b_start ); ?>" data-magnetic>Start the brief</a>
 					<a class="b-btn b-btn--line b-btn--lg" href="mailto:<?php echo esc_attr( $b_mail ); ?>">Send an email</a>
 				</div>
 			</div>
@@ -87,7 +75,7 @@ $b_faqs = array(
 <section class="ct-ways" aria-labelledby="ct-ways-h">
 	<div class="b-wrap">
 		<div class="ct-head">
-			<p class="b-eyebrow">Three ways in</p>
+			<p class="b-eyebrow">Two ways in</p>
 			<h2 id="ct-ways-h" data-split>Pick whichever suits you.</h2>
 		</div>
 		<div class="ct-grid">
@@ -164,7 +152,6 @@ echo wp_json_encode(
 						'@type'             => 'ContactPoint',
 						'contactType'       => 'customer service',
 						'email'             => $b_mail,
-						'telephone'         => $b_phone,
 						'areaServed'        => array( 'NG', 'US', 'GB', 'CA', 'KE', 'AU' ),
 						'availableLanguage' => 'English',
 						'hoursAvailable'    => array(

@@ -8,7 +8,6 @@
 get_header();
 
 $b_start = banks_route( '/start/', '/contact/' );
-$b_wa    = 'https://wa.me/' . preg_replace( '/\D/', '', banks_detail( 'whatsapp' ) );
 $b_mail  = banks_detail( 'email' );
 $b_li    = banks_detail( 'linkedin' );
 
@@ -187,8 +186,7 @@ $b_faqs = array(
 				<div class="ab-fact" data-reveal><dt><?php echo esc_html( $b_k ); ?></dt><dd><?php echo esc_html( $b_v ); ?></dd></div>
 			<?php endforeach; ?>
 			<div class="ab-fact" data-reveal><dt>Email</dt><dd><a href="mailto:<?php echo esc_attr( $b_mail ); ?>"><?php echo esc_html( $b_mail ); ?></a></dd></div>
-			<div class="ab-fact" data-reveal><dt>WhatsApp</dt><dd><a href="<?php echo esc_url( $b_wa ); ?>"><?php echo esc_html( banks_detail( 'whatsapp' ) ); ?></a></dd></div>
-		</dl>
+			</dl>
 	</div>
 </section>
 
@@ -228,7 +226,6 @@ $b_org       = array(
 	'legalName'     => banks_detail( 'legal' ),
 	'url'           => banks_main_url( '/' ),
 	'email'         => $b_mail,
-	'telephone'     => banks_detail( 'whatsapp' ),
 	'description'   => 'Nigerian technology company that designs and builds websites, web apps and custom solutions, automation and AI for businesses in any industry.',
 	'identifier'    => array(
 		'@type'      => 'PropertyValue',
@@ -268,7 +265,6 @@ $b_org       = array(
 		'@type'       => 'ContactPoint',
 		'contactType' => 'sales',
 		'email'       => $b_mail,
-		'telephone'   => banks_detail( 'whatsapp' ),
 	),
 );
 if ( banks_detail( 'instagram' ) ) {

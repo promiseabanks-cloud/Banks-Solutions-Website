@@ -18,7 +18,6 @@ $b_ref   = preg_match( '/^BS-\d{6}-\d{4,}$/', $b_ref ) ? $b_ref : '';
 $b_error = isset( $_GET['brief_error'] ) ? sanitize_key( wp_unslash( $_GET['brief_error'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display only.
 // Links from product and solution pages can tick a need in advance: /start/?need=ai.
 $b_need  = isset( $_GET['need'] ) ? array_map( 'sanitize_key', explode( ',', sanitize_text_field( wp_unslash( $_GET['need'] ) ) ) ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display only.
-$b_wa    = 'https://wa.me/' . preg_replace( '/\D/', '', banks_detail( 'whatsapp' ) );
 $b_mail  = banks_detail( 'email' );
 
 $b_next = array(
@@ -60,7 +59,7 @@ $b_step = function ( $n, $title, $hint ) {
 						</li>
 					<?php endforeach; ?>
 				</ol>
-				<p class="st-direct">Rather talk first? <a href="<?php echo esc_url( $b_wa ); ?>">WhatsApp us</a> or email <a href="<?php echo esc_url( 'mailto:' . $b_mail ); ?>"><?php echo esc_html( $b_mail ); ?></a>.</p>
+				<p class="st-direct">Rather talk first? Email <a href="<?php echo esc_url( 'mailto:' . $b_mail ); ?>"><?php echo esc_html( $b_mail ); ?></a>.</p>
 			</div>
 
 			<div class="st-card">
@@ -70,12 +69,11 @@ $b_step = function ( $n, $title, $hint ) {
 						<h2 class="st-done__title">Brief received.</h2>
 						<p>Your reference is <strong class="st-done__ref"><?php echo esc_html( $b_ref ); ?></strong>. We have emailed you a copy.</p>
 						<p>Within two working days we’ll reply with what we’d build, how long it takes and what it costs.</p>
-						<a class="b-btn b-btn--line" href="<?php echo esc_url( $b_wa ); ?>">Message us on WhatsApp</a>
 					</div>
 				<?php elseif ( ! $b_ready ) : ?>
 					<div class="st-done">
 						<h2 class="st-done__title">The brief is offline for a moment.</h2>
-						<p>Tell us what you’re building on <a href="<?php echo esc_url( $b_wa ); ?>">WhatsApp</a> or at <a href="<?php echo esc_url( 'mailto:' . $b_mail ); ?>"><?php echo esc_html( $b_mail ); ?></a>, and we’ll reply within two working days.</p>
+						<p>Tell us what you’re building at <a href="<?php echo esc_url( 'mailto:' . $b_mail ); ?>"><?php echo esc_html( $b_mail ); ?></a>, and we’ll reply within two working days.</p>
 					</div>
 				<?php else : ?>
 					<form class="st-form" method="post" action="<?php echo esc_url( banks_core_brief_action_url() ); ?>" data-rest="<?php echo esc_url( banks_core_brief_rest_url() ); ?>"<?php echo is_user_logged_in() ? ' data-nonce="' . esc_attr( wp_create_nonce( 'wp_rest' ) ) . '"' : ''; ?>>

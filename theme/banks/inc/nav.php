@@ -82,7 +82,6 @@ function banks_nav_default_tree() {
 				array( 'Banks Labs', '/labs/', 'Where we build and document our software' ),
 			),
 		),
-		array( 'Pricing', '/pricing/' ),
 		array(
 			'Resources',
 			'',
