@@ -7,8 +7,6 @@
 get_header();
 
 $b_products = banks_products();
-$b_phone    = banks_detail( 'whatsapp' );
-$b_wa       = $b_phone ? 'https://wa.me/' . preg_replace( '/\D/', '', $b_phone ) : '';
 $b_email    = banks_detail( 'email' );
 $b_brief    = add_query_arg( 'need', 'web-app', banks_route( '/start/', '/contact/' ) );
 $b_agency   = banks_route( '/wordpress-development/' );
@@ -123,11 +121,8 @@ $b_faqs = array(
 				<h3>Talk to us</h3>
 				<p>Questions, bugs or ideas go straight to the team that built it. Included for as long as your licence is active.</p>
 				<div class="lb-card__go">
-					<?php if ( $b_wa ) : ?>
-						<a class="b-btn b-btn--signal" href="<?php echo esc_url( $b_wa . '?text=' . rawurlencode( 'Hi Banks Solutions, I need help with one of your products.' ) ); ?>" data-magnetic>WhatsApp support</a>
-					<?php endif; ?>
 					<?php if ( $b_email ) : ?>
-						<a class="b-btn b-btn--line" href="mailto:<?php echo esc_attr( $b_email ); ?>?subject=<?php echo rawurlencode( 'Support request' ); ?>">Email us</a>
+						<a class="b-btn b-btn--signal" href="mailto:<?php echo esc_attr( $b_email ); ?>?subject=<?php echo rawurlencode( 'Support request' ); ?>" data-magnetic>Email us</a>
 					<?php endif; ?>
 				</div>
 			</article>

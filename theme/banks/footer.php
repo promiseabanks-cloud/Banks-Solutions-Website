@@ -32,7 +32,6 @@ $b_foot_start = banks_route( '/start/', '/contact/' );
 							<?php banks_nav_item( '/industries/', 'Industries' ); ?>
 							<?php banks_nav_item( '/banks-business-engine/', 'Banks Business Engine' ); ?>
 							<?php banks_nav_item( '/shop/', 'Shop' ); ?>
-							<?php banks_nav_item( '/pricing/', 'Pricing' ); ?>
 							<?php banks_nav_item( '/about/', 'About' ); ?>
 						</ul>
 					</div>
