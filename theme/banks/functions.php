@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.14.1' );
+define( 'BANKS_VERSION', '0.14.2' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
@@ -306,6 +306,9 @@ function banks_detail( $key ) {
 		'locations' => 'Lagos and Ilorin, Nigeria',
 		'instagram' => 'https://instagram.com/bankssolutions',
 		'linkedin'  => '',
+		'facebook'  => '',
+		'x'         => '',
+		'gbp'       => '',
 		'tagline'   => 'Websites, web apps and custom solutions, automation and AI for businesses in any field.',
 	);
 	$v = get_option( 'banks_' . $key, null );
@@ -325,6 +328,9 @@ add_action(
 			'whatsapp'  => 'WhatsApp number (international, e.g. 2348030000000)',
 			'instagram' => 'Instagram URL',
 			'linkedin'  => 'LinkedIn URL',
+			'facebook'  => 'Facebook URL',
+			'x'         => 'X (Twitter) URL',
+			'gbp'       => 'Google Business Profile URL',
 		);
 		foreach ( $fields as $k => $label ) {
 			$c->add_setting( 'banks_' . $k, array( 'type' => 'option', 'sanitize_callback' => 'sanitize_text_field' ) );
@@ -516,6 +522,7 @@ function banks_redirects() {
 		'aeo'                          => '/solutions/seo-aeo/',
 		'services'                     => '/solutions/',
 		'pricing'                      => '/solutions/',
+		'invoice-naija'                => '/labs/invoicenaija/',
 		'audit'                        => '/start/',
 		'banks-solution'               => '/',
 		'home-v2'                      => '/',
@@ -647,6 +654,87 @@ add_action(
 		}
 		$id = esc_js( $id );
 		echo "<script>(function(){var id='" . $id . "',done=false;function load(){if(done){return}done=true;window.dataLayer=window.dataLayer||[];window.gtag=function(){dataLayer.push(arguments)};gtag('js',new Date());gtag('config',id);var s=document.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id='+id;document.head.appendChild(s)}var evts=['scroll','pointerdown','keydown','touchstart'];function go(){evts.forEach(function(n){window.removeEventListener(n,go)});load()}evts.forEach(function(n){window.addEventListener(n,go,{passive:true,once:true})});setTimeout(load,5000)})();</script>\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- id escaped with esc_js above.
+	},
+	99
+);
+
+/** Profile URLs that confirm the brand to search and AI engines. Empty ones are skipped. */
+function banks_same_as() {
+	$urls = array();
+	foreach ( array( 'instagram', 'linkedin', 'facebook', 'x', 'gbp' ) as $k ) {
+		$u = banks_detail( $k );
+		if ( $u ) {
+			$urls[] = esc_url_raw( $u );
+		}
+	}
+	return $urls;
+}
+
+/**
+ * Organisation facts and the two offices as structured data. Rank Math already prints an
+ * Organization node; we add the legal name, RC number and profile links to it, and on the pages
+ * that show the address (home, About, Contact) add a ProfessionalService with both locations.
+ */
+add_filter(
+	'rank_math/json_ld',
+	function ( $data ) {
+		if ( ! is_array( $data ) ) {
+			return $data;
+		}
+		$org_id = banks_main_url( '/' ) . '#organization';
+		foreach ( $data as $key => $entity ) {
+			if ( ! is_array( $entity ) || empty( $entity['@type'] ) ) {
+				continue;
+			}
+			$types = (array) $entity['@type'];
+			if ( in_array( 'Organization', $types, true ) ) {
+				$data[ $key ]['legalName'] = banks_detail( 'legal' );
+				$same                      = array_merge( isset( $entity['sameAs'] ) ? (array) $entity['sameAs'] : array(), banks_same_as() );
+				$data[ $key ]['sameAs']    = array_values( array_unique( $same ) );
+			}
+		}
+		if ( is_front_page() || is_page( array( 'about', 'contact' ) ) ) {
+			$offices = array( 'Lagos', 'Ilorin' );
+			foreach ( $offices as $city ) {
+				$data[ 'banksOffice' . $city ] = array(
+					'@type'           => 'ProfessionalService',
+					'@id'             => banks_main_url( '/' ) . '#office-' . strtolower( $city ),
+					'name'            => 'Banks Solutions, ' . $city,
+					'url'             => banks_main_url( '/' ),
+					'email'           => banks_detail( 'email' ),
+					'image'           => banks_img( 'banks-solutions-og.jpg' ),
+					'priceRange'      => '₦₦',
+					'parentOrganization' => array( '@id' => $org_id ),
+					'address'         => array(
+						'@type'           => 'PostalAddress',
+						'addressLocality' => $city,
+						'addressCountry'  => 'NG',
+					),
+					'areaServed'      => array( 'Nigeria', 'United States', 'United Kingdom', 'Canada', 'Kenya', 'Australia' ),
+					'sameAs'          => banks_same_as(),
+				);
+			}
+		}
+		return $data;
+	},
+	98
+);
+
+/**
+ * Google cuts titles near 60 characters. When a title with the brand suffix is longer than that,
+ * drop the suffix (Google adds the site name itself) so the keywords stay visible.
+ */
+add_filter(
+	'rank_math/frontend/title',
+	function ( $title ) {
+		$plain = html_entity_decode( (string) $title, ENT_QUOTES, 'UTF-8' );
+		if ( mb_strlen( $plain ) > 60 ) {
+			$short = preg_replace( '/\s*[|\x{2013}\x{2014}-]\s*Banks Solutions\s*$/u', '', $plain );
+			if ( is_string( $short ) && mb_strlen( $short ) >= 25 && $short !== $plain ) {
+				return $short;
+			}
+		}
+		return $title;
 	},
 	99
 );
