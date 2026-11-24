@@ -658,13 +658,19 @@ add_action(
 	99
 );
 
+/** Same profile URL, upgraded to https and without www, so duplicates collapse. */
+function banks_clean_url( $url ) {
+	$url = preg_replace( '#^http://#i', 'https://', esc_url_raw( trim( $url ) ) );
+	return preg_replace( '#^https://www\.(instagram|x|twitter|linkedin)\.#i', 'https://$1.', (string) $url );
+}
+
 /** Profile URLs that confirm the brand to search and AI engines. Empty ones are skipped. */
 function banks_same_as() {
 	$urls = array();
 	foreach ( array( 'instagram', 'linkedin', 'facebook', 'x', 'gbp' ) as $k ) {
 		$u = banks_detail( $k );
 		if ( $u ) {
-			$urls[] = esc_url_raw( $u );
+			$urls[] = banks_clean_url( $u );
 		}
 	}
 	return $urls;
@@ -689,7 +695,7 @@ add_filter(
 			$types = (array) $entity['@type'];
 			if ( in_array( 'Organization', $types, true ) ) {
 				$data[ $key ]['legalName'] = banks_detail( 'legal' );
-				$same                      = array_merge( isset( $entity['sameAs'] ) ? (array) $entity['sameAs'] : array(), banks_same_as() );
+				$same                      = array_map( 'banks_clean_url', array_merge( isset( $entity['sameAs'] ) ? (array) $entity['sameAs'] : array(), banks_same_as() ) );
 				$data[ $key ]['sameAs']    = array_values( array_unique( $same ) );
 			}
 		}
