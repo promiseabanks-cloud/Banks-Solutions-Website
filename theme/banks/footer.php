@@ -33,6 +33,8 @@ $b_foot_start = banks_route( '/start/', '/contact/' );
 							<?php banks_nav_item( '/banks-business-engine/', 'Banks Business Engine' ); ?>
 							<?php banks_nav_item( '/shop/', 'Shop' ); ?>
 							<?php banks_nav_item( '/about/', 'About' ); ?>
+							<?php banks_nav_item( '/web-design-lagos/', 'Web design in Lagos' ); ?>
+							<?php banks_nav_item( '/web-developer-ilorin/', 'Web developer in Ilorin' ); ?>
 						</ul>
 					</div>
 					<div>

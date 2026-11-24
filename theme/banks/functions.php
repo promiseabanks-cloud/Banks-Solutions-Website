@@ -3,11 +3,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.14.2' );
+define( 'BANKS_VERSION', '0.14.3' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
 require_once __DIR__ . '/inc/industries.php';
+require_once __DIR__ . '/inc/cities.php';
 require_once __DIR__ . '/inc/nav.php';
 require_once __DIR__ . '/inc/mobile-type.php';
 require_once __DIR__ . '/inc/lab-products.php';
@@ -207,6 +208,9 @@ function banks_scene() {
 		if ( is_page( $b_scene ) && ! wp_get_post_parent_id( get_queried_object_id() ) ) {
 			return $b_scene;
 		}
+	}
+	if ( banks_city() ) {
+		return 'industry';
 	}
 	$parent = wp_get_post_parent_id( get_queried_object_id() );
 	if ( $parent && 'industries' === get_post_field( 'post_name', $parent ) && isset( banks_industries()[ get_post_field( 'post_name', get_queried_object_id() ) ] ) ) {
@@ -448,7 +452,7 @@ add_filter(
 			return $template;
 		}
 		if ( 'industry' === $scene ) {
-			return locate_template( 'page-industry.php' );
+			return locate_template( banks_city() ? 'page-city.php' : 'page-industry.php' );
 		}
 		if ( 'product' === $scene ) {
 			return locate_template( 'page-lab-product.php' );

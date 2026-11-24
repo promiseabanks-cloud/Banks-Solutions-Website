@@ -35,7 +35,7 @@ $b_sfx   = 'phone' === $b_form ? '_phone' : '';
 				?>
 				<div class="wk-view" data-domain="<?php echo esc_attr( $b_it['domain'] ); ?>">
 					<?php if ( $b_shot ) : ?>
-						<img class="wk-shot" src="<?php echo esc_url( $b_shot ); ?>" alt="<?php echo esc_attr( 'laptop' === $b_form ? sprintf( 'The %s website', $b_it['title'] ) : '' ); ?>" <?php echo $b_eager && ! $b_n ? 'fetchpriority="high"' : 'loading="lazy"'; ?> decoding="async">
+						<img class="wk-shot" src="<?php echo esc_url( $b_shot ); ?>" alt="<?php echo esc_attr( sprintf( 'laptop' === $b_form ? 'The %s website' : 'The %s website on a phone', $b_it['title'] ) ); ?>" <?php echo $b_eager && ! $b_n ? 'fetchpriority="high"' : 'loading="lazy"'; ?> decoding="async">
 					<?php else : ?>
 						<div class="wk-mock" data-tone="<?php echo esc_attr( $b_t ); ?>" aria-hidden="true">
 							<div class="wk-mock__nav"><b><?php echo esc_html( $b_mark ); ?></b><i></i><i></i><i></i><span></span></div>
