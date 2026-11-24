@@ -235,6 +235,8 @@ $b_faqs = array(
 	</div>
 </section>
 
+<?php get_template_part( 'template-parts/testimonials' ); ?>
+
 <section class="s-faq">
 	<div class="b-wrap s-faq__grid">
 		<div>

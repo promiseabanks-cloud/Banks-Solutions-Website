@@ -29,3 +29,16 @@
 .s-cta p{max-width:52ch;margin:0 auto 40px;color:var(--b-on-soft)}
 
 @media (prefers-reduced-motion:reduce){.s-live{animation:none}.s-qa__icon{transition:none}}
+
+/* Client reviews (template-parts/testimonials.php): home and About */
+.b-reviews{padding-block:clamp(80px,10vw,120px);border-top:1px solid var(--b-line)}
+.b-reviews h2{font-size:clamp(2rem,4.4vw,3.4rem);letter-spacing:-.035em;margin:0 0 clamp(32px,5vw,56px)}
+.b-reviews__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.b-review{margin:0;padding:clamp(22px,3vw,34px);background:var(--b-surface);border:1px solid var(--b-line);border-radius:var(--b-r);display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+.b-review blockquote{margin:0}
+.b-review p{margin:0;font-size:1.05rem;line-height:1.6}
+.b-review figcaption{display:flex;flex-direction:column;gap:2px;font-family:var(--b-mono);font-size:.8rem;color:var(--b-muted)}
+.b-review figcaption strong{font-family:var(--b-head);font-size:1rem;color:var(--b-fg)}
+.b-reviews__more{margin:28px 0 0}
+.b-reviews__more a{color:var(--b-link);text-decoration:underline;text-underline-offset:3px}
+@media (max-width:760px){.b-reviews__grid{grid-template-columns:1fr}}
