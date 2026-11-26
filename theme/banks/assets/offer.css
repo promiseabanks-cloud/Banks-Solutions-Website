@@ -9,7 +9,8 @@
 .of-price{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;margin-bottom:10px}
 .of-price__now{font:700 clamp(2.4rem,4.6vw,3.6rem)/1 var(--b-head);letter-spacing:-.04em}
 .of-price__was{display:grid;gap:2px;font:500 12px/1.2 var(--b-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--b-on-soft)}
-.of-price__was s{font:700 clamp(1.5rem,2.6vw,2rem)/1.1 var(--b-head);letter-spacing:-.02em;text-transform:none;color:var(--b-on);text-decoration-thickness:3px;text-decoration-color:var(--b-signal)}
+.of-price__was b{font:700 clamp(1.5rem,2.6vw,2rem)/1.1 var(--b-head);letter-spacing:-.02em;text-transform:none;color:var(--b-on-soft)}
+.of-price__save{align-self:center;padding:6px 12px;border-radius:999px;background:var(--b-signal);color:var(--b-ink);font:700 13px/1 var(--b-mono);letter-spacing:.04em}
 .of-slots{margin:0 0 26px;font-size:15px;color:var(--b-on);max-width:46ch}
 .of-count{margin:0 0 10px;font:500 13px/1.4 var(--b-mono);letter-spacing:.06em;color:var(--b-foam)}
 .of-visual{max-width:340px}
@@ -71,7 +72,7 @@
 .of-plan h3{font:700 1.3rem/1.2 var(--b-head);margin:0}
 .of-plan__price{margin:6px 0 0;font:700 1.9rem/1.1 var(--b-head);letter-spacing:-.03em}
 .of-plan__was{margin:0;font:500 15px/1.4 var(--b-body);color:var(--b-muted)}
-.of-plan__was s{font:700 1.15rem/1.2 var(--b-head);color:var(--b-fg);text-decoration-thickness:2px}
+.of-plan__was b{font:700 1.15rem/1.2 var(--b-head);color:var(--b-fg)}
 .of-plan__was strong{color:var(--b-link);margin-left:6px}
 .of-plan p{margin:0}
 .of-plan__when{font:500 13px/1.4 var(--b-mono);color:var(--b-link)}

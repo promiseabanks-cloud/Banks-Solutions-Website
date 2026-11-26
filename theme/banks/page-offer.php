@@ -45,7 +45,7 @@ $b_objs = array(
 				<div class="of-price" aria-label="Starter website price">
 					<?php if ( $b_active ) : ?>
 						<span class="of-price__now">₦200,000</span>
-						<span class="of-price__was"><span>Normal price</span><s>₦380,000</s></span>
+						<span class="of-price__was"><span>Normal price</span><b>₦380,000</b></span><span class="of-price__save">47% off</span>
 					<?php else : ?>
 						<span class="of-price__now">From ₦380,000</span>
 					<?php endif; ?>
@@ -157,7 +157,7 @@ $b_objs = array(
 					<h3><?php echo esc_html( $b_p[1] ); ?></h3>
 					<?php if ( $b_active ) : ?>
 						<p class="of-plan__price"><?php echo esc_html( $b_p[2] ); ?></p>
-						<p class="of-plan__was">Normally <s><?php echo esc_html( $b_p[3] ); ?></s> <strong><?php echo esc_html( $b_p[4] ); ?></strong></p>
+						<p class="of-plan__was">Normally <b><?php echo esc_html( $b_p[3] ); ?></b> <strong><?php echo esc_html( $b_p[4] ); ?></strong></p>
 					<?php else : ?>
 						<p class="of-plan__price"><?php echo esc_html( $b_p[3] ); ?></p>
 					<?php endif; ?>
