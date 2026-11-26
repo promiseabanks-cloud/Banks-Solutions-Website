@@ -39,19 +39,20 @@ $b_objs = array(
 		<div class="s-glow" aria-hidden="true"></div>
 		<div class="b-wrap of-inner">
 			<div class="of-copy">
-				<p class="b-eyebrow of-eyebrow"><span class="s-live" aria-hidden="true"></span><?php echo $b_active ? esc_html( 'Year-end offer · ends ' . $b_end_tx ) : 'Year-end offer · ended'; ?></p>
+				<p class="b-eyebrow of-eyebrow"><?php echo $b_active ? esc_html( 'Year-end offer · ends ' . $b_end_tx ) : 'Year-end offer · ended'; ?></p>
 				<h1 class="of-title">A website that answers your customers for you<span class="s-dot">.</span></h1>
 				<p class="of-lede">Live in 5 to 7 days, with your domain, hosting and Google listing included. Pay a ₦50,000 deposit to start, and the rest only when you love it.</p>
 				<div class="of-price" aria-label="Starter website price">
 					<?php if ( $b_active ) : ?>
 						<span class="of-price__now">₦200,000</span>
-						<span class="of-price__was"><s>₦380,000</s> normal price</span>
+						<span class="of-price__was"><span>Normal price</span><s>₦380,000</s></span>
 					<?php else : ?>
 						<span class="of-price__now">From ₦380,000</span>
 					<?php endif; ?>
 				</div>
 				<?php if ( $b_active ) : ?>
 					<p class="of-count" data-ends="<?php echo esc_attr( gmdate( 'c', $b_ends ) ); ?>" aria-live="off">Offer ends <?php echo esc_html( $b_end_tx ); ?></p>
+				<p class="of-slots">Limited slots. We only take on as many websites as we can build in 5 to 7 days.</p>
 				<?php endif; ?>
 				<div class="of-visual" aria-hidden="true">
 					<div class="of-phone">
@@ -62,7 +63,7 @@ $b_objs = array(
 							<p class="of-msg of-msg--in">Yes please</p>
 							<p class="of-msg of-msg--out">Done. You will get a payment link now.</p>
 						</div>
-						<p class="of-phone__foot"><span class="s-live"></span>Example: replied in 4 seconds, at 11:42 pm</p>
+						<p class="of-phone__foot">Example: replied in 4 seconds, at 11:42 pm</p>
 					</div>
 				</div>
 			</div>
@@ -156,7 +157,7 @@ $b_objs = array(
 					<h3><?php echo esc_html( $b_p[1] ); ?></h3>
 					<?php if ( $b_active ) : ?>
 						<p class="of-plan__price"><?php echo esc_html( $b_p[2] ); ?></p>
-						<p class="of-plan__was"><s><?php echo esc_html( $b_p[3] ); ?></s> · <?php echo esc_html( $b_p[4] ); ?></p>
+						<p class="of-plan__was">Normally <s><?php echo esc_html( $b_p[3] ); ?></s> <strong><?php echo esc_html( $b_p[4] ); ?></strong></p>
 					<?php else : ?>
 						<p class="of-plan__price"><?php echo esc_html( $b_p[3] ); ?></p>
 					<?php endif; ?>
@@ -181,7 +182,7 @@ $b_objs = array(
 			<li>The domain and hosting are included for your first year. We tell you the renewal cost before you pay the deposit.</li>
 			<li>Build time runs from the day we have your business details, logo and photos.</li>
 			<li>Business Engine full access runs for 30 days from launch. After that, its core features stay with your website and the rest is optional.</li>
-			<li>Offer prices apply to builds confirmed by <?php echo esc_html( $b_end_tx ); ?>. Growth and Max are priced from the figures shown and confirmed in writing after a short call.</li>
+			<li>Slots are limited and offer prices apply to builds confirmed by <?php echo esc_html( $b_end_tx ); ?>, or until the slots are full. Growth and Max are priced from the figures shown and confirmed in writing after a short call.</li>
 		</ul>
 	</div>
 </section>
