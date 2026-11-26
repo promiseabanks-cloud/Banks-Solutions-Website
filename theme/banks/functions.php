@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'BANKS_VERSION', '0.14.5' );
+define( 'BANKS_VERSION', '0.15.0' );
 define( 'BANKS_GSAP', '3.13.0' );
 define( 'BANKS_LENIS', '1.3.4' );
 
@@ -78,7 +78,7 @@ add_action(
 add_filter(
 	'script_loader_tag',
 	function ( $tag, $handle ) {
-		if ( in_array( $handle, array( 'gsap', 'gsap-scrolltrigger', 'gsap-splittext', 'lenis', 'banks-motion', 'banks-scenes', 'banks-home', 'banks-solutions', 'banks-solution', 'banks-start', 'banks-work', 'banks-case', 'banks-devices', 'banks-about', 'banks-contact', 'banks-engine', 'banks-shop', 'banks-labs', 'banks-dev', 'banks-legal', 'banks-knowledge', 'banks-glossary', 'banks-read', 'banks-industries', 'banks-industry', 'banks-product', 'banks-nav' ), true ) ) {
+		if ( in_array( $handle, array( 'gsap', 'gsap-scrolltrigger', 'gsap-splittext', 'lenis', 'banks-motion', 'banks-scenes', 'banks-home', 'banks-solutions', 'banks-solution', 'banks-start', 'banks-work', 'banks-case', 'banks-devices', 'banks-about', 'banks-contact', 'banks-engine', 'banks-shop', 'banks-labs', 'banks-dev', 'banks-legal', 'banks-knowledge', 'banks-glossary', 'banks-read', 'banks-industries', 'banks-industry', 'banks-offer', 'banks-product', 'banks-nav' ), true ) ) {
 			return str_replace( ' src=', ' defer src=', $tag );
 		}
 		return $tag;
@@ -211,6 +211,9 @@ function banks_scene() {
 	}
 	if ( banks_city() ) {
 		return 'industry';
+	}
+	if ( is_page( array( 'offer', 'offer-preview' ) ) && ! wp_get_post_parent_id( get_queried_object_id() ) ) {
+		return 'offer';
 	}
 	$parent = wp_get_post_parent_id( get_queried_object_id() );
 	if ( $parent && 'industries' === get_post_field( 'post_name', $parent ) && isset( banks_industries()[ get_post_field( 'post_name', get_queried_object_id() ) ] ) ) {
@@ -453,6 +456,9 @@ add_filter(
 		}
 		if ( 'industry' === $scene ) {
 			return locate_template( banks_city() ? 'page-city.php' : 'page-industry.php' );
+		}
+		if ( 'offer' === $scene ) {
+			return locate_template( 'page-offer.php' );
 		}
 		if ( 'product' === $scene ) {
 			return locate_template( 'page-lab-product.php' );
