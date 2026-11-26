@@ -153,6 +153,7 @@ function banks_core_submit_offer( array $raw ) {
 	$token = wp_generate_password( 24, false );
 	update_post_meta( $id, '_banks_offer_lead', $lead );
 	update_post_meta( $id, '_banks_offer_token', $token );
+	update_post_meta( $id, '_banks_offer_email', strtolower( $lead['email'] ) );
 	update_post_meta( $id, '_banks_offer_status', 'new' );
 	set_transient( $limit_key, $count + 1, HOUR_IN_SECONDS );
 
@@ -333,3 +334,113 @@ function banks_core_offer_post() {
 }
 add_action( 'admin_post_nopriv_banks_offer', 'banks_core_offer_post' );
 add_action( 'admin_post_banks_offer', 'banks_core_offer_post' );
+
+/*
+ * Paystack: the deposit. Paystack calls this URL when a payment succeeds; we check the signature
+ * with the secret key (option banks_paystack_secret, set under Offer leads > Payments), match the
+ * payer's email to a lead and mark the deposit paid.
+ */
+add_action(
+	'rest_api_init',
+	function () {
+		register_rest_route(
+			'banks/v1',
+			'/paystack',
+			array(
+				'methods'             => 'POST',
+				'permission_callback' => '__return_true',
+				'callback'            => 'banks_core_paystack_webhook',
+			)
+		);
+	}
+);
+
+function banks_core_paystack_webhook( WP_REST_Request $request ) {
+	$secret = (string) get_option( 'banks_paystack_secret', '' );
+	$body   = $request->get_body();
+	$sig    = (string) $request->get_header( 'x-paystack-signature' );
+	if ( '' === $secret || '' === $sig || ! hash_equals( hash_hmac( 'sha512', $body, $secret ), $sig ) ) {
+		return new WP_REST_Response( array( 'ok' => false ), 401 );
+	}
+	$event = json_decode( $body, true );
+	if ( ! is_array( $event ) || 'charge.success' !== ( $event['event'] ?? '' ) ) {
+		return new WP_REST_Response( array( 'ok' => true ), 200 );
+	}
+	$data   = isset( $event['data'] ) && is_array( $event['data'] ) ? $event['data'] : array();
+	$email  = strtolower( sanitize_email( $data['customer']['email'] ?? '' ) );
+	$amount = (int) ( $data['amount'] ?? 0 ); // Kobo.
+	$ref    = sanitize_text_field( (string) ( $data['reference'] ?? '' ) );
+	$studio = banks_core_brief_recipient();
+	$found  = $email ? get_posts(
+		array(
+			'post_type'      => 'banks_offer_lead',
+			'post_status'    => 'private',
+			'meta_key'       => '_banks_offer_email', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+			'meta_value'     => $email, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value
+			'posts_per_page' => 1,
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+			'fields'         => 'ids',
+		)
+	) : array();
+	if ( ! $found ) {
+		wp_mail( $studio, 'Paystack payment with no matching lead', "A payment arrived that matches no offer lead.\n\nEmail: $email\nAmount: " . ( $amount / 100 ) . "\nReference: $ref" );
+		return new WP_REST_Response( array( 'ok' => true ), 200 );
+	}
+	$id = (int) $found[0];
+	if ( 'paid' === get_post_meta( $id, '_banks_offer_status', true ) || get_post_meta( $id, '_banks_offer_paystack_ref', true ) === $ref ) {
+		return new WP_REST_Response( array( 'ok' => true ), 200 ); // Paystack retries; do it once.
+	}
+	$lead = get_post_meta( $id, '_banks_offer_lead', true );
+	update_post_meta( $id, '_banks_offer_status', 'paid' );
+	update_post_meta( $id, '_banks_offer_paystack_ref', $ref );
+	update_post_meta( $id, '_banks_offer_paid_amount', $amount / 100 );
+	update_post_meta( $id, '_banks_offer_paid_at', time() );
+	if ( is_array( $lead ) ) {
+		$short = $amount < 5000000 ? "\n\nNote: this is less than the \u{20A6}50,000 deposit, so we will confirm the balance with you." : '';
+		wp_mail(
+			$lead['email'],
+			'Deposit received: let\'s build your website',
+			'Hi ' . $lead['name'] . ",\n\nWe have received your deposit of \u{20A6}" . number_format( $amount / 100 ) . ". Thank you.\n\n" .
+			"Next, reply to this email with your business details, logo, colours and photos. If you do not have all of them yet, send what you have and we will guide you. Your build starts as soon as we have them.\n\n" .
+			'You pay the rest only when you are happy with the website.' . $short . "\n\nBanks Solutions\n" . home_url( '/' ),
+			array( 'Reply-To: Banks Solutions <' . $studio . '>' )
+		);
+		wp_mail( $studio, 'DEPOSIT PAID: ' . $lead['name'] . ' (' . $lead['business'] . ')', "Amount: \u{20A6}" . number_format( $amount / 100 ) . "\nReference: $ref\nWhatsApp: " . $lead['phone'] . "\nEmail: " . $lead['email'] . "\n\n" . admin_url( 'post.php?post=' . $id . '&action=edit' ) );
+		do_action( 'banks_core_offer_paid', $id, $lead, $amount / 100 );
+	}
+	return new WP_REST_Response( array( 'ok' => true ), 200 );
+}
+
+/** Offer leads > Payments: where the secret key and the deposit link are pasted. */
+add_action(
+	'admin_menu',
+	function () {
+		add_submenu_page( 'edit.php?post_type=banks_offer_lead', 'Payments', 'Payments', 'manage_options', 'banks-offer-payments', 'banks_core_offer_payments_page' );
+	}
+);
+function banks_core_offer_payments_page() {
+	if ( isset( $_POST['banks_pay_save'] ) && check_admin_referer( 'banks_pay' ) && current_user_can( 'manage_options' ) ) {
+		$new = isset( $_POST['banks_paystack_secret'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['banks_paystack_secret'] ) ) ) : '';
+		if ( '' !== $new ) {
+			update_option( 'banks_paystack_secret', $new, false );
+		}
+		update_option( 'banks_offer_deposit_link', isset( $_POST['banks_offer_deposit_link'] ) ? esc_url_raw( wp_unslash( $_POST['banks_offer_deposit_link'] ) ) : '', false );
+		echo '<div class="updated"><p>Saved.</p></div>';
+	}
+	$has = '' !== (string) get_option( 'banks_paystack_secret', '' );
+	?>
+	<div class="wrap">
+		<h1>Offer payments</h1>
+		<form method="post">
+			<?php wp_nonce_field( 'banks_pay' ); ?>
+			<table class="form-table">
+				<tr><th>Webhook URL (paste into Paystack)</th><td><code><?php echo esc_html( rest_url( 'banks/v1/paystack' ) ); ?></code></td></tr>
+				<tr><th><label for="s">Paystack secret key</label></th><td><input id="s" type="password" name="banks_paystack_secret" class="regular-text" autocomplete="off" placeholder="<?php echo $has ? 'Saved. Paste a new one to replace it' : 'sk_live_...'; ?>"></td></tr>
+				<tr><th><label for="d">Deposit payment link</label></th><td><input id="d" type="url" name="banks_offer_deposit_link" class="regular-text" value="<?php echo esc_attr( get_option( 'banks_offer_deposit_link', '' ) ); ?>"><p class="description">The ₦50,000 Paystack payment page link emailed to people who say yes.</p></td></tr>
+			</table>
+			<p><button class="button button-primary" name="banks_pay_save" value="1">Save</button></p>
+		</form>
+	</div>
+	<?php
+}
