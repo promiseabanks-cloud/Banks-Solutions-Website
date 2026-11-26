@@ -22,7 +22,7 @@ function banks_cities() {
 		'web-design-lagos'    => array(
 			'name'   => 'Lagos',
 			'h1'     => 'Website design and web apps in Lagos',
-			'answer' => 'Banks Solutions is a Lagos web design and development company. We build business websites from ₦499,000, online stores from ₦750,000, and web apps, CRM and AI tools priced from a written spec, for businesses in Lagos and across Nigeria.',
+			'answer' => 'Banks Solutions is a Lagos web design and development company. We build business websites from ₦380,000, online stores from ₦750,000, and web apps, CRM and AI tools priced from a written spec, for businesses in Lagos and across Nigeria.',
 			'feed'   => array(
 				array( 'Enquiry from Lekki', 'Captured, answered and logged in seconds' ),
 				array( 'Order from Ikeja', 'Paid by transfer, receipt sent' ),
@@ -35,7 +35,7 @@ function banks_cities() {
 				array( 'The website does not bring in business.', 'It looks fine but nobody can find it, and visitors do not know what to do next.' ),
 			),
 			'builds' => array(
-				array( 'websites', 'Websites and online stores', 'Fast, clear sites that show up in Google and turn visitors into enquiries and orders. From ₦499,000; stores from ₦750,000.' ),
+				array( 'websites', 'Websites and online stores', 'Fast, clear sites that show up in Google and turn visitors into enquiries and orders. From ₦380,000; stores from ₦750,000.' ),
 				array( 'web-apps', 'Web apps for how you work', 'Booking systems, client portals, dashboards and internal tools scoped from a short brief and paid in stages.' ),
 				array( 'automation-crm', 'CRM and follow-up', 'Every enquiry captured and followed up automatically, from first message to invoice.' ),
 			),
@@ -45,7 +45,7 @@ function banks_cities() {
 				array( 'A named person after launch', 'Updates, backups and monthly changes handled from ₦150,000 a month.' ),
 			),
 			'faqs'   => array(
-				array( 'How much does website design cost in Lagos?', 'Business websites with Banks Solutions start from ₦499,000 and online stores from ₦750,000. Web apps and custom systems are priced from a written spec after a short brief.' ),
+				array( 'How much does website design cost in Lagos?', 'Business websites with Banks Solutions start from ₦380,000 and online stores from ₦750,000. Web apps and custom systems are priced from a written spec after a short brief.' ),
 				array( 'How long does a website take to build?', 'A typical business website is live in about five weeks. We confirm the timeline in writing before you pay anything.' ),
 				array( 'Do you work with businesses outside Lagos?', 'Yes. We work with businesses across Nigeria and have clients in the United States, United Kingdom, Canada, Kenya and Australia. The work is done remotely.' ),
 				array( 'Can I meet you in person?', 'We are based in Lagos and Ilorin. Start with a brief on the Start page and we will arrange a call or a meeting if it helps.' ),
@@ -54,7 +54,7 @@ function banks_cities() {
 		'web-developer-ilorin' => array(
 			'name'   => 'Ilorin',
 			'h1'     => 'Web developer and software company in Ilorin',
-			'answer' => 'Banks Solutions has a team in Ilorin, Kwara State. We build business websites from ₦499,000, online stores from ₦750,000, and web apps, CRM and AI tools priced from a written spec, for Ilorin businesses, schools, clinics and organisations.',
+			'answer' => 'Banks Solutions has a team in Ilorin, Kwara State. We build business websites from ₦380,000, online stores from ₦750,000, and web apps, CRM and AI tools priced from a written spec, for Ilorin businesses, schools, clinics and organisations.',
 			'feed'   => array(
 				array( 'Admission enquiry', 'Received online, parent told what happens next' ),
 				array( 'Order from Tanke', 'Paid, receipt emailed, stock updated' ),
@@ -67,7 +67,7 @@ function banks_cities() {
 				array( 'You need more than a brochure site.', 'Admissions, bookings, orders or a client portal need a system, not just pages.' ),
 			),
 			'builds' => array(
-				array( 'websites', 'Websites that get found', 'Clear, fast sites with the pages and Google listing details local customers look for. From ₦499,000.' ),
+				array( 'websites', 'Websites that get found', 'Clear, fast sites with the pages and Google listing details local customers look for. From ₦380,000.' ),
 				array( 'web-apps', 'Web apps and portals', 'Admissions, booking, ordering and client portals built around how your organisation works.' ),
 				array( 'ai', 'Practical AI', 'Answer routine questions and sort enquiries automatically, for named jobs that save real time.' ),
 			),
@@ -78,7 +78,7 @@ function banks_cities() {
 			),
 			'faqs'   => array(
 				array( 'Do you have an office in Ilorin?', 'Yes. Banks Solutions works from Lagos and Ilorin. Send a brief on the Start page and we will arrange a call or a meeting.' ),
-				array( 'How much does a website cost in Ilorin?', 'Business websites start from ₦499,000 and online stores from ₦750,000. Web apps and custom systems are priced from a written spec.' ),
+				array( 'How much does a website cost in Ilorin?', 'Business websites start from ₦380,000 and online stores from ₦750,000. Web apps and custom systems are priced from a written spec.' ),
 				array( 'Can you build for a school or clinic?', 'Yes. We build websites, admission and fee-payment flows, appointment booking and intake for schools and health providers. We will not claim past clients we do not have, but we will show the work we have done.' ),
 				array( 'Will you look after the site after launch?', 'Yes. Care plans cover updates, verified backups, security, monitoring and monthly changes from ₦150,000 a month.' ),
 			),

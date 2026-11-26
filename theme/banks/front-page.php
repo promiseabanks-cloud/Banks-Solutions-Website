@@ -15,7 +15,7 @@ $b_build = array(
 	array(
 		'title' => 'Websites & e-commerce',
 		'text'  => 'Fast sites built around how your customers decide, including online stores with Paystack.',
-		'meta'  => 'From ₦499,000 · about 5 weeks',
+		'meta'  => 'From ₦380,000 · about 5 weeks',
 		'url'   => banks_route( '/solutions/websites/', '/services/digital-foundation/' ),
 	),
 	array(
@@ -66,7 +66,7 @@ $b_products = array(
 
 $b_faqs = array(
 	array( 'What does Banks Solutions do?', 'Banks Solutions is a Nigerian technology company based in Lagos and Ilorin that designs and builds websites, web apps and custom solutions, automation and AI systems. We work with businesses in any industry, in Nigeria and abroad, and also sell our own software, starting with the Banks Business Engine AI assistant.' ),
-	array( 'How much does a website cost in Nigeria?', 'A business website from Banks Solutions starts at ₦499,000 and an online store at ₦750,000. Web apps and custom solutions are priced from a written spec, because the cost depends on what the system has to do. Every price includes structure, copy guidance, mobile performance and launch support.' ),
+	array( 'How much does a website cost in Nigeria?', 'A business website from Banks Solutions starts at ₦380,000 and an online store at ₦750,000. Web apps and custom solutions are priced from a written spec, because the cost depends on what the system has to do. Every price includes structure, copy guidance, mobile performance and launch support.' ),
 	array( 'Do you work with businesses outside Nigeria?', 'Yes. We have built for clients in 6 countries: Nigeria, the United States, the United Kingdom, Canada, Kenya and Australia. Projects run through the client portal, so you can track progress, share files and pay online from anywhere.' ),
 	array( 'Can I pay in instalments?', 'Yes. Most projects are paid half at the start and half on delivery, or in full upfront. You pay securely by card or bank transfer through Paystack in your client portal.' ),
 	array( 'How long does a project take?', 'A website takes about 5 weeks, an online store about 8 weeks, and a website with automation about 8 weeks. Web apps and custom solutions are scoped individually; you see the timeline before you commit.' ),

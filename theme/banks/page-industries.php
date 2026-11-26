@@ -22,7 +22,7 @@ $b_roll = array( 'finance', 'law firms', 'hotels', 'schools', 'clinics', 'founda
 $b_faqs = array(
 	array( 'Which industries does Banks Solutions work with?', 'Any field. We have pages for finance, legal, hospitality, education, health, non-profits and fashion because that is where most of our clients are, and we also work with retail, coaching, entertainment, beauty and professional services.' ),
 	array( 'Do you have experience in my industry?', 'Each industry page shows the projects we have published in that field. Where we have none yet, the page says so, and we will walk you through how we would approach your business before you commit to anything.' ),
-	array( 'Is the price different by industry?', 'No. Business websites start at ₦499,000 and online stores at ₦750,000 in every field. Web apps and custom solutions are priced from a written spec, because the cost depends on what they need to do, not on your industry.' ),
+	array( 'Is the price different by industry?', 'No. Business websites start at ₦380,000 and online stores at ₦750,000 in every field. Web apps and custom solutions are priced from a written spec, because the cost depends on what they need to do, not on your industry.' ),
 	array( 'Do you work with businesses outside Nigeria?', 'Yes. We work with clients in Nigeria, the United States, the United Kingdom, Canada, Kenya and Australia.' ),
 );
 ?>
@@ -95,7 +95,7 @@ $b_faqs = array(
 			<h2 data-split>Different problems. Same standard.</h2>
 		</div>
 		<ol class="ix-same__list">
-			<li><span class="ix-same__n">01</span><h3>A written spec and a fixed price</h3><p>Before any work starts you know what we’ll build, how long it takes and what it costs. Websites from ₦499,000, stores from ₦750,000.</p></li>
+			<li><span class="ix-same__n">01</span><h3>A written spec and a fixed price</h3><p>Before any work starts you know what we’ll build, how long it takes and what it costs. Websites from ₦380,000, stores from ₦750,000.</p></li>
 			<li><span class="ix-same__n">02</span><h3>Built for phones on mobile data</h3><p>Your customers are on a phone, often on a slow connection. Every build is made and tested for that first.</p></li>
 			<li><span class="ix-same__n">03</span><h3>Yours to own</h3><p>The website, the code and the data belong to you, documented so any developer could take over.</p></li>
 		</ol>

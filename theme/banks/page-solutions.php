@@ -15,9 +15,9 @@ $b_solutions = array(
 		'short'  => 'Websites',
 		'pain'   => 'Visitors arrive and leave without a word.',
 		'line'   => 'A website that does a job, not one that just exists.',
-		'answer' => 'Business websites start at ₦499,000 and take about 5 weeks. Online stores with Paystack start at ₦750,000 and take about 8 weeks. Both are built around how your customers decide.',
+		'answer' => 'Business websites start at ₦380,000 and take about 5 weeks. Online stores with Paystack start at ₦750,000 and take about 8 weeks. Both are built around how your customers decide.',
 		'items'  => array( 'Business websites', 'Online stores with Paystack', 'Landing pages', 'Copy guidance', 'Fast on mobile data', 'Launch support' ),
-		'price'  => 'From ₦499,000 · about 5 weeks',
+		'price'  => 'From ₦380,000 · about 5 weeks',
 		'url'    => banks_route( '/solutions/websites/', '/services/digital-foundation/' ),
 	),
 	array(
@@ -73,7 +73,7 @@ $b_solutions = array(
 );
 
 $b_prices = array(
-	array( 'Business website', 499000, '', 'About 5 weeks' ),
+	array( 'Business website', 380000, '', 'About 5 weeks' ),
 	array( 'Online store with Paystack', 750000, '', 'About 8 weeks' ),
 	array( 'Automation & CRM', 800000, ' + ₦250,000 a month', 'Scoped from the brief' ),
 	array( 'Care plan', 150000, ' a month', 'Ongoing, cancel any time' ),
@@ -87,7 +87,7 @@ $b_faqs = array(
 	array( 'What does Banks Solutions build?', 'Banks Solutions, a technology company based in Lagos and Ilorin, Nigeria, builds six kinds of system: websites and online stores, web apps and custom solutions, automation and CRM, AI solutions, care plans, and SEO for Google and AI search. Most clients start with one and add others as the business grows.' ),
 	array( 'How do I know which solution I need?', 'Start with the brief. It takes about 10 minutes and asks what is slowing the business down. Within two working days we come back with what we would build, how long it takes and what it costs. We will also tell you which solutions you do not need.' ),
 	array( 'Can you combine solutions in one project?', 'Yes. A common pairing is a website with automation, so every enquiry from the site lands in a CRM and gets a WhatsApp reply. That takes about 8 weeks. You get one plan, one timeline and one client portal for the whole project.' ),
-	array( 'How much do your solutions cost?', 'Websites start at ₦499,000 and online stores at ₦750,000. Automation and CRM starts at ₦800,000 plus ₦250,000 a month, and care plans at ₦150,000 a month. Web apps, custom solutions and AI are priced from a written spec, so you see the full cost before you commit.' ),
+	array( 'How much do your solutions cost?', 'Websites start at ₦380,000 and online stores at ₦750,000. Automation and CRM starts at ₦800,000 plus ₦250,000 a month, and care plans at ₦150,000 a month. Web apps, custom solutions and AI are priced from a written spec, so you see the full cost before you commit.' ),
 	array( 'Do you only work with certain industries?', 'No. We work with businesses in any field. Clients include a microfinance bank, law firms, a hotel, a fashion designer, beauty salons, a coach and a foundation, in Nigeria, the United States, the United Kingdom, Canada, Kenya and Australia. We also build for schools, clinics and the wider health sector.' ),
 );
 ?>
