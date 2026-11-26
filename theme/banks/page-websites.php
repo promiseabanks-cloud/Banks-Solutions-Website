@@ -15,9 +15,9 @@ get_template_part(
 		'service_type' => 'Website design and development',
 		'start'        => banks_route( '/start/', '/contact/' ),
 		'h1'           => 'A website that does a job, not one that just exists',
-		'answer'       => 'Banks Solutions designs and builds business websites and online stores in Nigeria. Business sites start at ₦499,000 and take about 5 weeks; online stores with Paystack start at ₦750,000 and take about 8 weeks.',
+		'answer'       => 'Banks Solutions designs and builds business websites and online stores in Nigeria. Business sites start at ₦380,000 and take about 5 weeks; online stores with Paystack start at ₦750,000 and take about 8 weeks.',
 		'facts'        => array(
-			array( '₦499k', 'websites from' ),
+			array( '₦380k', 'websites from' ),
 			array( '~5 wks', 'brief to launch' ),
 			array( '100%', 'yours to own' ),
 		),
@@ -90,7 +90,7 @@ get_template_part(
 		'plans'        => array(
 			array(
 				'name'  => 'Business website',
-				'naira' => 499000,
+				'naira' => 380000,
 				'when'  => 'About 5 weeks',
 				'text'  => 'The essentials, done properly: fast, mobile-first and built to turn visitors into enquiries, with SEO and AI-search foundations from day one.',
 				'cta'   => 'Start with a website',
@@ -114,7 +114,7 @@ get_template_part(
 		),
 		'plans_note'   => 'Every quote is fixed before we start: no hourly rate that drifts, no surprises at invoice time. Pay in full, or half at the start and half on delivery, through Paystack.',
 		'faqs'         => array(
-			array( 'How much does a website cost in Nigeria?', 'At Banks Solutions a business website starts at ₦499,000 and an online store at ₦750,000. Larger builds with integrations are priced from a written spec. Every quote is fixed before work starts and includes copy, mobile performance, search foundations and launch support.' ),
+			array( 'How much does a website cost in Nigeria?', 'At Banks Solutions a business website starts at ₦380,000 and an online store at ₦750,000. Larger builds with integrations are priced from a written spec. Every quote is fixed before work starts and includes copy, mobile performance, search foundations and launch support.' ),
 			array( 'How long does it take to build a website?', 'A business website takes about 5 weeks from brief to launch, and an online store about 8 weeks. The variable is usually how quickly content, photographs and feedback come back; the build itself is the predictable part.' ),
 			array( 'Will I be able to update it myself?', 'Yes. We build with an editor a non-technical person can genuinely use, and train you on it at handover. Many clients add a care plan so they do not have to, but that is a choice, not a dependency we design in.' ),
 			array( 'Do you build online stores with Paystack?', 'Yes. Our online stores take card and bank transfer payments through Paystack, with product pages, checkout, order emails and stock handled in the store. Stores start at ₦750,000 and take about 8 weeks.' ),

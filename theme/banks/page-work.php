@@ -19,7 +19,7 @@ $b_faqs = array(
 	array( 'What has Banks Solutions built?', $b_count ? 'Websites and platforms for businesses in ' . ( count( $b_tags ) > 1 ? count( $b_tags ) . ' fields' : 'many fields' ) . ', including ' . implode( ', ', array_slice( wp_list_pluck( $b_items, 'title' ), 0, 6 ) ) . '. Every project on this page is live, and each one has its own case study.' : 'Websites, web apps and custom solutions for businesses in many fields. Projects are listed here as each case study is ready.' ),
 	array( 'Do you only build for one industry?', 'No. Banks Solutions builds for any business in any field: hotels, banks, law firms, salons, fashion labels, coaches, entertainment brands and foundations so far. What matters is the business problem, and the brief is where we learn it.' ),
 	array( 'Can I visit these websites?', 'Yes. Every project links to the live site, so you can try it on your own phone and see how fast it is for yourself.' ),
-	array( 'How much would a site like these cost?', 'Business websites start at ₦499,000 and online stores at ₦750,000. Web apps and custom solutions are priced from a written spec. Every quote is fixed before work starts.' ),
+	array( 'How much would a site like these cost?', 'Business websites start at ₦380,000 and online stores at ₦750,000. Web apps and custom solutions are priced from a written spec. Every quote is fixed before work starts.' ),
 );
 ?>
 <section class="wk-hero" data-dark data-hero>

@@ -37,5 +37,5 @@
 		</div>
 	</div>
 	<div class="vw-badge vw-badge--speed"><em>Load time on 4G</em><b><span data-vw-speed>1.2</span>s</b></div>
-	<div class="vw-badge vw-badge--lead"><span class="vw-badge__icon">↗</span><span><em>New enquiry</em>Quote request · ₦499k site</span></div>
+	<div class="vw-badge vw-badge--lead"><span class="vw-badge__icon">↗</span><span><em>New enquiry</em>Quote request · ₦380k site</span></div>
 </div>
